@@ -12,6 +12,12 @@
 2. open `http://localhost:8080`
 3. start developing :) page uses hot reload, so after any changes the page reloads automatically
 
+## Keyboard
+
+1. `WASD` to move camera
+2. `Shift + WASD` to rotate camera in correspoding direction
+3. `Z` - move down, `X` - move up
+
 ## TO-DO
 
 ### Bugs:
