@@ -94,18 +94,18 @@ export class Vector3 {
         const matrix = Matrix.identity(4, 4);
     
         matrix.set(3, 0, -this.x);
-        matrix.set(3, 0, -this.y);
-        matrix.set(3, 0, -this.z);
+        matrix.set(3, 1, -this.y);
+        matrix.set(3, 2, -this.z);
 
         return matrix;
     }
 
-    getTranlationFromOriginMatrix(): Matrix {
+    getTranslationFromOriginMatrix(): Matrix {
         const matrix = Matrix.identity(4, 4);
     
         matrix.set(3, 0, this.x);
-        matrix.set(3, 0, this.y);
-        matrix.set(3, 0, this.z);
+        matrix.set(3, 1, this.y);
+        matrix.set(3, 2, this.z);
 
         return matrix;
     }

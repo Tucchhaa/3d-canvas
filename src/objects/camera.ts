@@ -79,7 +79,7 @@ export class Camera extends SpaceEntity {
 
         const projectionMatrix = this.calculateProjectionMatrix(vectorFromCamera.z);
 
-        const homogeneousVector = vectorFromCamera.asRowVector().toHomogeneous();
+        const homogeneousVector = vectorFromCamera.asRowVector().asHomogeneous();
 
         const projectionVector = homogeneousVector.mmul(projectionMatrix).mmul(this.perspectiveMatrix);
 
