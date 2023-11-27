@@ -82,7 +82,7 @@ export class Renderer {
      * @returns array of points on the screen or undefined if points are out of the screen.
      */
     private getPointsOnScreen(camera: Camera, polygon: Polygon): Vector2[] | undefined {
-        const points = polygon.verteces.map(vertex => camera.project(vertex));
+        const points = polygon.vertexes.map(vertex => camera.project(vertex));
 
         if(points.every(point => !camera.isProjectedPointInViewport(point)))
             return undefined;

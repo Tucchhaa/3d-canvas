@@ -7,10 +7,11 @@ import { Vector3 } from 'structures/vector';
 const canvas = document.getElementById('canvas') as HTMLCanvasElement;
 canvas.width = canvas.offsetWidth * 2;
 canvas.height = canvas.offsetHeight * 2;
-canvas.getContext('2d')
 
 const engine = new Engine(canvas);
+// const camera = new Camera({ fov: 1.57 }, new Vector3(0, 0, 600), new Vector3(0, 0, -1).unit());
 const camera = new Camera({ fov: 1.57 }, new Vector3(0, 0, -600), new Vector3(0, 0, 1).unit());
+// const camera = new Camera({ fov: 1.57 }, new Vector3(-251, 0, 0), new Vector3(1, 0, 0).unit());
 (window as any).camera = camera;
 
 engine.setCamera(camera);
@@ -25,7 +26,7 @@ const pyramid1 = new Pyramid(new Vector3(0, 0, 0), new Vector3(50, 50, 50));
 
 const cube2 = new Cube(new Vector3(-800, +50, 0), new Vector3(100, 100, 100));
 
-const cube3 = new Cube(new Vector3(-550, -100, 0), new Vector3(600, 100, 100));
+const longCube = new Cube(new Vector3(-550, -100, 0), new Vector3(600, 100, 100));
 
 // cube.rotate(new Vector3(1, 1, 1).unit(), 1.4);
 
@@ -35,11 +36,13 @@ engine.addObject(pyramid1);
 engine.addObject(cube1);
 engine.addObject(pyramid);
 engine.addObject(cube2);
-engine.addObject(cube3);
+engine.addObject(longCube);
 
 engine.update();
-console.log('========')
-// camera.setDirection(new Vector3(0, 0.2, -1).unit());w
+console.log('========\n\n========')
+// camera.setDirection(new Vector3(0, 0.2, -1).unit());
+// camera.setPosition(new Vector3(-249, 0, 0));
+
 engine.update();
 
 engine.on('beforeUpdate', () => {
@@ -54,9 +57,9 @@ engine.launch();
 
 
 window.addEventListener('keypress', (e) => {
-    const speed = 15;
-    const rotSpeed = 0.03;
-    let a =1;
+    const speed = 30;
+    const rotSpeed = 0.07;
+
     if(e.shiftKey) {
         if(e.key === 'W') {
             camera.rotate(Vector3.left, rotSpeed);

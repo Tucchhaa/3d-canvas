@@ -12,7 +12,7 @@ export class Object3D extends SpaceEntity {
         const translationVector = Vector3.substract(value, this.position);
         
         for(const polygon of this.polygons) {
-            for(const vertex of polygon.verteces) {
+            for(const vertex of polygon.vertexes) {
                 vertex.add(translationVector);
             }
         }
@@ -36,7 +36,7 @@ export class Object3D extends SpaceEntity {
         const applyMatrix = translate.mmul(scaleMatrix).mmul(translateBack);
 
         for(const polygon of this.polygons) {
-            for(const vertex of polygon.verteces) {
+            for(const vertex of polygon.vertexes) {
                 const vector = vertex.asRowVector().toHomogeneous();
 
                 const result = vector.mmul(applyMatrix);
@@ -59,7 +59,7 @@ export class Object3D extends SpaceEntity {
         const rotation = Vector3.calculateRotationMatrix(direction, angle);
 
         for(const polygon of this.polygons) {
-            for(const vertex of polygon.verteces) {
+            for(const vertex of polygon.vertexes) {
                 vertex.set(Vector3.fromMatrix(vertex.asRowVector().mmul(rotation)));
             }
         }

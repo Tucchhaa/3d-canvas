@@ -137,6 +137,10 @@ export class Vector3 {
         return [this.x, this.y, this.z];
     }
 
+    public asVector2() {
+        return new Vector2(this.x, this.y);
+    }
+
     public set(vector: Vector3) {
         this.x = vector.x;
         this.y = vector.y;
@@ -162,10 +166,19 @@ export class Vector3 {
         return this;
     }
 
-    public multiply(scalar: number): Vector3 {
-        this.x *= scalar;
-        this.y *= scalar;
-        this.z *= scalar;
+    public multiply(a: Vector3): Vector3;
+    public multiply(scalar: number): Vector3
+    public multiply(a: Vector3 | number): Vector3 {
+        if(a instanceof Vector3) {
+            this.x *= a.x;
+            this.y *= a.y;
+            this.z *= a.z;
+        }
+        else {
+            this.x *= a;
+            this.y *= a;
+            this.z *= a;
+        }
 
         return this;
     }
