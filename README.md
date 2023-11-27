@@ -21,9 +21,8 @@
 ## TO-DO
 
 ### Bugs:
-1. Rotation works incorrectly if object's position is not 0, 0, 0
-2. If camera's direction is opposite to positive Z, then vertical rotation doesn't work properly
-3. If all vertexes of polygon out of the screen, the triangle not rendered. In some cases this is wrong
+1. If camera's direction is opposite to positive Z, then vertical rotation doesn't work properly
+2. If all vertexes of polygon out of the screen, the triangle not rendered. In some cases this is wrong
 
 ### Functionality:
 1. Lights
