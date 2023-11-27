@@ -84,13 +84,14 @@ export class Renderer {
     private getPointsOnScreen(camera: Camera, polygon: Polygon): Vector2[] | undefined {
         const points = polygon.vertexes.map(vertex => camera.project(vertex));
 
-        if(points.every(point => !camera.isProjectedPointInViewport(point)))
-            return undefined;
+        // TODO: need a function for checking if triangle is on the screen. Without this culling, optimization will be bad
+        // if(points.every(point => !camera.isProjectedPointInViewport(point)))
+        //     return undefined;
 
         return points.map(point => 
             point
                 .asVector2()
-                .multiply(new Vector2(this.offset_x, this.offset_y))
+                .multiply(new Vector2(this.offset_x, this.offset_y * this.ratio))
                 .add(new Vector2(this.offset_x, this.offset_y))
         );
     }

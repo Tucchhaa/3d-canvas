@@ -22,7 +22,7 @@ const cube1 = new Cube(new Vector3(-300, +50, 0), new Vector3(100, 100, 100));
 
 const pyramid = new Pyramid(new Vector3(-550, 50, 0), new Vector3(50, 50, 50));
 
-const pyramid1 = new Pyramid(new Vector3(0, 0, 0), new Vector3(50, 50, 50));
+const pyramid1 = new Pyramid(new Vector3(50, 50, 0), new Vector3(50, 50, 50));
 
 const cube2 = new Cube(new Vector3(-800, +50, 0), new Vector3(100, 100, 100));
 
@@ -43,10 +43,12 @@ console.log('========\n\n========')
 // camera.setDirection(new Vector3(0, 0.2, -1).unit());
 // camera.setPosition(new Vector3(-249, 0, 0));
 
+pyramid1.rotate(Vector3.right, 0.05);
 engine.update();
 
 engine.on('beforeUpdate', () => {
-    pyramid1.rotate(Vector3.right, 0.01);
+    pyramid1.rotate(Vector3.right, 0.05);
+    longCube.rotate(Vector3.up, 0.05)
 
     // cube2.scale = Vector3.multiply(cube2.scale, new Vector3(x, x, x));
 });
