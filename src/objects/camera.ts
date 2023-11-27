@@ -86,14 +86,18 @@ export class Camera extends SpaceEntity {
 
         const point = Vector3.fromMatrix(projectionVector);
 
-        // Point is out of viewport if z is out coordinates
         if(point.z < this.near || point.z > this.far) {
-            return Vector2.one.multiply(Infinity);
+            point.multiply(new Vector3(point.z, point.z, 1));
         }
 
-        return new Vector2(
-            projectionVector.get(0, 0),
-            projectionVector.get(0, 1)
+        return point;
+    }
+
+    public isProjectedPointInViewport(point: Vector3) {
+        return (
+            point.z >= this.near && point.z <= this.far
+            && point.x > - 1 && point.x < 1
+            && point.y > - 1 && point.y < 1
         );
     }
 
