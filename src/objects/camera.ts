@@ -69,7 +69,7 @@ export class Camera extends SpaceEntity {
         } 
         else if(angle == Math.PI) {
             vectorFromCamera.z = -vectorFromCamera.z;
-            // vectorFromCamera.x = -vectorFromCamera.x;
+            vectorFromCamera.x = -vectorFromCamera.x;
             // vectorFromCamera.y = -vectorFromCamera.y;
 
             // vectorFromCamera.multiply(-1);
