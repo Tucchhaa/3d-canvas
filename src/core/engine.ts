@@ -11,7 +11,7 @@ export class Engine {
 
     private renderInterval: number = -1;
 
-    private FPS = 24;
+    private FPS = 60;
 
     private readonly objects: Object3D[] = [];
 

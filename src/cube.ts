@@ -223,12 +223,12 @@
 // }
 
 // function drawFace(ctx: CanvasRenderingContext2D, position: Vector, face: Face) {
-//     const verteces = face.asArray();
+//     const vertexes = face.asArray();
 //     let isFirst = false;
 
 //     ctx.beginPath();
 
-//     for(const v of verteces) {
+//     for(const v of vertexes) {
 //         const vertex = Vector.add(v, position);
 //         const projection = project(vertex);
 
