@@ -1,4 +1,4 @@
-import Matrix from "ml-matrix";
+import Matrix from "structures/matrix";
 import { Vector3 } from "structures/vector";
 import { Polygon } from "structures/polygon";
 import { SpaceEntity } from "./space_entity";
@@ -28,16 +28,16 @@ export class Object3D extends SpaceEntity {
 
     public setScale(value: Vector3) {
         const translate = this.position.getTranslationToOriginMatrix();
-        const translateBack = this.position.getTranlationFromOriginMatrix();
+        const translateBack = this.position.getTranslationFromOriginMatrix();
 
         const scaleRatio = Vector3.divide(value, this._scale);
-        const scaleMatrix = Matrix.diag(scaleRatio.asArray()).toHomogeneous();
+        const scaleMatrix = Matrix.diag(scaleRatio.asArray()).asHomogeneous();
 
         const applyMatrix = translate.mmul(scaleMatrix).mmul(translateBack);
 
         for(const polygon of this.polygons) {
             for(const vertex of polygon.vertexes) {
-                const vector = vertex.asRowVector().toHomogeneous();
+                const vector = vertex.asRowVector().asHomogeneous();
 
                 const result = vector.mmul(applyMatrix);
 
@@ -56,11 +56,17 @@ export class Object3D extends SpaceEntity {
     public rotate(direction: Vector3, angle: number) {
         super.rotate(direction, angle);
 
-        const rotation = Vector3.calculateRotationMatrix(direction, angle);
+        const rotation = Vector3.calculateRotationMatrix(direction, angle).asHomogeneous();
+        const translateTo = this.position.getTranslationToOriginMatrix();
+        const translateFrom = this.position.getTranslationFromOriginMatrix();
+
+        const matrix = translateTo.mmul(rotation).mmul(translateFrom);
 
         for(const polygon of this.polygons) {
             for(const vertex of polygon.vertexes) {
-                vertex.set(Vector3.fromMatrix(vertex.asRowVector().mmul(rotation)));
+                const rotatedVertex = vertex.asRowVector().asHomogeneous().mmul(matrix);
+
+                vertex.set(Vector3.fromMatrix(rotatedVertex));
             }
         }
     }

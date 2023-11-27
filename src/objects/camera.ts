@@ -79,10 +79,9 @@ export class Camera extends SpaceEntity {
 
         const projectionMatrix = this.calculateProjectionMatrix(vectorFromCamera.z);
 
-        const homogeneousVector = vectorFromCamera.asRowVector().toHomogeneous();
-        // perspective matrix looks useless here. The only effect it brings is scalation due to fov, but near and far are useless.
-        const projectionVector = homogeneousVector.mmul(projectionMatrix)
-        // .mmul(this.perspectiveMatrix);
+        const homogeneousVector = vectorFromCamera.asRowVector().asHomogeneous();
+
+        const projectionVector = homogeneousVector.mmul(projectionMatrix).mmul(this.perspectiveMatrix);
 
         const point = Vector3.fromMatrix(projectionVector);
 
@@ -128,13 +127,13 @@ export class Camera extends SpaceEntity {
         perspectiveMatrix = 
             scale  0      0         0
             0      scale  0         0
-            0      0      -f/(f-n)  -1
-            0      0      -f*n(f-n) 0
+            0      0      f/(f-n)  1
+            0      0      f*n(f-n) 0
         */
         const perspectiveMatrix = Matrix.diagonal([scale, scale], 4, 4);
-        perspectiveMatrix.set(2, 2, -far / (far - near));
-        perspectiveMatrix.set(3, 2, -far * near / (far - near));
-        perspectiveMatrix.set(2, 3, -1);
+        perspectiveMatrix.set(2, 2, far / (far - near));
+        perspectiveMatrix.set(3, 2, far * near / (far - near));
+        perspectiveMatrix.set(2, 3, 1);
 
         this.perspectiveMatrix = perspectiveMatrix;
     }
