@@ -34,7 +34,7 @@ export class Object3D extends SpaceEntity {
         const scaleMatrix = Matrix.diag(scaleRatio.asArray()).asHomogeneous();
 
         const applyMatrix = translate.mmul(scaleMatrix).mmul(translateBack);
-
+        
         for(const polygon of this.polygons) {
             for(const vertex of polygon.vertexes) {
                 const vector = vertex.asRowVector().asHomogeneous();
@@ -86,8 +86,8 @@ export class Cube extends Object3D {
             // left
             new Polygon(
                 new Vector3(-0.5, -0.5, +0.5),
-                new Vector3(-0.5, -0.5, -0.5),
                 new Vector3(-0.5, +0.5, +0.5),
+                new Vector3(-0.5, -0.5, -0.5),
             ),
             new Polygon(
                 new Vector3(-0.5, +0.5, -0.5),
@@ -103,8 +103,8 @@ export class Cube extends Object3D {
             ),
             new Polygon(
                 new Vector3(-0.5, -0.5, +0.5),
-                new Vector3(-0.5, +0.5, +0.5),
                 new Vector3(+0.5, +0.5, +0.5),
+                new Vector3(-0.5, +0.5, +0.5),
             ),
 
             // right
@@ -115,8 +115,8 @@ export class Cube extends Object3D {
             ),
             new Polygon(
                 new Vector3(+0.5, -0.5, +0.5),
-                new Vector3(+0.5, +0.5, +0.5),
                 new Vector3(+0.5, +0.5, -0.5),
+                new Vector3(+0.5, +0.5, +0.5),
             ),
 
             // back
@@ -126,16 +126,16 @@ export class Cube extends Object3D {
                 new Vector3(-0.5, +0.5, -0.5),
             ),
             new Polygon(
-                new Vector3(+0.5, -0.5, -0.5),
                 new Vector3(+0.5, +0.5, -0.5),
+                new Vector3(+0.5, -0.5, -0.5),
                 new Vector3(-0.5, +0.5, -0.5),
             ),
 
             // bottom
             new Polygon(
                 new Vector3(-0.5, -0.5, -0.5),
-                new Vector3(-0.5, -0.5, +0.5),
                 new Vector3(+0.5, -0.5, +0.5),
+                new Vector3(-0.5, -0.5, +0.5),
             ),
             new Polygon(
                 new Vector3(-0.5, -0.5, -0.5),
@@ -151,8 +151,8 @@ export class Cube extends Object3D {
             ),
             new Polygon(
                 new Vector3(-0.5, +0.5, -0.5),
-                new Vector3(+0.5, +0.5, -0.5),
                 new Vector3(+0.5, +0.5, +0.5),
+                new Vector3(+0.5, +0.5, -0.5),
             ),
         ];
 
@@ -179,23 +179,23 @@ export class Pyramid extends Object3D {
 
             // right
             new Polygon(
-                new Vector3(+0.5, -0.5, -0.5),
                 new Vector3(+0.5, -0.5, +0.5),
+                new Vector3(+0.5, -0.5, -0.5),
                 new Vector3(0, 0.5, +0),
             ),
 
             // back
             new Polygon(
-                new Vector3(-0.5, -0.5, -0.5),
                 new Vector3(+0.5, -0.5, -0.5),
+                new Vector3(-0.5, -0.5, -0.5),
                 new Vector3(0, 0.5, +0),
             ),
 
             // bottom
             new Polygon(
                 new Vector3(-0.5, -0.5, -0.5),
-                new Vector3(-0.5, -0.5, +0.5),
                 new Vector3(+0.5, -0.5, +0.5),
+                new Vector3(-0.5, -0.5, +0.5),
             ),
             new Polygon(
                 new Vector3(-0.5, -0.5, -0.5),
