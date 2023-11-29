@@ -28,10 +28,12 @@
 1. Lights
 2. Shadow projections
 3. Loading .obj models for rendering them
+4. We need more advanced ZSort. Some times polygons are drawed in the wrong order.
 
 ### Refactoring: 
 1. refactor rotation method
 2. we should recognize if vertex is on the screen before projecting it (+optimization)
+3. Use requestAnimationFrame instead of intervals
 
 ### Bonus functionality:
 1. physics

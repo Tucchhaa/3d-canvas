@@ -25,6 +25,9 @@ export class Renderer {
         this.updateDimensions();
     }
 
+    // ===
+    // Canvas manipulations
+    // ===
     public updateDimensions() {
         const { canvas } = this;
 
@@ -39,28 +42,77 @@ export class Renderer {
         this.offset_y = canvas.height / 2;
 
         // ctx styles
-        this.ctx.strokeStyle = 'rgba(0, 0, 0, 0.3)';
-        this.ctx.fillStyle = 'rgba(0, 150, 255, 0.3)';
+        this.ctx.strokeStyle = 'rgba(0, 0, 0)';
+        this.ctx.fillStyle = 'rgba(0, 150, 255)';
     }
 
-    public render(camera: Camera, objects: Object3D[]) {
+    public clearScreen() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    }
+
+    // ===
+
+    public render(camera: Camera, objects: Object3D[]): void {
+        this.clearScreen();
+
+        let renderedPolygons: Polygon[] = [];
 
         for(const object3d of objects) {
-            for(const polygon of object3d.polygons) {
-                this.drawPolygon(camera, polygon);
-            }
+            renderedPolygons = renderedPolygons.concat(this.projectObject(camera, object3d));
+        }
+
+        renderedPolygons.sort(this.ZSort);
+
+        for(const polygon of renderedPolygons) {
+            this.drawPolygon(polygon);
         }
     }
 
-    private drawPolygon(camera: Camera, polygon: Polygon) {
+    // TODO: this algorithm does not always work properly
+    private ZSort(a: Polygon, b: Polygon) {
+        const points1 = a.vertexes;
+        const points2 = b.vertexes;
+
+        return (points2[0].z + points2[1].z + points2[2].z) - (points1[0].z + points1[1].z + points1[2].z);
+    }
+
+    /**
+     * Backface culling
+     */
+    private isVisible(polygon: Polygon) {
+        // P.S. not really sure why this works
+        const [p1, p2, p3] = polygon.vertexes;
+
+        return (
+            (p2.x - p1.x) * (p3.y - p1.y) <
+            (p3.x - p1.x) * (p2.y - p1.y)
+        );
+    }
+
+    /**
+     * Projects polygon onto screen
+     */
+    public projectObject(camera: Camera, object3d: Object3D): Polygon[] {
+        const result = [];
+
+        for(const polygon of object3d.polygons) {
+            const projectedPolygon = polygon.map(vertex => 
+                camera.project(vertex)
+                    .multiply(new Vector3(this.offset_x, this.offset_y * this.ratio, 1))
+                    .add(new Vector3(this.offset_x, this.offset_y, 0))
+            );
+
+            if(this.isVisible(projectedPolygon))
+                result.push(projectedPolygon);
+        }
+
+        return result;
+    }
+
+    private drawPolygon(polygon: Polygon) {
         const { ctx } = this;
 
-        const points = this.getPointsOnScreen(camera, polygon);
-
-        if(points === undefined) {
-            return;
-        }
+        const points = polygon.vertexes;
 
         const startPoint = points[0];
 
@@ -75,24 +127,5 @@ export class Renderer {
         ctx.closePath();
         ctx.fill();
         ctx.stroke();
-    }
-
-    /**
-     * 
-     * @returns array of points on the screen or undefined if points are out of the screen.
-     */
-    private getPointsOnScreen(camera: Camera, polygon: Polygon): Vector2[] | undefined {
-        const points = polygon.vertexes.map(vertex => camera.project(vertex));
-
-        // TODO: need a function for checking if triangle is on the screen. Without this culling, optimization will be bad
-        // if(points.every(point => !camera.isProjectedPointInViewport(point)))
-        //     return undefined;
-
-        return points.map(point => 
-            point
-                .asVector2()
-                .multiply(new Vector2(this.offset_x, this.offset_y * this.ratio))
-                .add(new Vector2(this.offset_x, this.offset_y))
-        );
     }
 }

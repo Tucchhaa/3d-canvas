@@ -141,6 +141,10 @@ export class Vector3 {
         return new Vector2(this.x, this.y);
     }
 
+    public clone() {
+        return new Vector3(this.x, this.y, this.z);
+    }
+
     public set(vector: Vector3) {
         this.x = vector.x;
         this.y = vector.y;
