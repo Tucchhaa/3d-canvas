@@ -1,4 +1,4 @@
-import { Matrix } from 'ml-matrix';
+import { Matrix } from './matrix';
 
 export class Vector3 {
 	constructor(
