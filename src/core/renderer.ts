@@ -24,9 +24,9 @@ export class Renderer {
 		this.updateDimensions();
 	}
 
-    // ===
-    // Canvas manipulations
-    // ===
+	// ===
+	// Canvas manipulations
+	// ===
 	updateDimensions() {
 		this.#canvas.width = this.#width = this.#canvas.offsetWidth * 2;
 		this.#canvas.height = this.#height = this.#canvas.offsetHeight * 2;
@@ -41,84 +41,88 @@ export class Renderer {
 		this.#ctx.fillStyle = 'rgba(0, 150, 255)';
 	}
 
-    public clearScreen() {
-        this.#ctx.clearRect(0, 0, this.#canvas.width, this.#canvas.height);
-    }
+	public clearScreen() {
+		this.#ctx.clearRect(0, 0, this.#canvas.width, this.#canvas.height);
+	}
 
-    // ===
+	// ===
 
-    public render(camera: Camera, objects: Object3D[]): void {
-        this.clearScreen();
+	public render(camera: Camera, objects: Object3D[]): void {
+		this.clearScreen();
 
-        let renderedPolygons: Polygon[] = [];
+		let renderedPolygons: Polygon[] = [];
 
-        for(const object3d of objects) {
-            renderedPolygons = renderedPolygons.concat(this.projectObject(camera, object3d));
-        }
+		for (const object3d of objects) {
+			renderedPolygons = renderedPolygons.concat(
+				this.projectObject(camera, object3d),
+			);
+		}
 
-        renderedPolygons.sort(this.ZSort);
+		renderedPolygons.sort(this.ZSort);
 
-        for(const polygon of renderedPolygons) {
-            this.#drawPolygon(polygon);
-        }
-    }
+		for (const polygon of renderedPolygons) {
+			this.#drawPolygon(polygon);
+		}
+	}
 
-    // TODO: this algorithm does not always work properly
-    private ZSort(a: Polygon, b: Polygon) {
-        const points1 = a.vertexes;
-        const points2 = b.vertexes;
+	// TODO: this algorithm does not always work properly
+	private ZSort(a: Polygon, b: Polygon) {
+		const points1 = a.vertexes;
+		const points2 = b.vertexes;
 
-        return (points2[0].z + points2[1].z + points2[2].z) - (points1[0].z + points1[1].z + points1[2].z);
-    }
+		return (
+			points2[0].z +
+			points2[1].z +
+			points2[2].z -
+			(points1[0].z + points1[1].z + points1[2].z)
+		);
+	}
 
-    /**
-     * Backface culling
-     */
-    private isVisible(polygon: Polygon) {
-        // P.S. not really sure why this works
-        const [p1, p2, p3] = polygon.vertexes;
+	/**
+	 * Backface culling
+	 */
+	private isVisible(polygon: Polygon) {
+		// P.S. not really sure why this works
+		const [p1, p2, p3] = polygon.vertexes;
 
-        return (
-            (p2.x - p1.x) * (p3.y - p1.y) <
-            (p3.x - p1.x) * (p2.y - p1.y)
-        );
-    }
+		return (p2.x - p1.x) * (p3.y - p1.y) < (p3.x - p1.x) * (p2.y - p1.y);
+	}
 
-    /**
-     * Projects polygon onto screen
-     */
-    public projectObject(camera: Camera, object3d: Object3D): Polygon[] {
-        const result = [];
+	/**
+	 * Projects polygon onto screen
+	 */
+	public projectObject(camera: Camera, object3d: Object3D): Polygon[] {
+		const result = [];
 
-        for(const polygon of object3d.polygons) {
-            const projectedPolygon = polygon.map(vertex => 
-                camera.project(vertex)
-                    .multiply(new Vector3(this.#offsetX, this.#offsetY * this.#ratio, 1))
-                    .add(new Vector3(this.#offsetX, this.#offsetY, 0))
-            );
+		for (const polygon of object3d.polygons) {
+			const projectedPolygon = polygon.map((vertex) =>
+				camera
+					.project(vertex)
+					.multiply(new Vector3(this.#offsetX, this.#offsetY * this.#ratio, 1))
+					.add(new Vector3(this.#offsetX, this.#offsetY, 0)),
+			);
 
-            if(this.isVisible(projectedPolygon))
-                result.push(projectedPolygon);
-        }
+			if (this.isVisible(projectedPolygon)) result.push(projectedPolygon);
+		}
 
-        return result;
-    }
+		return result;
+	}
 
 	#drawPolygon(polygon: Polygon) {
-        const points = polygon.vertexes;
+		const points = polygon.vertexes;
 
-        const startPoint = points[0];
+		const startPoint = points[0];
 
-        this.#ctx.beginPath();
-        this.#ctx.moveTo(startPoint.x, startPoint.y);
+		this.#ctx.beginPath();
+		this.#ctx.moveTo(startPoint.x, startPoint.y);
 
-        for(let i=1; i < points.length; i++) {
-            const point = points[i]!;
-            this.#ctx.lineTo(point.x, point.y);
-        }
+		for (let i = 1; i < points.length; i++) {
+			const point = points[i]!;
+			this.#ctx.lineTo(point.x, point.y);
+		}
 
-        this.#ctx.closePath();
-        this.#ctx.fill();
-        this.#ctx.stroke();
+		this.#ctx.closePath();
+		this.#ctx.fill();
+		this.#ctx.stroke();
 	}
 }
