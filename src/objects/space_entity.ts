@@ -1,4 +1,4 @@
-import { Vector3D } from '../structures/vector';
+import { Vector3 } from '../structures/vector';
 
 /**
  * Represents an object in the 3D space that has a position and a direction
@@ -7,17 +7,17 @@ export abstract class SpaceEntity {
 	/**
 	 * World coordinates
 	 */
-	#position: Vector3D = Vector3D.zero;
+	#position: Vector3 = Vector3.zero;
 	/**
 	 * Unit vector which represents a direction at which object looks forward
 	 */
-	#direction: Vector3D = Vector3D.forward;
+	#direction: Vector3 = Vector3.forward;
 
 	get position() {
 		return this.#position;
 	}
 
-	setPosition(position: Vector3D) {
+	setPosition(position: Vector3) {
 		this.#position = position;
 	}
 
@@ -25,7 +25,7 @@ export abstract class SpaceEntity {
 		return this.#direction;
 	}
 
-	setDirection(direction: Vector3D) {
+	setDirection(direction: Vector3) {
 		this.#direction = direction;
 	}
 
@@ -34,16 +34,16 @@ export abstract class SpaceEntity {
 	 * @param direction normal vector
 	 * @param angle angle in radians
 	 */
-	rotate(direction: Vector3D, angle: number): void {
+	rotate(direction: Vector3, angle: number): void {
 		this.#direction.rotate(direction, angle);
 	}
 
 	/**
 	 * Translates object relative to its direction
 	 */
-	translate(delta: Vector3D): void {
-		const angle = Vector3D.getAngleBetween(this.direction, Vector3D.forward);
-		const cross = Vector3D.cross(this.direction, Vector3D.forward);
+	translate(delta: Vector3): void {
+		const angle = Vector3.getAngleBetween(this.direction, Vector3.forward);
+		const cross = Vector3.cross(this.direction, Vector3.forward);
 		const normal = cross.unit();
 
 		if (cross.sqrMagnitude() !== 0) {
@@ -54,6 +54,6 @@ export abstract class SpaceEntity {
 
 		// console.log('normal: ', normal, ']\nangle: ', angle * 180/Math.PI, '\ndelta: ', delta, '\nposition: ', this.position);
 
-		this.setPosition(Vector3D.add(this.position, delta));
+		this.setPosition(Vector3.add(this.position, delta));
 	}
 }

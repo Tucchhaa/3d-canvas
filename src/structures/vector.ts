@@ -1,6 +1,6 @@
 import { Matrix } from 'ml-matrix';
 
-export class Vector3D {
+export class Vector3 {
 	constructor(
 		public x: number,
 		public y: number,
@@ -31,43 +31,43 @@ export class Vector3D {
 	unit() {
 		const magnitude = this.magnitude();
 
-		return Vector3D.divide(this, magnitude);
+		return Vector3.divide(this, magnitude);
 	}
 
 	// ===
 	// Simple vectors
 	// ===
 	static get zero() {
-		return new Vector3D(0, 0, 0);
+		return new Vector3(0, 0, 0);
 	}
 
 	static get one() {
-		return new Vector3D(1, 1, 1);
+		return new Vector3(1, 1, 1);
 	}
 
 	static get up() {
-		return new Vector3D(0, 1, 0);
+		return new Vector3(0, 1, 0);
 	}
 
 	static get down() {
-		return new Vector3D(0, -1, 0);
+		return new Vector3(0, -1, 0);
 	}
 
 	static get forward() {
-		return new Vector3D(0, 0, 1);
+		return new Vector3(0, 0, 1);
 	}
 
 	static get backward() {
-		return new Vector3D(0, 0, -1);
+		return new Vector3(0, 0, -1);
 	}
 
 	// if look along Z axis, your right side will be on the negative x
 	static get right() {
-		return new Vector3D(-1, 0, 0);
+		return new Vector3(-1, 0, 0);
 	}
 
 	static get left() {
-		return new Vector3D(1, 0, 0);
+		return new Vector3(1, 0, 0);
 	}
 
 	// ===
@@ -78,12 +78,12 @@ export class Vector3D {
 	 * @param direction rotation direction
 	 * @param angle angle in radians
 	 */
-	rotate(direction: Vector3D, angle: number) {
-		const rotation = Vector3D.calculateRotationMatrix(direction, angle);
+	rotate(direction: Vector3, angle: number) {
+		const rotation = Vector3.calculateRotationMatrix(direction, angle);
 
 		const result = this.asRowVector().mmul(rotation);
 
-		this.set(Vector3D.fromMatrix(result));
+		this.set(Vector3.fromMatrix(result));
 	}
 
 	// ===
@@ -122,12 +122,12 @@ export class Vector3D {
 			throw new Error();
 		}
 
-		return Vector3D.fromArray(matrix.to1DArray() as [number, number, number]);
+		return Vector3.fromArray(matrix.to1DArray() as [number, number, number]);
 	}
 
 	static fromArray(array: [number, number, number]) {
 		const [x, y, z] = array;
-		return new Vector3D(x, y, z);
+		return new Vector3(x, y, z);
 	}
 
 	// ===
@@ -142,10 +142,10 @@ export class Vector3D {
 	}
 
 	clone() {
-		return new Vector3D(this.x, this.y, this.z);
+		return new Vector3(this.x, this.y, this.z);
 	}
 
-	set(vector: Vector3D) {
+	set(vector: Vector3) {
 		this.x = vector.x;
 		this.y = vector.y;
 		this.z = vector.z;
@@ -154,7 +154,7 @@ export class Vector3D {
 	// ===
 	// Mutable arithmetic
 	// ===
-	add(a: Vector3D): Vector3D {
+	add(a: Vector3): Vector3 {
 		this.x += a.x;
 		this.y += a.y;
 		this.z += a.z;
@@ -162,7 +162,7 @@ export class Vector3D {
 		return this;
 	}
 
-	substract(a: Vector3D): Vector3D {
+	substract(a: Vector3): Vector3 {
 		this.x -= a.x;
 		this.y -= a.y;
 		this.z -= a.z;
@@ -170,10 +170,10 @@ export class Vector3D {
 		return this;
 	}
 
-	multiply(a: Vector3D): Vector3D;
-	multiply(scalar: number): Vector3D;
-	multiply(a: Vector3D | number): Vector3D {
-		if (a instanceof Vector3D) {
+	multiply(a: Vector3): Vector3;
+	multiply(scalar: number): Vector3;
+	multiply(a: Vector3 | number): Vector3 {
+		if (a instanceof Vector3) {
 			this.x *= a.x;
 			this.y *= a.y;
 			this.z *= a.z;
@@ -186,7 +186,7 @@ export class Vector3D {
 		return this;
 	}
 
-	divide(scalar: number): Vector3D {
+	divide(scalar: number): Vector3 {
 		this.x /= scalar;
 		this.y /= scalar;
 		this.z /= scalar;
@@ -197,42 +197,42 @@ export class Vector3D {
 	// ===
 	// Immutable arithmetic
 	// ===
-	static add(a: Vector3D, b: Vector3D): Vector3D {
-		return new Vector3D(a.x + b.x, a.y + b.y, a.z + b.z);
+	static add(a: Vector3, b: Vector3): Vector3 {
+		return new Vector3(a.x + b.x, a.y + b.y, a.z + b.z);
 	}
 
-	static multiply(a: Vector3D, scalar: number): Vector3D;
-	static multiply(a: Vector3D, b: Vector3D): Vector3D;
-	static multiply(a: Vector3D, b: Vector3D | number): Vector3D {
+	static multiply(a: Vector3, scalar: number): Vector3;
+	static multiply(a: Vector3, b: Vector3): Vector3;
+	static multiply(a: Vector3, b: Vector3 | number): Vector3 {
 		// console.log(a, b);
-		if (b instanceof Vector3D)
-			return new Vector3D(a.x * b.x, a.y * b.y, a.z * b.z);
+		if (b instanceof Vector3)
+			return new Vector3(a.x * b.x, a.y * b.y, a.z * b.z);
 
-		return new Vector3D(a.x * b, a.y * b, a.z * b);
+		return new Vector3(a.x * b, a.y * b, a.z * b);
 	}
 
-	static substract(a: Vector3D, b: Vector3D): Vector3D {
-		return new Vector3D(a.x - b.x, a.y - b.y, a.z - b.z);
+	static substract(a: Vector3, b: Vector3): Vector3 {
+		return new Vector3(a.x - b.x, a.y - b.y, a.z - b.z);
 	}
 
-	static divide(a: Vector3D, scalar: number): Vector3D;
-	static divide(a: Vector3D, b: Vector3D): Vector3D;
-	static divide(a: Vector3D, b: Vector3D | number): Vector3D {
-		if (b instanceof Vector3D)
-			return new Vector3D(a.x / b.x, a.y / b.y, a.z / b.z);
+	static divide(a: Vector3, scalar: number): Vector3;
+	static divide(a: Vector3, b: Vector3): Vector3;
+	static divide(a: Vector3, b: Vector3 | number): Vector3 {
+		if (b instanceof Vector3)
+			return new Vector3(a.x / b.x, a.y / b.y, a.z / b.z);
 
-		return new Vector3D(a.x / b, a.y / b, a.z / b);
+		return new Vector3(a.x / b, a.y / b, a.z / b);
 	}
 
 	// ===
 	// Vector multiplication
 	// ===
-	static dot(a: Vector3D, b: Vector3D): number {
+	static dot(a: Vector3, b: Vector3): number {
 		return a.x * b.x + a.y * b.y + a.z * b.z;
 	}
 
-	static cross(a: Vector3D, b: Vector3D): Vector3D {
-		return new Vector3D(
+	static cross(a: Vector3, b: Vector3): Vector3 {
+		return new Vector3(
 			a.y * b.z - a.z * b.y,
 			a.x * b.z - a.z * b.x,
 			a.x * b.y - a.y * b.x,
@@ -248,8 +248,8 @@ export class Vector3D {
 	 * @param b unit vector
 	 * @returns angle in radians
 	 */
-	static getAngleBetween(a: Vector3D, b: Vector3D): number {
-		const dotProduct = Vector3D.dot(a, b);
+	static getAngleBetween(a: Vector3, b: Vector3): number {
+		const dotProduct = Vector3.dot(a, b);
 
 		if (dotProduct >= 1) return 0;
 
@@ -258,7 +258,7 @@ export class Vector3D {
 		return Math.acos(dotProduct);
 	}
 
-	static calculateRotationMatrix(direction: Vector3D, angle: number): Matrix {
+	static calculateRotationMatrix(direction: Vector3, angle: number): Matrix {
 		const cos = Math.cos(angle);
 		const sin = Math.sin(angle);
 

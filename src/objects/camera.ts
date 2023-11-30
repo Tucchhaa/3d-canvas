@@ -1,6 +1,6 @@
 import Matrix from 'ml-matrix';
 
-import { Vector3D } from '../structures/vector';
+import { Vector3 } from '../structures/vector';
 import { SpaceEntity } from './space_entity';
 
 export type CameraConfig = {
@@ -25,8 +25,8 @@ export class Camera extends SpaceEntity {
 
 	constructor(
 		config: CameraConfig = {},
-		position: Vector3D = Vector3D.zero,
-		direction: Vector3D = Vector3D.backward,
+		position: Vector3 = Vector3.zero,
+		direction: Vector3 = Vector3.backward,
 	) {
 		super();
 
@@ -54,12 +54,12 @@ export class Camera extends SpaceEntity {
 	// ===
 	// Projection and perspective
 	// ===
-	project(vertex: Vector3D) {
-		const vectorFromCamera = Vector3D.substract(vertex, this.position);
+	project(vertex: Vector3) {
+		const vectorFromCamera = Vector3.substract(vertex, this.position);
 		// const forw = new Vector3(0, this.direction.y, this.direction.z).unit();
 
-		const angle = Vector3D.getAngleBetween(Vector3D.forward, this.direction);
-		const cross = Vector3D.cross(Vector3D.forward, this.direction);
+		const angle = Vector3.getAngleBetween(Vector3.forward, this.direction);
+		const cross = Vector3.cross(Vector3.forward, this.direction);
 
 		const normal = cross.unit();
 		// console.log('before: ', vectorFromCamera);
@@ -85,16 +85,16 @@ export class Camera extends SpaceEntity {
 			.mmul(projectionMatrix)
 			.mmul(this.#perspectiveMatrix);
 
-		const point = Vector3D.fromMatrix(projectionVector);
+		const point = Vector3.fromMatrix(projectionVector);
 
 		if (point.z < this.near || point.z > this.far) {
-			point.multiply(new Vector3D(point.z, point.z, 1));
+			point.multiply(new Vector3(point.z, point.z, 1));
 		}
 
 		return point;
 	}
 
-	isProjectedPointInViewport(point: Vector3D) {
+	isProjectedPointInViewport(point: Vector3) {
 		return (
 			point.z >= this.near &&
 			point.z <= this.far &&

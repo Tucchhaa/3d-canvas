@@ -3,7 +3,7 @@ import { Matrix } from 'ml-matrix';
 import { Engine } from './core/engine';
 import { Camera } from './objects/camera';
 import { Cube, Pyramid } from './objects/object3d';
-import { Vector3D } from './structures/vector';
+import { Vector3 } from './structures/vector';
 
 declare module 'ml-matrix' {
 	export interface Matrix {
@@ -36,8 +36,8 @@ canvas.height = canvas.offsetHeight * 2;
 
 const camera = new Camera(
 	{ fov: 1.57 },
-	new Vector3D(0, 0, -600),
-	new Vector3D(0, 0, 1).unit(),
+	new Vector3(0, 0, -600),
+	new Vector3(0, 0, 1).unit(),
 );
 const engine = new Engine(canvas, camera);
 // const camera = new Camera({ fov: 1.57 }, new Vector3(0, 0, 600), new Vector3(0, 0, -1).unit());
@@ -45,20 +45,17 @@ const engine = new Engine(canvas, camera);
 
 // const cube = new Cube(new Vector3(0, 0, 0), new Vector3(30, 30, 30));
 
-const cube1 = new Cube(new Vector3D(-300, +50, 0), new Vector3D(100, 100, 100));
+const cube1 = new Cube(new Vector3(-300, +50, 0), new Vector3(100, 100, 100));
 
-const pyramid = new Pyramid(
-	new Vector3D(-550, 50, 0),
-	new Vector3D(50, 50, 50),
-);
+const pyramid = new Pyramid(new Vector3(-550, 50, 0), new Vector3(50, 50, 50));
 
-const pyramid1 = new Pyramid(new Vector3D(50, 50, 0), new Vector3D(50, 50, 50));
+const pyramid1 = new Pyramid(new Vector3(50, 50, 0), new Vector3(50, 50, 50));
 
-const cube2 = new Cube(new Vector3D(-800, +50, 0), new Vector3D(100, 100, 100));
+const cube2 = new Cube(new Vector3(-800, +50, 0), new Vector3(100, 100, 100));
 
 const longCube = new Cube(
-	new Vector3D(-550, -100, 0),
-	new Vector3D(600, 100, 100),
+	new Vector3(-550, -100, 0),
+	new Vector3(600, 100, 100),
 );
 
 // cube.rotate(new Vector3(1, 1, 1).unit(), 1.4);
@@ -75,11 +72,11 @@ engine
 // camera.setDirection(new Vector3(0, 0.2, -1).unit());
 // camera.setPosition(new Vector3(-249, 0, 0));
 
-pyramid1.rotate(Vector3D.right, 0.05);
+pyramid1.rotate(Vector3.right, 0.05);
 
 engine.on('beforeUpdate', () => {
-	pyramid1.rotate(Vector3D.right, 0.05);
-	longCube.rotate(Vector3D.up, 0.05);
+	pyramid1.rotate(Vector3.right, 0.05);
+	longCube.rotate(Vector3.up, 0.05);
 
 	// cube2.scale = Vector3.multiply(cube2.scale, new Vector3(x, x, x));
 });
@@ -93,25 +90,25 @@ addEventListener('keydown', (e) => {
 
 	if (e.shiftKey) {
 		if (e.key === 'W') {
-			camera.rotate(Vector3D.left, rotSpeed);
+			camera.rotate(Vector3.left, rotSpeed);
 		}
 
-		if (e.key === 'A') camera.rotate(Vector3D.up, rotSpeed);
+		if (e.key === 'A') camera.rotate(Vector3.up, rotSpeed);
 
-		if (e.key === 'S') camera.rotate(Vector3D.right, rotSpeed);
+		if (e.key === 'S') camera.rotate(Vector3.right, rotSpeed);
 
-		if (e.key === 'D') camera.rotate(Vector3D.down, rotSpeed);
+		if (e.key === 'D') camera.rotate(Vector3.down, rotSpeed);
 
 		return;
 	}
 
-	if (e.key === 'w') camera.translate(Vector3D.forward.multiply(speed));
+	if (e.key === 'w') camera.translate(Vector3.forward.multiply(speed));
 
-	if (e.key === 'a') camera.translate(Vector3D.left.multiply(speed));
+	if (e.key === 'a') camera.translate(Vector3.left.multiply(speed));
 
-	if (e.key === 's') camera.translate(Vector3D.backward.multiply(speed));
+	if (e.key === 's') camera.translate(Vector3.backward.multiply(speed));
 
-	if (e.key === 'd') camera.translate(Vector3D.right.multiply(speed));
+	if (e.key === 'd') camera.translate(Vector3.right.multiply(speed));
 
 	if (e.key == 'z') camera.position.y -= speed;
 
