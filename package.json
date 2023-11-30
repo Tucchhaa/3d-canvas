@@ -1,24 +1,33 @@
 {
-  "name": "3d-canvas",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "build-ts": "tsc --build",
-    "dev": "webpack-dev-server --mode=development",
-    "build": "webpack --mode=production"
-  },
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "clean-webpack-plugin": "^4.0.0",
-    "ts-loader": "^9.5.1",
-    "typescript": "^5.2.2",
-    "webpack": "^5.89.0",
-    "webpack-cli": "^5.1.4",
-    "webpack-dev-server": "^4.15.1"
-  },
-  "dependencies": {
-    "ml-matrix": "^6.10.8"
-  }
+	"name": "3d-engine",
+	"version": "0.0.0",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"prepare": "npx simple-git-hooks",
+		"dev": "vite",
+		"build": "vite build",
+		"preview": "vite preview",
+		"test-unit": "vitest",
+		"lint": "eslint . --ext .js,.ts --fix --ignore-path .gitignore",
+		"fmt": "prettier -w . --ignore-path .gitignore",
+		"fmt-check": "prettier -c . --ignore-path .gitignore"
+	},
+	"devDependencies": {
+		"@types/node": "20.10.1",
+		"@typescript-eslint/eslint-plugin": "6.13.1",
+		"@typescript-eslint/parser": "6.13.1",
+		"eslint": "8.54.0",
+		"eslint-define-config": "2.0.0",
+		"eslint-plugin-simple-import-sort": "10.0.0",
+		"ml-matrix": "6.10.8",
+		"prettier": "3.1.0",
+		"simple-git-hooks": "2.9.0",
+		"typescript": "5.3.2",
+		"vite": "5.0.4",
+		"vitest": "0.34.6"
+	},
+	"simple-git-hooks": {
+		"pre-commit": "npm run lint\nnpm run fmt"
+	}
 }

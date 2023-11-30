@@ -1,72 +1,63 @@
-import { Camera } from "objects/camera";
-import { Object3D } from "objects/object3d";
-import { Renderer } from "./renderer";
+import { Camera } from '../objects/camera';
+import { Object3D } from '../objects/object3d';
+import { Renderer } from './renderer';
 
-type EngineEvents = 'beforeUpdate' | 'afterUpdate'; 
+type EngineEvents = 'beforeUpdate' | 'afterUpdate';
 
 type EngineEventHandler = () => void;
 
 export class Engine {
-    private readonly renderer: Renderer;
+	#renderer: Renderer;
+	#camera: Camera;
 
-    private renderInterval: number = -1;
+	#renderId: ReturnType<typeof setInterval> | undefined;
 
-    private FPS = 60;
+	#fps = 60;
 
-    private readonly objects: Object3D[] = [];
+	#objects: Object3D[] = [];
 
-    private mainCamera!: Camera;
+	private eventHandlers: { [key in EngineEvents]: EngineEventHandler[] } = {
+		beforeUpdate: Array<EngineEventHandler>(),
+		afterUpdate: Array<EngineEventHandler>(),
+	};
 
-    private eventHandlers: { [key in EngineEvents]: EngineEventHandler[] } = {
-        beforeUpdate: Array<EngineEventHandler>(),
-        afterUpdate: Array<EngineEventHandler>()
-    };
+	constructor(canvas: HTMLCanvasElement, camera: Camera) {
+		this.#renderer = new Renderer(canvas);
+		this.#camera = camera;
 
-    constructor(canvas: HTMLCanvasElement) {
-        this.renderer = new Renderer(canvas);
+		addEventListener('resize', () => {
+			this.#renderer.updateDimensions();
+		});
+	}
 
-        window.addEventListener('resize', () => {
-            this.renderer.updateDimensions();
-        });
-    }
+	launch() {
+		this.#renderId = setInterval(this.update.bind(this), 1000 / this.#fps);
+	}
 
-    // ===
+	stop() {
+		clearInterval(this.#renderId);
+	}
 
-    public setCamera(camera: Camera) {
-        this.mainCamera = camera;
-    }
+	addObject(object: Object3D) {
+		this.#objects.push(object);
+		return this;
+	}
 
-    public launch() {
-        this.renderInterval = setInterval(this.update.bind(this), 1000 / this.FPS);
-    }
+	update() {
+		this.emit('beforeUpdate');
 
-    public stop() {
-        clearInterval(this.renderInterval);
-    }
+		this.#renderer.render(this.#camera, this.#objects);
 
+		this.emit('afterUpdate');
+	}
 
-    public addObject(object3d: Object3D) {
-        this.objects.push(object3d);
-    }
+	on(eventName: EngineEvents, handler: EngineEventHandler) {
+		this.eventHandlers[eventName].push(handler);
+	}
 
-    update() {
-        this.emit('beforeUpdate');
-
-        this.renderer.render(this.mainCamera, this.objects);
-
-        this.emit('afterUpdate');
-    }
-
-    // ===
-    // Events
-    // ===
-    on(eventName: EngineEvents, handler: EngineEventHandler) {
-        this.eventHandlers[eventName].push(handler);
-    }
-
-    emit(eventName: EngineEvents) {
-        for(const handler of this.eventHandlers[eventName]) {
-            handler();
-        }
-    }
+	emit(eventName: EngineEvents) {
+		for (const handler of this.eventHandlers[eventName]) {
+			handler();
+		}
+	}
 }

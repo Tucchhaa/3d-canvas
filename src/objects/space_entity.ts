@@ -1,65 +1,59 @@
-import { Vector3 } from "structures/vector";
+import { Vector3D } from '../structures/vector';
 
 /**
  * Represents an object in the 3D space that has a position and a direction
  */
 export abstract class SpaceEntity {
-    /**
-     * World coordinates
-     */
-    private _position: Vector3 = Vector3.zero;
+	/**
+	 * World coordinates
+	 */
+	#position: Vector3D = Vector3D.zero;
+	/**
+	 * Unit vector which represents a direction at which object looks forward
+	 */
+	#direction: Vector3D = Vector3D.forward;
 
-    public get position() {
-        return this._position;
-    }
+	get position() {
+		return this.#position;
+	}
 
-    public setPosition(position: Vector3) {
-        this._position = position;
-    } 
+	setPosition(position: Vector3D) {
+		this.#position = position;
+	}
 
-    // ===
+	get direction() {
+		return this.#direction;
+	}
 
-    /**
-     * Unit vector which represents a direction at which object looks forward
-     */
-    private _direction: Vector3 = Vector3.forward;
+	setDirection(direction: Vector3D) {
+		this.#direction = direction;
+	}
 
-    public get direction() {
-        return this._direction;
-    }
+	/**
+	 * Rotates object according to right hand rule
+	 * @param direction normal vector
+	 * @param angle angle in radians
+	 */
+	rotate(direction: Vector3D, angle: number): void {
+		this.#direction.rotate(direction, angle);
+	}
 
-    public setDirection(direction: Vector3) {
-        this._direction = direction;
-    }
+	/**
+	 * Translates object relative to its direction
+	 */
+	translate(delta: Vector3D): void {
+		const angle = Vector3D.getAngleBetween(this.direction, Vector3D.forward);
+		const cross = Vector3D.cross(this.direction, Vector3D.forward);
+		const normal = cross.unit();
 
-    // ===
+		if (cross.sqrMagnitude() !== 0) {
+			delta.rotate(normal, angle);
+		} else if (angle == Math.PI) {
+			delta.multiply(-1);
+		}
 
-    /**
-     * Rotates object according to right hand rule
-     * @param direction normal vector
-     * @param angle angle in radians
-     */
-    rotate(direction: Vector3, angle: number): void {
-        this._direction.rotate(direction, angle);
-    }
-    
-    /**
-     * Translates object relative to its direction
-     */
-    translate(delta: Vector3): void {
-        const angle = Vector3.getAngleBetween(this.direction, Vector3.forward);
-        const cross = Vector3.cross(this.direction, Vector3.forward);
-        const normal = cross.unit();
-        
-        if(cross.sqrMagnitude() !== 0) {
-            delta.rotate(normal, angle);    
-        }
-        else if(angle == Math.PI) {
-            delta.multiply(-1);
-        }
+		// console.log('normal: ', normal, ']\nangle: ', angle * 180/Math.PI, '\ndelta: ', delta, '\nposition: ', this.position);
 
-        // console.log('normal: ', normal, ']\nangle: ', angle * 180/Math.PI, '\ndelta: ', delta, '\nposition: ', this.position);
-
-        this.setPosition(Vector3.add(this.position, delta));
-    }
+		this.setPosition(Vector3D.add(this.position, delta));
+	}
 }

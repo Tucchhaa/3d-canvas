@@ -203,14 +203,12 @@
 
 // let angularVelocity = 0.005;
 
-
 // render(ctx, objects);
 // setInterval(() => {
 //     cube.rotate(new Vector(1, 1, 1).unit(), angularVelocity);
 
 //     render(ctx, objects);
 // }, 1000/60);
-
 
 // function render(ctx: CanvasRenderingContext2D, objects: Shape[]) {
 //     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -232,7 +230,7 @@
 //         const vertex = Vector.add(v, position);
 //         const projection = project(vertex);
 
-//         isFirst 
+//         isFirst
 //             ? ctx.moveTo(projection.x + CENTER_X, projection.y + CENTER_Y)
 //             : ctx.lineTo(projection.x + CENTER_X, projection.y + CENTER_Y);
 
