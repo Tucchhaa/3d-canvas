@@ -23,14 +23,13 @@
 ### Bugs:
 
 1. If camera's direction is opposite to positive Z, then vertical rotation doesn't work properly
-2. If all vertexes of polygon out of the screen, the triangle not rendered. In some cases this is wrong
 
 ### Functionality:
 
 1. Lights
 2. Shadow projections
-3. Loading .obj models for rendering them
-4. We need more advanced ZSort. Some times polygons are drawed in the wrong order.
+3. We need more advanced ZSort. Some times polygons are drawed in the wrong order.
+4. Need to add more complex 3D-objects
 
 ### Refactoring:
 

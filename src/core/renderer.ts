@@ -1,6 +1,6 @@
 import { Camera } from '../objects/camera';
 import { Object3D } from '../objects/object3d';
-import { Polygon } from '../structures/polygon';
+import { Polygon } from '../structures/geometry';
 import { Vector3 } from '../structures/vector';
 
 export class Renderer {
@@ -94,7 +94,9 @@ export class Renderer {
 	public projectObject(camera: Camera, object3d: Object3D): Polygon[] {
 		const result = [];
 
-		for (const polygon of object3d.polygons) {
+		const polygonIterator = object3d.geometry.iteratePolygons();
+
+		for (const polygon of polygonIterator) {
 			const projectedPolygon = polygon.map((vertex) =>
 				camera
 					.project(vertex)

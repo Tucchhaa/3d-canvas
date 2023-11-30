@@ -1,5 +1,4 @@
-import Matrix from 'ml-matrix';
-
+import { Matrix } from '../structures/matrix';
 import { Vector3 } from '../structures/vector';
 import { SpaceEntity } from './space_entity';
 

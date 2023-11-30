@@ -1,25 +1,28 @@
-import { Matrix } from 'ml-matrix';
-
-import { Polygon } from '../structures/polygon';
+import { Geometry } from '../structures/geometry';
+import { Matrix } from '../structures/matrix';
 import { Vector3 } from '../structures/vector';
 import { SpaceEntity } from './space_entity';
 
 export type ObjectName = 'cube';
 
+export type Object3DConfig = {
+	geometry: Geometry;
+
+	position: Vector3;
+	scale: Vector3;
+	direction: Vector3;
+};
+
 export class Object3D extends SpaceEntity {
-	readonly polygons: Polygon[];
+	readonly geometry: Geometry;
+
 	#scale: Vector3 = Vector3.one;
 
-	constructor(
-		polygons: Polygon[],
-		position: Vector3 = Vector3.zero,
-		scale: Vector3 = Vector3.one,
-		direction = Vector3.forward,
-	) {
+	constructor({ geometry, position, scale, direction }: Object3DConfig) {
 		super();
 
-		direction;
-		this.polygons = polygons;
+		this.geometry = geometry;
+		this.setDirection(direction);
 		this.setScale(scale);
 		this.setPosition(position);
 	}
@@ -27,10 +30,8 @@ export class Object3D extends SpaceEntity {
 	setPosition(value: Vector3) {
 		const translationVector = Vector3.substract(value, this.position);
 
-		for (const polygon of this.polygons) {
-			for (const vertex of polygon.vertexes) {
-				vertex.add(translationVector);
-			}
+		for (const vertex of this.geometry.vertexes) {
+			vertex.add(translationVector);
 		}
 
 		super.setPosition(value);
@@ -49,14 +50,12 @@ export class Object3D extends SpaceEntity {
 
 		const applyMatrix = translate.mmul(scaleMatrix).mmul(translateBack);
 
-		for (const polygon of this.polygons) {
-			for (const vertex of polygon.vertexes) {
-				const vector = vertex.asRowVector().asHomogeneous();
+		for (const vertex of this.geometry.vertexes) {
+			const vector = vertex.asRowVector().asHomogeneous();
 
-				const result = vector.mmul(applyMatrix);
+			const result = vector.mmul(applyMatrix);
 
-				vertex.set(Vector3.fromMatrix(result));
-			}
+			vertex.set(Vector3.fromMatrix(result));
 		}
 
 		this.#scale = value;
@@ -79,148 +78,10 @@ export class Object3D extends SpaceEntity {
 
 		const matrix = translateTo.mmul(rotation).mmul(translateFrom);
 
-		for (const polygon of this.polygons) {
-			for (const vertex of polygon.vertexes) {
-				const rotatedVertex = vertex.asRowVector().asHomogeneous().mmul(matrix);
+		for (const vertex of this.geometry.vertexes) {
+			const rotatedVertex = vertex.asRowVector().asHomogeneous().mmul(matrix);
 
-				vertex.set(Vector3.fromMatrix(rotatedVertex));
-			}
+			vertex.set(Vector3.fromMatrix(rotatedVertex));
 		}
-	}
-}
-
-export class Cube extends Object3D {
-	constructor(
-		position: Vector3 = Vector3.zero,
-		scale: Vector3 = Vector3.one,
-		direction: Vector3 = Vector3.forward,
-	) {
-		const polygons = [
-			// left
-			new Polygon(
-				new Vector3(-0.5, -0.5, +0.5),
-				new Vector3(-0.5, +0.5, +0.5),
-				new Vector3(-0.5, -0.5, -0.5),
-			),
-			new Polygon(
-				new Vector3(-0.5, +0.5, -0.5),
-				new Vector3(-0.5, -0.5, -0.5),
-				new Vector3(-0.5, +0.5, +0.5),
-			),
-
-			// front
-			new Polygon(
-				new Vector3(-0.5, -0.5, +0.5),
-				new Vector3(+0.5, -0.5, +0.5),
-				new Vector3(+0.5, +0.5, +0.5),
-			),
-			new Polygon(
-				new Vector3(-0.5, -0.5, +0.5),
-				new Vector3(+0.5, +0.5, +0.5),
-				new Vector3(-0.5, +0.5, +0.5),
-			),
-
-			// right
-			new Polygon(
-				new Vector3(+0.5, -0.5, +0.5),
-				new Vector3(+0.5, -0.5, -0.5),
-				new Vector3(+0.5, +0.5, -0.5),
-			),
-			new Polygon(
-				new Vector3(+0.5, -0.5, +0.5),
-				new Vector3(+0.5, +0.5, -0.5),
-				new Vector3(+0.5, +0.5, +0.5),
-			),
-
-			// back
-			new Polygon(
-				new Vector3(+0.5, -0.5, -0.5),
-				new Vector3(-0.5, -0.5, -0.5),
-				new Vector3(-0.5, +0.5, -0.5),
-			),
-			new Polygon(
-				new Vector3(+0.5, +0.5, -0.5),
-				new Vector3(+0.5, -0.5, -0.5),
-				new Vector3(-0.5, +0.5, -0.5),
-			),
-
-			// bottom
-			new Polygon(
-				new Vector3(-0.5, -0.5, -0.5),
-				new Vector3(+0.5, -0.5, +0.5),
-				new Vector3(-0.5, -0.5, +0.5),
-			),
-			new Polygon(
-				new Vector3(-0.5, -0.5, -0.5),
-				new Vector3(+0.5, -0.5, -0.5),
-				new Vector3(+0.5, -0.5, +0.5),
-			),
-
-			// top
-			new Polygon(
-				new Vector3(-0.5, +0.5, -0.5),
-				new Vector3(-0.5, +0.5, +0.5),
-				new Vector3(+0.5, +0.5, +0.5),
-			),
-			new Polygon(
-				new Vector3(-0.5, +0.5, -0.5),
-				new Vector3(+0.5, +0.5, +0.5),
-				new Vector3(+0.5, +0.5, -0.5),
-			),
-		];
-
-		super(polygons, position, scale, direction);
-	}
-}
-
-export class Pyramid extends Object3D {
-	constructor(
-		position: Vector3 = Vector3.zero,
-		scale: Vector3 = Vector3.one,
-		direction: Vector3 = Vector3.forward,
-	) {
-		const polygons = [
-			// left
-			new Polygon(
-				new Vector3(-0.5, -0.5, -0.5),
-				new Vector3(-0.5, -0.5, +0.5),
-				new Vector3(0, 0.5, +0),
-			),
-
-			// front
-			new Polygon(
-				new Vector3(-0.5, -0.5, +0.5),
-				new Vector3(+0.5, -0.5, +0.5),
-				new Vector3(0, 0.5, +0),
-			),
-
-			// right
-			new Polygon(
-				new Vector3(+0.5, -0.5, +0.5),
-				new Vector3(+0.5, -0.5, -0.5),
-				new Vector3(0, 0.5, +0),
-			),
-
-			// back
-			new Polygon(
-				new Vector3(+0.5, -0.5, -0.5),
-				new Vector3(-0.5, -0.5, -0.5),
-				new Vector3(0, 0.5, +0),
-			),
-
-			// bottom
-			new Polygon(
-				new Vector3(-0.5, -0.5, -0.5),
-				new Vector3(+0.5, -0.5, +0.5),
-				new Vector3(-0.5, -0.5, +0.5),
-			),
-			new Polygon(
-				new Vector3(-0.5, -0.5, -0.5),
-				new Vector3(+0.5, -0.5, -0.5),
-				new Vector3(+0.5, -0.5, +0.5),
-			),
-		];
-
-		super(polygons, position, scale, direction);
 	}
 }
