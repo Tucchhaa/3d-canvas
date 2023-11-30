@@ -4,10 +4,10 @@ export class Polygon {
 	/**
 	 * Should contain only 3 vertexes
 	 */
-	vertexes: Vector3[];
+	vertexes: [Vector3, Vector3, Vector3];
 
 	constructor(...vertexes: Vector3[]) {
-		this.vertexes = vertexes;
+		this.vertexes = vertexes as [Vector3, Vector3, Vector3];
 	}
 
 	map(func: (vertex: Vector3) => Vector3): Polygon {

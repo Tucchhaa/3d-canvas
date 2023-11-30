@@ -1,7 +1,7 @@
 import { Camera } from '../objects/camera';
 import { Object3D } from '../objects/object3d';
 import { Polygon } from '../structures/polygon';
-import { Vector2 as Vector2D } from '../structures/vector';
+import { Vector3 } from '../structures/vector';
 
 export class Renderer {
 	#canvas: HTMLCanvasElement;
@@ -24,6 +24,9 @@ export class Renderer {
 		this.updateDimensions();
 	}
 
+	// ===
+	// Canvas manipulations
+	// ===
 	updateDimensions() {
 		this.#canvas.width = this.#width = this.#canvas.offsetWidth * 2;
 		this.#canvas.height = this.#height = this.#canvas.offsetHeight * 2;
@@ -34,28 +37,81 @@ export class Renderer {
 		this.#offsetY = this.#height / 2;
 
 		// ctx styles
-		this.#ctx.strokeStyle = 'rgba(0, 0, 0, 0.3)';
-		this.#ctx.fillStyle = 'rgba(0, 150, 255, 0.3)';
+		this.#ctx.strokeStyle = 'rgba(0, 0, 0)';
+		this.#ctx.fillStyle = 'rgba(0, 150, 255)';
 	}
 
-	render(camera: Camera, objects: Object3D[]) {
+	public clearScreen() {
 		this.#ctx.clearRect(0, 0, this.#canvas.width, this.#canvas.height);
+	}
+
+	// ===
+
+	public render(camera: Camera, objects: Object3D[]): void {
+		this.clearScreen();
+
+		let renderedPolygons: Polygon[] = [];
 
 		for (const object3d of objects) {
-			for (const polygon of object3d.polygons) {
-				this.#drawPolygon(camera, polygon);
-			}
+			renderedPolygons = renderedPolygons.concat(
+				this.projectObject(camera, object3d),
+			);
+		}
+
+		renderedPolygons.sort(this.ZSort);
+
+		for (const polygon of renderedPolygons) {
+			this.#drawPolygon(polygon);
 		}
 	}
 
-	#drawPolygon(camera: Camera, polygon: Polygon) {
-		const points = this.#getPointsOnScreen(camera, polygon);
+	// TODO: this algorithm does not always work properly
+	private ZSort(a: Polygon, b: Polygon) {
+		const points1 = a.vertexes;
+		const points2 = b.vertexes;
 
-		if (!points) {
-			return;
+		return (
+			points2[0].z +
+			points2[1].z +
+			points2[2].z -
+			(points1[0].z + points1[1].z + points1[2].z)
+		);
+	}
+
+	/**
+	 * Backface culling
+	 */
+	private isVisible(polygon: Polygon) {
+		// P.S. not really sure why this works
+		const [p1, p2, p3] = polygon.vertexes;
+
+		return (p2.x - p1.x) * (p3.y - p1.y) < (p3.x - p1.x) * (p2.y - p1.y);
+	}
+
+	/**
+	 * Projects polygon onto screen
+	 */
+	public projectObject(camera: Camera, object3d: Object3D): Polygon[] {
+		const result = [];
+
+		for (const polygon of object3d.polygons) {
+			const projectedPolygon = polygon.map((vertex) =>
+				camera
+					.project(vertex)
+					.multiply(new Vector3(this.#offsetX, this.#offsetY * this.#ratio, 1))
+					.add(new Vector3(this.#offsetX, this.#offsetY, 0)),
+			);
+
+			if (this.isVisible(projectedPolygon)) result.push(projectedPolygon);
 		}
 
-		const startPoint = points[0]!;
+		return result;
+	}
+
+	#drawPolygon(polygon: Polygon) {
+		const points = polygon.vertexes;
+
+		const startPoint = points[0];
 
 		this.#ctx.beginPath();
 		this.#ctx.moveTo(startPoint.x, startPoint.y);
@@ -68,24 +124,5 @@ export class Renderer {
 		this.#ctx.closePath();
 		this.#ctx.fill();
 		this.#ctx.stroke();
-	}
-
-	/**
-	 *
-	 * @returns array of points on the screen or undefined if points are out of the screen.
-	 */
-	#getPointsOnScreen(camera: Camera, polygon: Polygon): Vector2D[] | undefined {
-		const points = polygon.vertexes.map((vertex) => camera.project(vertex));
-
-		// TODO: need a function for checking if triangle is on the screen. Without this culling, optimization will be bad
-		// if(points.every(point => !camera.isProjectedPointInViewport(point)))
-		//     return undefined;
-
-		return points.map((point) =>
-			point
-				.asVector2()
-				.multiply(new Vector2D(this.#offsetX, this.#offsetY * this.#ratio))
-				.add(new Vector2D(this.#offsetX, this.#offsetY)),
-		);
 	}
 }
