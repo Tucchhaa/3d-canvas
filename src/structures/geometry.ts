@@ -12,7 +12,9 @@ export class Geometry {
 
 	*iteratePolygons() {
 		for (const face of this.#faces) {
-			const polygon = new Polygon(face.map(vertexIndex => this.vertexes[vertexIndex]!));
+			const polygon = new Polygon(
+				face.map((vertexIndex) => this.vertexes[vertexIndex]!),
+			);
 
 			yield polygon;
 		}
