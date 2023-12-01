@@ -204,7 +204,6 @@ export class Vector3 {
 	static multiply(a: Vector3, scalar: number): Vector3;
 	static multiply(a: Vector3, b: Vector3): Vector3;
 	static multiply(a: Vector3, b: Vector3 | number): Vector3 {
-		// console.log(a, b);
 		if (b instanceof Vector3)
 			return new Vector3(a.x * b.x, a.y * b.y, a.z * b.z);
 

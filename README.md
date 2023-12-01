@@ -23,19 +23,20 @@
 ### Bugs:
 
 1. If camera's direction is opposite to positive Z, then vertical rotation doesn't work properly
+2. We need more advanced ZSort. Some times polygons are drawed in the wrong order.
 
 ### Functionality:
 
 1. Lights
 2. Shadow projections
-3. We need more advanced ZSort. Some times polygons are drawed in the wrong order.
-4. Need to add more complex 3D-objects
+3. Need to add more complex 3D-objects
 
 ### Refactoring:
 
 1. refactor rotation method
-2. we should recognize if vertex is on the screen before projecting it (+optimization)
-3. Use requestAnimationFrame instead of intervals
+2. Need more optimization, renderering a lot of polygons causes lugs
+3. we should recognize if vertex is on the screen before projecting it (+optimization)
+4. Use requestAnimationFrame instead of intervals
 
 ### Bonus functionality:
 

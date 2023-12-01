@@ -50,12 +50,12 @@ export class ResourceLoader {
 		const vertexMatches = raw.match(/^v( -?\d+(\.\d+)?){3}$/gm);
 
 		const vertexes = vertexMatches?.map((vertex) => {
-			const vertexes = vertex
+			const coordinates = vertex
 				.split(' ')
 				.slice(1)
-				.map((v) => Number(v));
+				.map((num) => Number(num));
 
-			return new Vector3(vertexes[0]!, vertexes[1]!, vertexes[2]!);
+			return new Vector3(coordinates[0]!, coordinates[1]!, coordinates[2]!);
 		});
 
 		// ===
@@ -74,7 +74,7 @@ export class ResourceLoader {
 
 		return new Geometry(
 			vertexes as Vector3[],
-			faces as Array<[number, number, number]>,
+			faces as number[][],
 		);
 	}
 
