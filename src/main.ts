@@ -19,6 +19,8 @@ const engine = new Engine(canvas, camera);
 engine.on('onPrepare', async () => {
 	await engine.resourceLoader.loadObject('cube');
 	await engine.resourceLoader.loadObject('pyramid');
+	await engine.resourceLoader.loadObject('teapot');
+	await engine.resourceLoader.loadObject('shuttle');
 });
 
 let longCube: any;
@@ -45,11 +47,24 @@ engine.on('beforeLaunch', () => {
 		position: new Vector3(250, 0, 0),
 		scale: Vector3.one.multiply(50),
 	});
+
+	engine.createObject('teapot', {
+		position: new Vector3(500, 0, 0),
+		scale: Vector3.one.multiply(100),
+	});
+
+	engine.createObject('shuttle', {
+		position: new Vector3(0, 600, 0),
+		scale: Vector3.one.multiply(50),
+		direction: Vector3.right,
+	});
 });
 
 engine.on('beforeUpdate', () => {
-	pyramid1.rotate(Vector3.right, 0.05);
-	longCube.rotate(Vector3.up, 0.05);
+	// pyramid1.rotate(Vector3.right, 0.05);
+	// longCube.rotate(Vector3.up, 0.05);
+	// cube1.rotate(new Vector3(1, 1, 1).unit(), 0.025);
+	// cube2.rotate(new Vector3(-1, 1, 1).unit(), 0.025);
 });
 
 engine.launch();

@@ -66,15 +66,16 @@ export class Renderer {
 	}
 
 	// TODO: this algorithm does not always work properly
+	// also some polygons has more than 3 vertexes
 	private ZSort(a: Polygon, b: Polygon) {
 		const points1 = a.vertexes;
 		const points2 = b.vertexes;
 
 		return (
-			points2[0].z +
-			points2[1].z +
-			points2[2].z -
-			(points1[0].z + points1[1].z + points1[2].z)
+			points2[0]!.z +
+			points2[1]!.z +
+			points2[2]!.z -
+			(points1[0]!.z + points1[1]!.z + points1[2]!.z)
 		);
 	}
 
@@ -83,7 +84,8 @@ export class Renderer {
 	 */
 	private isVisible(polygon: Polygon) {
 		// P.S. not really sure why this works
-		const [p1, p2, p3] = polygon.vertexes;
+		// also some polygons has more than 3 vertexes
+		const [p1, p2, p3] = polygon.vertexes as [Vector3, Vector3, Vector3];
 
 		return (p2.x - p1.x) * (p3.y - p1.y) < (p3.x - p1.x) * (p2.y - p1.y);
 	}
@@ -113,7 +115,7 @@ export class Renderer {
 	#drawPolygon(polygon: Polygon) {
 		const points = polygon.vertexes;
 
-		const startPoint = points[0];
+		const startPoint = points[0]!;
 
 		this.#ctx.beginPath();
 		this.#ctx.moveTo(startPoint.x, startPoint.y);
