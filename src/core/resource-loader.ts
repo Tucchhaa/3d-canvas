@@ -72,10 +72,7 @@ export class ResourceLoader {
 			throw new Error('Unsupported .obj format');
 		}
 
-		return new Geometry(
-			vertexes as Vector3[],
-			faces as number[][],
-		);
+		return new Geometry(vertexes as Vector3[], faces as number[][]);
 	}
 
 	// ===

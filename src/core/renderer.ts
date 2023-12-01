@@ -57,7 +57,7 @@ export class Renderer {
 				this.projectObject(camera, object3d),
 			);
 		}
-;
+
 		renderedPolygons.sort(this.ZSort);
 
 		for (const polygon of renderedPolygons) {
@@ -72,7 +72,9 @@ export class Renderer {
 		const points2 = b.vertexes;
 
 		return (
-			(points2[0]!.z + points2[1]!.z + points2[2]!.z) -
+			points2[0]!.z +
+			points2[1]!.z +
+			points2[2]!.z -
 			(points1[0]!.z + points1[1]!.z + points1[2]!.z)
 		);
 	}
