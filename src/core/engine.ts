@@ -20,7 +20,7 @@ export class Engine {
 
 	#renderId: ReturnType<typeof setInterval> | undefined;
 
-	#fps = 60;
+	#fps = 24;
 
 	#objects: Object3D[] = [];
 

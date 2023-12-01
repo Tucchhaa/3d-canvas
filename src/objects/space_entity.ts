@@ -52,8 +52,6 @@ export abstract class SpaceEntity {
 			delta.multiply(-1);
 		}
 
-		// console.log('normal: ', normal, ']\nangle: ', angle * 180/Math.PI, '\ndelta: ', delta, '\nposition: ', this.position);
-
 		this.setPosition(Vector3.add(this.position, delta));
 	}
 }
