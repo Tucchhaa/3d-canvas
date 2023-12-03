@@ -1,6 +1,8 @@
 import { Geometry } from '../structures/geometry';
 import { Vector3 } from '../structures/vector';
 
+const TEXTURE_RE = /^vt.*/gm;
+
 export class ResourceLoader {
 	#cache: { [file: string]: string } = {};
 	#cachedObjects: { [file: string]: Geometry } = {};
@@ -68,11 +70,19 @@ export class ResourceLoader {
 				.map((f) => Number(f.split('/')[0]) - 1),
 		);
 
+		const textures = raw.match(TEXTURE_RE)?.map((texture) => {
+			const [x, y] = texture
+				.split(' ')
+				.slice(1)
+				.map((v) => +v);
+			return new Vector3(x!, y!, 0);
+		});
+
 		if (!faces || !vertexes) {
 			throw new Error('Unsupported .obj format');
 		}
 
-		return new Geometry(vertexes as Vector3[], faces as number[][]);
+		return new Geometry(vertexes, faces);
 	}
 
 	// ===
