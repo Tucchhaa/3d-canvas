@@ -1,3 +1,4 @@
+import { Matrix } from '../structures/matrix';
 import { Vector3 } from '../structures/vector';
 
 /**
@@ -12,6 +13,13 @@ export abstract class SpaceEntity {
 	 * Unit vector which represents a direction at which object looks forward
 	 */
 	#direction: Vector3 = Vector3.forward;
+
+	/**
+	 * If multiply Vector3.forward by this matrix, we will get the direction of the camera
+	 */
+	#rotation: Matrix = Matrix.identity(3, 3);
+
+	// ===
 
 	get position() {
 		return this.#position;
@@ -29,29 +37,26 @@ export abstract class SpaceEntity {
 		this.#direction = direction;
 	}
 
+	get rotation() {
+		return this.#rotation;
+	}
+
 	/**
 	 * Rotates object according to right hand rule
-	 * @param direction normal vector
+	 * @param normal normal vector
 	 * @param angle angle in radians
 	 */
-	rotate(direction: Vector3, angle: number): void {
-		this.#direction.rotate(direction, angle);
+	rotate(normal: Vector3, angle: number) {
+		const rotationMatrix = Vector3.calculateRotationMatrix(normal, angle);
+
+		this.#rotation = this.rotation.mmul(rotationMatrix);
+		this.#direction.mmul(rotationMatrix);
 	}
 
 	/**
 	 * Translates object relative to its direction
 	 */
 	translate(delta: Vector3): void {
-		const angle = Vector3.getAngleBetween(this.direction, Vector3.forward);
-		const cross = Vector3.cross(this.direction, Vector3.forward);
-		const normal = cross.unit();
-
-		if (cross.sqrMagnitude() !== 0) {
-			delta.rotate(normal, angle);
-		} else if (angle == Math.PI) {
-			delta.multiply(-1);
-		}
-
-		this.setPosition(Vector3.add(this.position, delta));
+		throw new Error('not implemented');
 	}
 }

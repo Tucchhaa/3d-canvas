@@ -54,37 +54,13 @@ export class Camera extends SpaceEntity {
 	// Projection and perspective
 	// ===
 	project(vertex: Vector3) {
-		const vectorFromCamera = Vector3.substract(vertex, this.position);
-		// const forw = new Vector3(0, this.direction.y, this.direction.z).unit();
+		const vectorFromCamera = Vector3.substract(vertex, this.position).mmul(this.rotation);
 
-		const angle = Vector3.getAngleBetween(Vector3.forward, this.direction);
-		const cross = Vector3.cross(Vector3.forward, this.direction);
+		const projectionMatrix = this.#calculateProjectionMatrix(vectorFromCamera.z);
 
-		const normal = cross.unit();
-		// console.log('before: ', vectorFromCamera);
-		if (cross.sqrMagnitude() !== 0) {
-			vectorFromCamera.rotate(normal, angle);
-		} else if (angle == Math.PI) {
-			vectorFromCamera.z = -vectorFromCamera.z;
-			vectorFromCamera.x = -vectorFromCamera.x;
-			// vectorFromCamera.y = -vectorFromCamera.y;
-
-			// vectorFromCamera.multiply(-1);
-		}
-
-		// console.log('normal: ', normal, '\nangle:', angle * 180/Math.PI, '\nvector: ', vectorFromCamera);
-
-		const projectionMatrix = this.#calculateProjectionMatrix(
-			vectorFromCamera.z,
-		);
-
-		const homogeneousVector = vectorFromCamera.asRowVector().asHomogeneous();
-
-		const projectionVector = homogeneousVector
+		const point = vectorFromCamera
 			.mmul(projectionMatrix)
 			.mmul(this.#perspectiveMatrix);
-
-		const point = Vector3.fromMatrix(projectionVector);
 
 		if (point.z < this.near || point.z > this.far) {
 			point.multiply(new Vector3(point.z, point.z, 1));

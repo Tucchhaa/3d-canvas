@@ -8,16 +8,16 @@ export class Vector3 {
 	) {}
 
 	// ===
-	sqrMagnitude() {
+	get sqrMagnitude() {
 		return this.x * this.x + this.y * this.y + this.z * this.z;
 	}
 
-	magnitude() {
-		return Math.sqrt(this.sqrMagnitude());
+	get magnitude() {
+		return Math.sqrt(this.sqrMagnitude);
 	}
 
 	setMagnitude(magnitude: number) {
-		const coefficient = magnitude / this.magnitude();
+		const coefficient = magnitude / this.magnitude;
 
 		this.multiply(coefficient);
 
@@ -29,7 +29,7 @@ export class Vector3 {
 	 * @returns unit vector
 	 */
 	unit() {
-		const magnitude = this.magnitude();
+		const magnitude = this.magnitude;
 
 		return Vector3.divide(this, magnitude);
 	}
@@ -194,6 +194,17 @@ export class Vector3 {
 		return this;
 	}
 
+
+	mmul(matrix: Matrix): Vector3 {
+		const isHomogeneous = matrix.rows === 4;
+
+		const vector = isHomogeneous ? this.asRowVector().asHomogeneous() : this.asRowVector();
+
+		this.set(Vector3.fromMatrix(vector.mmul(matrix)));
+
+		return this;
+	}
+
 	// ===
 	// Immutable arithmetic
 	// ===
@@ -223,6 +234,16 @@ export class Vector3 {
 		return new Vector3(a.x / b, a.y / b, a.z / b);
 	}
 
+	static mmul(a: Vector3, matrix: Matrix): Vector3 {
+		const isHomogeneous = matrix.rows === 4;
+
+		const vector = isHomogeneous ? a.asColumnVector().asHomogeneous() : a.asColumnVector();
+
+		const result = Vector3.fromMatrix(vector.mmul(matrix));
+
+		return result;
+	}
+
 	// ===
 	// Vector multiplication
 	// ===
@@ -248,13 +269,13 @@ export class Vector3 {
 	 * @returns angle in radians
 	 */
 	static getAngleBetween(a: Vector3, b: Vector3): number {
-		const dotProduct = Vector3.dot(a, b);
+		let dot = Vector3.dot(a, b);
 
-		if (dotProduct >= 1) return 0;
+		dot = Math.max(-1, Math.min(1, dot));
 
-		if (dotProduct <= -1) return Math.PI;
+		const result = Math.acos(dot);
 
-		return Math.acos(dotProduct);
+		return result;
 	}
 
 	static calculateRotationMatrix(direction: Vector3, angle: number): Matrix {

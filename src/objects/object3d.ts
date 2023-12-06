@@ -27,6 +27,8 @@ export class Object3D extends SpaceEntity {
 		this.setPosition(position);
 	}
 
+	// ===
+
 	setPosition(value: Vector3) {
 		const translationVector = Vector3.substract(value, this.position);
 
@@ -69,10 +71,7 @@ export class Object3D extends SpaceEntity {
 	rotate(direction: Vector3, angle: number) {
 		super.rotate(direction, angle);
 
-		const rotation = Vector3.calculateRotationMatrix(
-			direction,
-			angle,
-		).asHomogeneous();
+		const rotation = Vector3.calculateRotationMatrix(direction, angle).asHomogeneous();
 		const translateTo = this.position.getTranslationToOriginMatrix();
 		const translateFrom = this.position.getTranslationFromOriginMatrix();
 
