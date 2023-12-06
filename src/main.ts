@@ -27,6 +27,8 @@ let longCube: any;
 let cube1: any;
 let cube2: any;
 let pyramid1: any;
+let teaopot: any;
+let shuttle: any;
 
 engine.on('beforeLaunch', () => {
 	longCube = engine.createObject('cube', {
@@ -48,12 +50,12 @@ engine.on('beforeLaunch', () => {
 		scale: Vector3.one.multiply(50),
 	});
 
-	engine.createObject('teapot', {
-		position: new Vector3(500, 0, 0),
-		scale: Vector3.one.multiply(100),
-	});
+	// teaopot = engine.createObject('teapot', {
+	// 	position: new Vector3(500, 0, 0),
+	// 	scale: Vector3.one.multiply(100),
+	// });
 
-	engine.createObject('shuttle', {
+	shuttle = engine.createObject('shuttle', {
 		position: new Vector3(0, 600, 0),
 		scale: Vector3.one.multiply(50),
 		direction: Vector3.right,
@@ -61,6 +63,9 @@ engine.on('beforeLaunch', () => {
 });
 
 engine.on('beforeUpdate', () => {
+	shuttle.rotate(Vector3.right, 0.05);
+	// teaopot.rotate(new Vector3(1, 1, 1).unit(), 0.05);
+
 	// pyramid1.rotate(Vector3.right, 0.05);
 	// longCube.rotate(Vector3.up, 0.05);
 	// cube1.rotate(new Vector3(1, 1, 1).unit(), 0.025);
@@ -75,26 +80,36 @@ addEventListener('keydown', (e) => {
 	const rotSpeed = 0.07;
 
 	if (e.shiftKey) {
-		if (e.key === 'W') {
-			camera.rotate(Vector3.left, rotSpeed);
-		}
+		if (e.key === 'W') camera.rotate(Vector3.right, rotSpeed);
 
 		if (e.key === 'A') camera.rotate(Vector3.up, rotSpeed);
 
-		if (e.key === 'S') camera.rotate(Vector3.right, rotSpeed);
+		if (e.key === 'S') camera.rotate(Vector3.left, rotSpeed);
 
 		if (e.key === 'D') camera.rotate(Vector3.down, rotSpeed);
 
 		return;
 	}
 
-	if (e.key === 'w') camera.translate(Vector3.forward.multiply(speed));
+	if (e.key === 'w')
+		camera.setPosition(
+			Vector3.add(camera.position, Vector3.forward.multiply(speed)),
+		);
 
-	if (e.key === 'a') camera.translate(Vector3.left.multiply(speed));
+	if (e.key === 'a')
+		camera.setPosition(
+			Vector3.add(camera.position, Vector3.left.multiply(speed)),
+		);
 
-	if (e.key === 's') camera.translate(Vector3.backward.multiply(speed));
+	if (e.key === 's')
+		camera.setPosition(
+			Vector3.add(camera.position, Vector3.backward.multiply(speed)),
+		);
 
-	if (e.key === 'd') camera.translate(Vector3.right.multiply(speed));
+	if (e.key === 'd')
+		camera.setPosition(
+			Vector3.add(camera.position, Vector3.right.multiply(speed)),
+		);
 
 	if (e.key == 'z') camera.position.y -= speed;
 

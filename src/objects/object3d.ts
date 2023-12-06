@@ -27,6 +27,8 @@ export class Object3D extends SpaceEntity {
 		this.setPosition(position);
 	}
 
+	// ===
+
 	setPosition(value: Vector3) {
 		const translationVector = Vector3.substract(value, this.position);
 
