@@ -28,17 +28,17 @@ BaseMatrix.prototype.asHomogeneous = function (this: BaseMatrix) {
 export class Matrix extends BaseMatrix {
 	/**
 	 * Projects vector onto a plane
-	 * @returns projection 
+	 * @returns projection
 	 */
 	static project(plane: Matrix, vector: Matrix): Matrix {
-		if(vector.isColumnVector() === false) {
+		if (vector.isColumnVector() === false) {
 			throw new Error();
-		} 
+		}
 
 		const x = inverse(plane.transpose().mmul(plane));
 
 		const P = plane.mmul(x).mmul(plane.transpose());
-		
+
 		const projection = P.mmul(vector);
 
 		return projection;
@@ -48,7 +48,7 @@ export class Matrix extends BaseMatrix {
 		return new Matrix([
 			[0, 0],
 			[1, 0],
-			[0, 1]
+			[0, 1],
 		]);
 	}
 
@@ -56,7 +56,7 @@ export class Matrix extends BaseMatrix {
 		return new Matrix([
 			[1, 0],
 			[0, 0],
-			[0, 1]
+			[0, 1],
 		]);
 	}
 
@@ -64,7 +64,7 @@ export class Matrix extends BaseMatrix {
 		return new Matrix([
 			[1, 0],
 			[0, 1],
-			[0, 0]
+			[0, 0],
 		]);
 	}
 }

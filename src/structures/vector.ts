@@ -194,11 +194,12 @@ export class Vector3 {
 		return this;
 	}
 
-
 	mmul(matrix: Matrix): Vector3 {
 		const isHomogeneous = matrix.rows === 4;
 
-		const vector = isHomogeneous ? this.asRowVector().asHomogeneous() : this.asRowVector();
+		const vector = isHomogeneous
+			? this.asRowVector().asHomogeneous()
+			: this.asRowVector();
 
 		this.set(Vector3.fromMatrix(vector.mmul(matrix)));
 
@@ -237,7 +238,9 @@ export class Vector3 {
 	static mmul(a: Vector3, matrix: Matrix): Vector3 {
 		const isHomogeneous = matrix.rows === 4;
 
-		const vector = isHomogeneous ? a.asColumnVector().asHomogeneous() : a.asColumnVector();
+		const vector = isHomogeneous
+			? a.asColumnVector().asHomogeneous()
+			: a.asColumnVector();
 
 		const result = Vector3.fromMatrix(vector.mmul(matrix));
 

@@ -91,13 +91,25 @@ addEventListener('keydown', (e) => {
 		return;
 	}
 
-	if (e.key === 'w') camera.setPosition(Vector3.add(camera.position, Vector3.forward.multiply(speed)));
+	if (e.key === 'w')
+		camera.setPosition(
+			Vector3.add(camera.position, Vector3.forward.multiply(speed)),
+		);
 
-	if (e.key === 'a') camera.setPosition(Vector3.add(camera.position, Vector3.left.multiply(speed)));
+	if (e.key === 'a')
+		camera.setPosition(
+			Vector3.add(camera.position, Vector3.left.multiply(speed)),
+		);
 
-	if (e.key === 's') camera.setPosition(Vector3.add(camera.position, Vector3.backward.multiply(speed)));
+	if (e.key === 's')
+		camera.setPosition(
+			Vector3.add(camera.position, Vector3.backward.multiply(speed)),
+		);
 
-	if (e.key === 'd') camera.setPosition(Vector3.add(camera.position, Vector3.right.multiply(speed)));
+	if (e.key === 'd')
+		camera.setPosition(
+			Vector3.add(camera.position, Vector3.right.multiply(speed)),
+		);
 
 	if (e.key == 'z') camera.position.y -= speed;
 
