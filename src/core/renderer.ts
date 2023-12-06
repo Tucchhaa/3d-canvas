@@ -53,9 +53,7 @@ export class Renderer {
 		let renderedPolygons: Polygon[] = [];
 
 		for (const object3d of objects) {
-			renderedPolygons = renderedPolygons.concat(
-				this.projectObject(camera, object3d),
-			);
+			renderedPolygons = renderedPolygons.concat(this.projectObject(camera, object3d));
 		}
 
 		renderedPolygons.sort(this.ZSort);
@@ -71,12 +69,7 @@ export class Renderer {
 		const points1 = a.vertexes;
 		const points2 = b.vertexes;
 
-		return (
-			points2[0]!.z +
-			points2[1]!.z +
-			points2[2]!.z -
-			(points1[0]!.z + points1[1]!.z + points1[2]!.z)
-		);
+		return points2[0]!.z + points2[1]!.z + points2[2]!.z - (points1[0]!.z + points1[1]!.z + points1[2]!.z);
 	}
 
 	/**

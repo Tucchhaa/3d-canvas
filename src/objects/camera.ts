@@ -22,11 +22,7 @@ export class Camera extends SpaceEntity {
 	near: number;
 	far: number;
 
-	constructor(
-		config: CameraConfig = {},
-		position: Vector3 = Vector3.zero,
-		direction: Vector3 = Vector3.backward,
-	) {
+	constructor(config: CameraConfig = {}, position: Vector3 = Vector3.zero, direction: Vector3 = Vector3.backward) {
 		super();
 
 		this.setPosition(position);
@@ -54,17 +50,11 @@ export class Camera extends SpaceEntity {
 	// Projection and perspective
 	// ===
 	project(vertex: Vector3) {
-		const vectorFromCamera = Vector3.substract(vertex, this.position).mmul(
-			this.rotation,
-		);
+		const vectorFromCamera = Vector3.substract(vertex, this.position).mmul(this.rotation);
 
-		const projectionMatrix = this.#calculateProjectionMatrix(
-			vectorFromCamera.z,
-		);
+		const projectionMatrix = this.#calculateProjectionMatrix(vectorFromCamera.z);
 
-		const point = vectorFromCamera
-			.mmul(projectionMatrix)
-			.mmul(this.#perspectiveMatrix);
+		const point = vectorFromCamera.mmul(projectionMatrix).mmul(this.#perspectiveMatrix);
 
 		if (point.z < this.near || point.z > this.far) {
 			point.multiply(new Vector3(point.z, point.z, 1));
@@ -74,14 +64,7 @@ export class Camera extends SpaceEntity {
 	}
 
 	isProjectedPointInViewport(point: Vector3) {
-		return (
-			point.z >= this.near &&
-			point.z <= this.far &&
-			point.x > -1 &&
-			point.x < 1 &&
-			point.y > -1 &&
-			point.y < 1
-		);
+		return point.z >= this.near && point.z <= this.far && point.x > -1 && point.x < 1 && point.y > -1 && point.y < 1;
 	}
 
 	#initProjectionMatrix(): void {

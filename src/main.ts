@@ -9,11 +9,7 @@ const canvas = document.querySelector('canvas')!;
 canvas.width = canvas.offsetWidth * 2;
 canvas.height = canvas.offsetHeight * 2;
 
-const camera = new Camera(
-	{ fov: 1.57 },
-	new Vector3(0, 0, -600),
-	new Vector3(0, 0, 1).unit(),
-);
+const camera = new Camera({ fov: 1.57 }, new Vector3(0, 0, -600), new Vector3(0, 0, 1).unit());
 const engine = new Engine(canvas, camera);
 
 engine.on('onPrepare', async () => {
@@ -91,25 +87,13 @@ addEventListener('keydown', (e) => {
 		return;
 	}
 
-	if (e.key === 'w')
-		camera.setPosition(
-			Vector3.add(camera.position, Vector3.forward.multiply(speed)),
-		);
+	if (e.key === 'w') camera.setPosition(Vector3.add(camera.position, Vector3.forward.multiply(speed)));
 
-	if (e.key === 'a')
-		camera.setPosition(
-			Vector3.add(camera.position, Vector3.left.multiply(speed)),
-		);
+	if (e.key === 'a') camera.setPosition(Vector3.add(camera.position, Vector3.left.multiply(speed)));
 
-	if (e.key === 's')
-		camera.setPosition(
-			Vector3.add(camera.position, Vector3.backward.multiply(speed)),
-		);
+	if (e.key === 's') camera.setPosition(Vector3.add(camera.position, Vector3.backward.multiply(speed)));
 
-	if (e.key === 'd')
-		camera.setPosition(
-			Vector3.add(camera.position, Vector3.right.multiply(speed)),
-		);
+	if (e.key === 'd') camera.setPosition(Vector3.add(camera.position, Vector3.right.multiply(speed)));
 
 	if (e.key == 'z') camera.position.y -= speed;
 

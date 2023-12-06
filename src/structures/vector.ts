@@ -197,9 +197,7 @@ export class Vector3 {
 	mmul(matrix: Matrix): Vector3 {
 		const isHomogeneous = matrix.rows === 4;
 
-		const vector = isHomogeneous
-			? this.asRowVector().asHomogeneous()
-			: this.asRowVector();
+		const vector = isHomogeneous ? this.asRowVector().asHomogeneous() : this.asRowVector();
 
 		this.set(Vector3.fromMatrix(vector.mmul(matrix)));
 
@@ -216,8 +214,7 @@ export class Vector3 {
 	static multiply(a: Vector3, scalar: number): Vector3;
 	static multiply(a: Vector3, b: Vector3): Vector3;
 	static multiply(a: Vector3, b: Vector3 | number): Vector3 {
-		if (b instanceof Vector3)
-			return new Vector3(a.x * b.x, a.y * b.y, a.z * b.z);
+		if (b instanceof Vector3) return new Vector3(a.x * b.x, a.y * b.y, a.z * b.z);
 
 		return new Vector3(a.x * b, a.y * b, a.z * b);
 	}
@@ -229,8 +226,7 @@ export class Vector3 {
 	static divide(a: Vector3, scalar: number): Vector3;
 	static divide(a: Vector3, b: Vector3): Vector3;
 	static divide(a: Vector3, b: Vector3 | number): Vector3 {
-		if (b instanceof Vector3)
-			return new Vector3(a.x / b.x, a.y / b.y, a.z / b.z);
+		if (b instanceof Vector3) return new Vector3(a.x / b.x, a.y / b.y, a.z / b.z);
 
 		return new Vector3(a.x / b, a.y / b, a.z / b);
 	}
@@ -238,9 +234,7 @@ export class Vector3 {
 	static mmul(a: Vector3, matrix: Matrix): Vector3 {
 		const isHomogeneous = matrix.rows === 4;
 
-		const vector = isHomogeneous
-			? a.asColumnVector().asHomogeneous()
-			: a.asColumnVector();
+		const vector = isHomogeneous ? a.asColumnVector().asHomogeneous() : a.asColumnVector();
 
 		const result = Vector3.fromMatrix(vector.mmul(matrix));
 
@@ -255,11 +249,7 @@ export class Vector3 {
 	}
 
 	static cross(a: Vector3, b: Vector3): Vector3 {
-		return new Vector3(
-			a.y * b.z - a.z * b.y,
-			a.x * b.z - a.z * b.x,
-			a.x * b.y - a.y * b.x,
-		);
+		return new Vector3(a.y * b.z - a.z * b.y, a.x * b.z - a.z * b.x, a.x * b.y - a.y * b.x);
 	}
 
 	// ===
@@ -285,7 +275,7 @@ export class Vector3 {
 		const cos = Math.cos(angle);
 		const sin = Math.sin(angle);
 
-		const Q = Matrix.identity(3, 3).mul(cos);
+		const rotation = Matrix.identity(3, 3).mul(cos);
 
 		const d = direction;
 
@@ -301,13 +291,13 @@ export class Vector3 {
 
 		for (let i = 0; i < 3; i++) {
 			for (let j = 0; j < 3; j++) {
-				const value = Q.get(i, j) + m.get(i, j) - n.get(i, j);
+				const value = rotation.get(i, j) + m.get(i, j) - n.get(i, j);
 
-				Q.set(i, j, value);
+				rotation.set(i, j, value);
 			}
 		}
 
-		return Q;
+		return rotation;
 	}
 }
 

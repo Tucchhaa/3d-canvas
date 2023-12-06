@@ -4,11 +4,7 @@ import { Vector3 } from '../structures/vector';
 import { Renderer } from './renderer';
 import { ResourceLoader } from './resource-loader';
 
-type EngineEvents =
-	| 'onPrepare'
-	| 'beforeLaunch'
-	| 'beforeUpdate'
-	| 'afterUpdate';
+type EngineEvents = 'onPrepare' | 'beforeLaunch' | 'beforeUpdate' | 'afterUpdate';
 
 type EngineEventHandler = () => Promise<void> | void;
 
@@ -56,14 +52,7 @@ export class Engine {
 		clearInterval(this.#renderId);
 	}
 
-	createObject(
-		name: string,
-		{
-			position,
-			direction,
-			scale,
-		}: { position?: Vector3; direction?: Vector3; scale?: Vector3 },
-	) {
+	createObject(name: string, { position, direction, scale }: { position?: Vector3; direction?: Vector3; scale?: Vector3 }) {
 		const geometry = this.resourceLoader.getObject(name);
 
 		const object3d = new Object3D({

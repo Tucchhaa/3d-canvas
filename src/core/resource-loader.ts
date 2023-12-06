@@ -81,8 +81,7 @@ export class ResourceLoader {
 	getObject(name: string) {
 		const obj = this.#cachedObjects[name];
 
-		if (!obj)
-			throw new Error(`Object '${name}' is undefined when tried to access it`);
+		if (!obj) throw new Error(`Object '${name}' is undefined when tried to access it`);
 
 		return obj.clone();
 	}
