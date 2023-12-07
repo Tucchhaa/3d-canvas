@@ -3,13 +3,16 @@
 
 import { Engine } from './core/engine';
 import { Camera } from './objects/camera';
+import { Object3D } from './objects/object3d';
 import { Vector3 } from './structures/vector';
 
 const canvas = document.querySelector('canvas')!;
 canvas.width = canvas.offsetWidth * 2;
 canvas.height = canvas.offsetHeight * 2;
 
-const camera = new Camera({ fov: 1.57 }, new Vector3(0, 0, -600), new Vector3(0, 0, 1).unit());
+const camera = new Camera({ fov: 1.57 }, new Vector3(0, 800, -1500));
+camera.rotate(Vector3.left, 0.5);
+
 const engine = new Engine(canvas, camera);
 
 engine.on('onPrepare', async () => {
@@ -19,12 +22,12 @@ engine.on('onPrepare', async () => {
 	await engine.resourceLoader.loadObject('shuttle');
 });
 
-let longCube: any;
-let cube1: any;
-let cube2: any;
-let pyramid1: any;
-let teaopot: any;
-let shuttle: any;
+let longCube: Object3D;
+let cube1: Object3D;
+let cube2: Object3D;
+let pyramid1: Object3D;
+let teaopot: Object3D;
+let shuttle: Object3D;
 
 engine.on('beforeLaunch', () => {
 	longCube = engine.createObject('cube', {
@@ -33,16 +36,19 @@ engine.on('beforeLaunch', () => {
 	});
 
 	cube1 = engine.createObject('cube', {
-		position: new Vector3(0, +50, 0),
+		name: 'cube',
+		pivot: new Vector3(50, -50, 50),
+		position: new Vector3(-150, 125, -50),
 		scale: new Vector3(100, 100, 100),
 	});
+	
 	cube2 = engine.createObject('cube', {
 		position: new Vector3(-500, +50, 0),
 		scale: new Vector3(100, 100, 100),
 	});
 
 	pyramid1 = engine.createObject('pyramid', {
-		position: new Vector3(250, 0, 0),
+		position: new Vector3(-100, 50, 0),
 		scale: Vector3.one.multiply(50),
 	});
 
@@ -52,20 +58,17 @@ engine.on('beforeLaunch', () => {
 	});
 
 	shuttle = engine.createObject('shuttle', {
-		position: new Vector3(0, 600, 0),
+		position: new Vector3(0, 0, 1200),
 		scale: Vector3.one.multiply(50),
 		direction: Vector3.right,
 	});
+
+	shuttle.rotate(Vector3.left, Math.PI/2+0.7);
 });
 
 engine.on('beforeUpdate', () => {
-	shuttle.rotate(Vector3.right, 0.05);
-	// teaopot.rotate(new Vector3(1, 1, 1).unit(), 0.05);
-
-	// pyramid1.rotate(Vector3.right, 0.05);
-	// longCube.rotate(Vector3.up, 0.05);
-	// cube1.rotate(new Vector3(1, 1, 1).unit(), 0.025);
-	// cube2.rotate(new Vector3(-1, 1, 1).unit(), 0.025);
+	cube1.rotate(Vector3.up, 0.025);
+	shuttle.rotate(Vector3.up, 0.025, new Vector3(0, 0, 0));
 });
 
 engine.launch();
