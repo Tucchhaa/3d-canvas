@@ -6,9 +6,20 @@ import { Vector3 } from '../structures/vector';
  */
 export abstract class SpaceEntity {
 	/**
+	 * Name for debugging
+	 */
+	name: string = 'entity';
+
+	/**
 	 * World coordinates
 	 */
 	#position: Vector3 = Vector3.zero;
+
+	/**
+	 * Center point of the object. Rotation occurs around it.
+	 */
+	readonly pivot: Vector3 = Vector3.zero;
+
 	/**
 	 * Unit vector which represents a direction at which object looks forward
 	 */
@@ -26,7 +37,7 @@ export abstract class SpaceEntity {
 	}
 
 	setPosition(position: Vector3) {
-		this.#position = position;
+		this.#position = Vector3.add(position, this.pivot);
 	}
 
 	get direction() {
@@ -39,6 +50,11 @@ export abstract class SpaceEntity {
 
 	get rotation() {
 		return this.#rotation;
+	}
+
+	// ===
+	constructor(pivot: Vector3 = Vector3.zero) {
+		this.pivot = pivot;
 	}
 
 	/**

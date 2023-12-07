@@ -1,5 +1,5 @@
 import { Camera } from '../objects/camera';
-import { Object3D } from '../objects/object3d';
+import { Object3D, Object3DConfig } from '../objects/object3d';
 import { Vector3 } from '../structures/vector';
 import { Renderer } from './renderer';
 import { ResourceLoader } from './resource-loader';
@@ -16,7 +16,7 @@ export class Engine {
 
 	#renderId: ReturnType<typeof setInterval> | undefined;
 
-	#fps = 24;
+	#fps = 60;
 
 	#objects: Object3D[] = [];
 
@@ -54,15 +54,17 @@ export class Engine {
 		clearInterval(this.#renderId);
 	}
 
-	createObject(name: string, { position, direction, scale }: { position?: Vector3; direction?: Vector3; scale?: Vector3 }) {
+	createObject(name: string, config: Partial<Object3DConfig>) {
 		const geometry = this.resourceLoader.getObject(name);
-
-		const object3d = new Object3D({
+		const defaultConfig: Object3DConfig = {
 			geometry,
-			position: position ?? Vector3.zero,
-			direction: direction ?? Vector3.forward,
-			scale: scale ?? Vector3.one,
-		});
+			pivot: Vector3.zero,
+			position: Vector3.zero,
+			scale: Vector3.one,
+			direction: Vector3.forward,
+		};
+
+		const object3d = new Object3D({ ...defaultConfig, ...config });
 
 		this.#objects.push(object3d);
 

@@ -8,6 +8,8 @@ export type ObjectName = 'cube';
 export type Object3DConfig = {
 	geometry: Geometry;
 
+	name?: string;
+	pivot: Vector3;
 	position: Vector3;
 	scale: Vector3;
 	direction: Vector3;
@@ -18,8 +20,10 @@ export class Object3D extends SpaceEntity {
 
 	#scale: Vector3 = Vector3.one;
 
-	constructor({ geometry, position, scale, direction }: Object3DConfig) {
-		super();
+	constructor({ name, geometry, pivot, position, scale, direction }: Object3DConfig) {
+		super(pivot);
+
+		this.name = name ?? 'entity';
 
 		this.geometry = geometry;
 		this.setDirection(direction);
@@ -30,6 +34,7 @@ export class Object3D extends SpaceEntity {
 	// ===
 
 	setPosition(value: Vector3) {
+		console.log(this.name, value);
 		const translationVector = Vector3.substract(value, this.position);
 
 		for (const vertex of this.geometry.vertexes) {
@@ -64,12 +69,14 @@ export class Object3D extends SpaceEntity {
 	 * @param direction rotation direction
 	 * @param angle angle in radians
 	 */
-	rotate(direction: Vector3, angle: number) {
+	rotate(direction: Vector3, angle: number, pivot?: Vector3) {
 		super.rotate(direction, angle);
 
+		const rotationPivot = pivot ?? this.position;
+
 		const rotation = Vector3.calculateRotationMatrix(direction, angle).asHomogeneous();
-		const translateTo = this.position.getTranslationToOriginMatrix();
-		const translateFrom = this.position.getTranslationFromOriginMatrix();
+		const translateTo = rotationPivot.getTranslationToOriginMatrix();
+		const translateFrom = rotationPivot.getTranslationFromOriginMatrix();
 
 		const transformMatrix = translateTo.mmul(rotation).mmul(translateFrom);
 
