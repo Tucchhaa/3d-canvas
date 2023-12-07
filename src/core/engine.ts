@@ -45,7 +45,9 @@ export class Engine {
 
 		this.emit('beforeLaunch');
 
-		this.#renderId = setInterval(this.update.bind(this), 1000 / this.#fps);
+		this.#renderId = setInterval(() => {
+			requestAnimationFrame(this.update.bind(this));
+		}, 1000 / this.#fps);
 	}
 
 	stop() {
