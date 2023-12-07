@@ -46,10 +46,10 @@ engine.on('beforeLaunch', () => {
 		scale: Vector3.one.multiply(50),
 	});
 
-	// teaopot = engine.createObject('teapot', {
-	// 	position: new Vector3(500, 0, 0),
-	// 	scale: Vector3.one.multiply(100),
-	// });
+	teaopot = engine.createObject('teapot', {
+		position: new Vector3(500, 0, 0),
+		scale: Vector3.one.multiply(100),
+	});
 
 	shuttle = engine.createObject('shuttle', {
 		position: new Vector3(0, 600, 0),
@@ -69,7 +69,7 @@ engine.on('beforeUpdate', () => {
 });
 
 engine.launch();
-// setTimeout(() => { engine.stop(); }, 5000);
+// setTimeout(() => { engine.stop(); }, 500);
 
 addEventListener('keydown', (e) => {
 	const speed = 30;

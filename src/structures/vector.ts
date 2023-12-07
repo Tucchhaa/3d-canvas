@@ -126,8 +126,7 @@ export class Vector3 {
 	}
 
 	static fromArray(array: [number, number, number]) {
-		const [x, y, z] = array;
-		return new Vector3(x, y, z);
+		return new Vector3(...array);
 	}
 
 	// ===
@@ -230,11 +229,29 @@ export class Vector3 {
 	static mmul(vector: Vector3, matrix: Matrix): Vector3 {
 		const isHomogeneous = matrix.rows === 4;
 
-		const vectorMatrix = isHomogeneous ? vector.asRowVector().asHomogeneous() : vector.asRowVector();
+		if(isHomogeneous) {
+			return new Vector3(
+				vector.x * matrix.get(0, 0) + vector.y * matrix.get(1, 0) + vector.z * matrix.get(2, 0) + matrix.get(3, 0),
+				vector.x * matrix.get(0, 1) + vector.y * matrix.get(1, 1) + vector.z * matrix.get(2, 1) + matrix.get(3, 1),
+				vector.x * matrix.get(0, 2) + vector.y * matrix.get(1, 2) + vector.z * matrix.get(2, 2) + matrix.get(3, 2),
+			);
+		}
 
-		const result = Vector3.fromMatrix(vectorMatrix.mmul(matrix));
+		return new Vector3(
+			vector.x * matrix.get(0, 0) + vector.y * matrix.get(1, 0) + vector.z * matrix.get(2, 0),
+			vector.x * matrix.get(0, 1) + vector.y * matrix.get(1, 1) + vector.z * matrix.get(2, 1),
+			vector.x * matrix.get(0, 2) + vector.y * matrix.get(1, 2) + vector.z * matrix.get(2, 2),
+		);
+		
+		/*
+			Code below is really slow, but does the same thing as code above
+		*/
 
-		return result;
+		// const vectorMatrix = isHomogeneous ? vector.asRowVector().asHomogeneous() : vector.asRowVector();
+		// const mmul = vectorMatrix.mmul(matrix);
+		// const result = Vector3.fromMatrix(mmul);
+
+		// return result;
 	}
 
 	// ===
