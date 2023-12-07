@@ -229,7 +229,7 @@ export class Vector3 {
 	static mmul(vector: Vector3, matrix: Matrix): Vector3 {
 		const isHomogeneous = matrix.rows === 4;
 
-		if(isHomogeneous) {
+		if (isHomogeneous) {
 			return new Vector3(
 				vector.x * matrix.get(0, 0) + vector.y * matrix.get(1, 0) + vector.z * matrix.get(2, 0) + matrix.get(3, 0),
 				vector.x * matrix.get(0, 1) + vector.y * matrix.get(1, 1) + vector.z * matrix.get(2, 1) + matrix.get(3, 1),
@@ -242,7 +242,7 @@ export class Vector3 {
 			vector.x * matrix.get(0, 1) + vector.y * matrix.get(1, 1) + vector.z * matrix.get(2, 1),
 			vector.x * matrix.get(0, 2) + vector.y * matrix.get(1, 2) + vector.z * matrix.get(2, 2),
 		);
-		
+
 		/*
 			Code below is really slow, but does the same thing as code above
 		*/
