@@ -8,7 +8,7 @@ export type ObjectName = 'cube';
 export type Object3DConfig = {
 	geometry: Geometry;
 
-	name?: string,
+	name?: string;
 	pivot: Vector3;
 	position: Vector3;
 	scale: Vector3;

@@ -61,7 +61,7 @@ export class Engine {
 			pivot: Vector3.zero,
 			position: Vector3.zero,
 			scale: Vector3.one,
-			direction: Vector3.forward
+			direction: Vector3.forward,
 		};
 
 		const object3d = new Object3D({ ...defaultConfig, ...config });

@@ -41,7 +41,7 @@ engine.on('beforeLaunch', () => {
 		position: new Vector3(-150, 125, -50),
 		scale: new Vector3(100, 100, 100),
 	});
-	
+
 	cube2 = engine.createObject('cube', {
 		position: new Vector3(-500, +50, 0),
 		scale: new Vector3(100, 100, 100),
@@ -63,7 +63,7 @@ engine.on('beforeLaunch', () => {
 		direction: Vector3.right,
 	});
 
-	shuttle.rotate(Vector3.left, Math.PI/2+0.7);
+	shuttle.rotate(Vector3.left, Math.PI / 2 + 0.7);
 });
 
 engine.on('beforeUpdate', () => {
