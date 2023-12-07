@@ -53,11 +53,7 @@ export class Object3D extends SpaceEntity {
 		const applyMatrix = translate.mmul(scaleMatrix).mmul(translateBack);
 
 		for (const vertex of this.geometry.vertexes) {
-			const vector = vertex.asRowVector().asHomogeneous();
-
-			const result = vector.mmul(applyMatrix);
-
-			vertex.set(Vector3.fromMatrix(result));
+			vertex.mmul(applyMatrix);
 		}
 
 		this.#scale = value;
@@ -71,19 +67,14 @@ export class Object3D extends SpaceEntity {
 	rotate(direction: Vector3, angle: number) {
 		super.rotate(direction, angle);
 
-		const rotation = Vector3.calculateRotationMatrix(
-			direction,
-			angle,
-		).asHomogeneous();
+		const rotation = Vector3.calculateRotationMatrix(direction, angle).asHomogeneous();
 		const translateTo = this.position.getTranslationToOriginMatrix();
 		const translateFrom = this.position.getTranslationFromOriginMatrix();
 
-		const matrix = translateTo.mmul(rotation).mmul(translateFrom);
+		const transformMatrix = translateTo.mmul(rotation).mmul(translateFrom);
 
 		for (const vertex of this.geometry.vertexes) {
-			const rotatedVertex = vertex.asRowVector().asHomogeneous().mmul(matrix);
-
-			vertex.set(Vector3.fromMatrix(rotatedVertex));
+			vertex.mmul(transformMatrix);
 		}
 	}
 }

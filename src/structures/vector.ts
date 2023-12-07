@@ -126,8 +126,7 @@ export class Vector3 {
 	}
 
 	static fromArray(array: [number, number, number]) {
-		const [x, y, z] = array;
-		return new Vector3(x, y, z);
+		return new Vector3(...array);
 	}
 
 	// ===
@@ -195,13 +194,7 @@ export class Vector3 {
 	}
 
 	mmul(matrix: Matrix): Vector3 {
-		const isHomogeneous = matrix.rows === 4;
-
-		const vector = isHomogeneous
-			? this.asRowVector().asHomogeneous()
-			: this.asRowVector();
-
-		this.set(Vector3.fromMatrix(vector.mmul(matrix)));
+		this.set(Vector3.mmul(this, matrix));
 
 		return this;
 	}
@@ -216,8 +209,7 @@ export class Vector3 {
 	static multiply(a: Vector3, scalar: number): Vector3;
 	static multiply(a: Vector3, b: Vector3): Vector3;
 	static multiply(a: Vector3, b: Vector3 | number): Vector3 {
-		if (b instanceof Vector3)
-			return new Vector3(a.x * b.x, a.y * b.y, a.z * b.z);
+		if (b instanceof Vector3) return new Vector3(a.x * b.x, a.y * b.y, a.z * b.z);
 
 		return new Vector3(a.x * b, a.y * b, a.z * b);
 	}
@@ -229,22 +221,37 @@ export class Vector3 {
 	static divide(a: Vector3, scalar: number): Vector3;
 	static divide(a: Vector3, b: Vector3): Vector3;
 	static divide(a: Vector3, b: Vector3 | number): Vector3 {
-		if (b instanceof Vector3)
-			return new Vector3(a.x / b.x, a.y / b.y, a.z / b.z);
+		if (b instanceof Vector3) return new Vector3(a.x / b.x, a.y / b.y, a.z / b.z);
 
 		return new Vector3(a.x / b, a.y / b, a.z / b);
 	}
 
-	static mmul(a: Vector3, matrix: Matrix): Vector3 {
+	static mmul(vector: Vector3, matrix: Matrix): Vector3 {
 		const isHomogeneous = matrix.rows === 4;
 
-		const vector = isHomogeneous
-			? a.asColumnVector().asHomogeneous()
-			: a.asColumnVector();
+		if (isHomogeneous) {
+			return new Vector3(
+				vector.x * matrix.get(0, 0) + vector.y * matrix.get(1, 0) + vector.z * matrix.get(2, 0) + matrix.get(3, 0),
+				vector.x * matrix.get(0, 1) + vector.y * matrix.get(1, 1) + vector.z * matrix.get(2, 1) + matrix.get(3, 1),
+				vector.x * matrix.get(0, 2) + vector.y * matrix.get(1, 2) + vector.z * matrix.get(2, 2) + matrix.get(3, 2),
+			);
+		}
 
-		const result = Vector3.fromMatrix(vector.mmul(matrix));
+		return new Vector3(
+			vector.x * matrix.get(0, 0) + vector.y * matrix.get(1, 0) + vector.z * matrix.get(2, 0),
+			vector.x * matrix.get(0, 1) + vector.y * matrix.get(1, 1) + vector.z * matrix.get(2, 1),
+			vector.x * matrix.get(0, 2) + vector.y * matrix.get(1, 2) + vector.z * matrix.get(2, 2),
+		);
 
-		return result;
+		/*
+			Code below is really slow, but does the same thing as code above
+		*/
+
+		// const vectorMatrix = isHomogeneous ? vector.asRowVector().asHomogeneous() : vector.asRowVector();
+		// const mmul = vectorMatrix.mmul(matrix);
+		// const result = Vector3.fromMatrix(mmul);
+
+		// return result;
 	}
 
 	// ===
@@ -255,11 +262,7 @@ export class Vector3 {
 	}
 
 	static cross(a: Vector3, b: Vector3): Vector3 {
-		return new Vector3(
-			a.y * b.z - a.z * b.y,
-			a.x * b.z - a.z * b.x,
-			a.x * b.y - a.y * b.x,
-		);
+		return new Vector3(a.y * b.z - a.z * b.y, a.x * b.z - a.z * b.x, a.x * b.y - a.y * b.x);
 	}
 
 	// ===
@@ -285,7 +288,7 @@ export class Vector3 {
 		const cos = Math.cos(angle);
 		const sin = Math.sin(angle);
 
-		const Q = Matrix.identity(3, 3).mul(cos);
+		const rotation = Matrix.identity(3, 3).mul(cos);
 
 		const d = direction;
 
@@ -301,13 +304,13 @@ export class Vector3 {
 
 		for (let i = 0; i < 3; i++) {
 			for (let j = 0; j < 3; j++) {
-				const value = Q.get(i, j) + m.get(i, j) - n.get(i, j);
+				const value = rotation.get(i, j) + m.get(i, j) - n.get(i, j);
 
-				Q.set(i, j, value);
+				rotation.set(i, j, value);
 			}
 		}
 
-		return Q;
+		return rotation;
 	}
 }
 

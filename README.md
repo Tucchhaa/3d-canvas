@@ -22,14 +22,17 @@
 
 ### Bugs:
 
-1. If camera's direction is opposite to positive Z, then vertical rotation doesn't work properly
-2. We need more advanced ZSort. Some times polygons are drawed in the wrong order.
+1. We need more advanced ZSort. Some times polygons are drawed in the wrong order.
+2. If camera placed on same Y coordinate with another object and the camera is turned 180deg from the object the screen is filled with polygons
 
 ### Functionality:
 
-1. Lights
-2. Shadow projections
-3. Need to add more complex 3D-objects
+1. Translation of object relative to its rotation
+2. Rotation relative to pivot
+3. Lights
+4. Shadow projections
+5. Need to add more complex 3D-objects
+6. Need to design scenes (City design, room interior design)
 
 ### Refactoring:
 

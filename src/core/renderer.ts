@@ -50,12 +50,10 @@ export class Renderer {
 	public render(camera: Camera, objects: Object3D[]): void {
 		this.clearScreen();
 
-		let renderedPolygons: Polygon[] = [];
+		const renderedPolygons: Polygon[] = [];
 
 		for (const object3d of objects) {
-			renderedPolygons = renderedPolygons.concat(
-				this.projectObject(camera, object3d),
-			);
+			renderedPolygons.push(...this.projectObject(camera, object3d));
 		}
 
 		renderedPolygons.sort(this.ZSort);
@@ -71,18 +69,13 @@ export class Renderer {
 		const points1 = a.vertexes;
 		const points2 = b.vertexes;
 
-		return (
-			points2[0]!.z +
-			points2[1]!.z +
-			points2[2]!.z -
-			(points1[0]!.z + points1[1]!.z + points1[2]!.z)
-		);
+		return points2[0]!.z + points2[1]!.z + points2[2]!.z - (points1[0]!.z + points1[1]!.z + points1[2]!.z);
 	}
 
 	/**
 	 * Backface culling
 	 */
-	private isVisible(polygon: Polygon) {
+	private isPolygonVisible(polygon: Polygon) {
 		// P.S. not really sure why this works
 		// also some polygons has more than 3 vertexes
 		const [p1, p2, p3] = polygon.vertexes as [Vector3, Vector3, Vector3];
@@ -106,7 +99,9 @@ export class Renderer {
 					.add(new Vector3(this.#offsetX, this.#offsetY, 0)),
 			);
 
-			if (this.isVisible(projectedPolygon)) result.push(projectedPolygon);
+			if (this.isPolygonVisible(projectedPolygon)) {
+				result.push(projectedPolygon);
+			}
 		}
 
 		return result;
