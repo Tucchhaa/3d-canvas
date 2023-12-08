@@ -2,6 +2,7 @@ import { Camera } from '../objects/camera';
 import { Object3D } from '../objects/object3d';
 import { Polygon } from '../structures/geometry';
 import { Vector3 } from '../structures/vector';
+import { Scene } from './scene';
 
 export class Renderer {
 	#canvas: HTMLCanvasElement;
@@ -47,13 +48,13 @@ export class Renderer {
 
 	// ===
 
-	public render(camera: Camera, objects: Object3D[]): void {
+	public render(scene: Scene): void {
 		this.clearScreen();
 
 		const renderedPolygons: Polygon[] = [];
 
-		for (const object3d of objects) {
-			renderedPolygons.push(...this.projectObject(camera, object3d));
+		for (const object3d of scene.getObjects()) {
+			renderedPolygons.push(...this.projectObject(scene.mainCamera, object3d));
 		}
 
 		renderedPolygons.sort(this.ZSort);
