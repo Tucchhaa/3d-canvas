@@ -1,5 +1,3 @@
-import { SpaceEntity } from "./space_entity";
+import { SpaceEntity } from './space_entity';
 
-export class LightSource extends SpaceEntity {
-
-}
+export class LightSource extends SpaceEntity {}

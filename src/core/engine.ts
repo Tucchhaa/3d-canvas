@@ -35,7 +35,6 @@ export class Engine {
 		clearInterval(this.#renderId);
 	}
 
-
 	update() {
 		this.#scene.obBeforeUpdate();
 

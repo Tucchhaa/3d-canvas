@@ -1,31 +1,31 @@
-import { Camera } from "../objects/camera";
-import { LightSource } from "../objects/light-source";
-import { Object3D, Object3DConfig } from "../objects/object3d";
-import { Vector3 } from "../structures/vector";
-import { Engine } from "./engine";
-import { ResourceLoader } from "./resource-loader";
+import { Camera } from '../objects/camera';
+import { LightSource } from '../objects/light-source';
+import { Object3D, Object3DConfig } from '../objects/object3d';
+import { Vector3 } from '../structures/vector';
+import { Engine } from './engine';
+import { ResourceLoader } from './resource-loader';
 
 export abstract class Scene {
-    protected engine: Engine;
+	protected engine: Engine;
 
-    mainCamera!: Camera;
+	mainCamera!: Camera;
 
-    protected resourceLoader: ResourceLoader;
+	protected resourceLoader: ResourceLoader;
 
 	#objects: Object3D[] = [];
 
-    #lights: LightSource[] = [];
+	#lights: LightSource[] = [];
 
-    constructor(engine: Engine) {
-        this.engine = engine;
-        this.resourceLoader = engine.resourceLoader;
+	constructor(engine: Engine) {
+		this.engine = engine;
+		this.resourceLoader = engine.resourceLoader;
 
-        this.configureScene();
-    }
+		this.configureScene();
+	}
 
-    abstract configureScene(): void;
+	abstract configureScene(): void;
 
-    // ===
+	// ===
 	createObject(name: string, config: Partial<Object3DConfig>) {
 		const geometry = this.engine.resourceLoader.getObject(name);
 		const defaultConfig: Object3DConfig = {
@@ -43,20 +43,20 @@ export abstract class Scene {
 		return object3d;
 	}
 
-    getObjects() {
-        return this.#objects;
-    }
+	getObjects() {
+		return this.#objects;
+	}
 
 	getObject() {}
 
-    // ===
-    // Events
-    // ===
-    onBeforeLaunch() {}
+	// ===
+	// Events
+	// ===
+	onBeforeLaunch() {}
 
-    async onPrepareResources() {}
+	async onPrepareResources() {}
 
-    obBeforeUpdate() {}
+	obBeforeUpdate() {}
 
-    onAfterUpdate() {}
+	onAfterUpdate() {}
 }
