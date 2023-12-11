@@ -31,7 +31,11 @@ export abstract class SpaceEntity {
 	#rotation: Matrix = Matrix.identity(3, 3);
 
 	// ===
+	constructor(pivot: Vector3 = Vector3.zero) {
+		this.pivot = pivot;
+	}
 
+	// ===
 	get position() {
 		return this.#position;
 	}
@@ -55,11 +59,6 @@ export abstract class SpaceEntity {
 		return this.#rotation;
 	}
 
-	// ===
-	constructor(pivot: Vector3 = Vector3.zero) {
-		this.pivot = pivot;
-	}
-
 	/**
 	 * Rotates object according to right hand rule
 	 * @param normal normal vector
@@ -68,7 +67,7 @@ export abstract class SpaceEntity {
 	rotate(normal: Vector3, angle: number) {
 		const rotationMatrix = Vector3.calculateRotationMatrix(normal, angle);
 
-		this.#rotation = this.rotation.mmul(rotationMatrix);
+		this.#rotation = this.#rotation.mmul(rotationMatrix);
 		this.#direction.mmul(rotationMatrix);
 	}
 
