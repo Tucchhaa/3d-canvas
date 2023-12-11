@@ -36,7 +36,7 @@ export class Engine {
 	}
 
 	update() {
-		this.#scene.obBeforeUpdate();
+		this.#scene.onBeforeUpdate();
 
 		this.#renderer.render(this.#scene);
 

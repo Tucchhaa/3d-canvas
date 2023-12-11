@@ -9,16 +9,18 @@ export class TestScene extends Scene {
 	#cube1!: Object3D;
 	#cube2!: Object3D;
 	#pyramid1!: Object3D;
-	#teaopot!: Object3D;
+	#teapot!: Object3D;
 	#shuttle!: Object3D;
 	#directLight1!: DirectLight;
 	#directLight2!: DirectLight;
 
 	async prepareResources(): Promise<void> {
-		await this.resourceLoader.loadObject('cube');
-		await this.resourceLoader.loadObject('pyramid');
-		await this.resourceLoader.loadObject('teapot');
-		await this.resourceLoader.loadObject('shuttle');
+		await Promise.all([
+			this.resourceLoader.loadObject('cube'),
+			this.resourceLoader.loadObject('pyramid'),
+			this.resourceLoader.loadObject('teapot'),
+			this.resourceLoader.loadObject('shuttle'),
+		]);
 	}
 
 	configureScene(): void {
@@ -59,7 +61,7 @@ export class TestScene extends Scene {
 			scale: Vector3.one.multiply(50),
 		});
 
-		this.#teaopot = this.createObject('teapot', {
+		this.#teapot = this.createObject('teapot', {
 			position: new Vector3(500, 0, 0),
 			scale: Vector3.one.multiply(100),
 		});
@@ -74,7 +76,7 @@ export class TestScene extends Scene {
 		this.#setDocumentEventListeners();
 	}
 
-	obBeforeUpdate(): void {
+	onBeforeUpdate(): void {
 		this.#cube1.rotate(Vector3.up, 0.025);
 		this.#shuttle.rotate(Vector3.up, 0.025, new Vector3(0, 0, 0));
 	}

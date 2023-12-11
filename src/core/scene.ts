@@ -53,7 +53,7 @@ export abstract class Scene {
 	// ===
 	async prepareResources() {}
 
-	obBeforeUpdate() {}
+	onBeforeUpdate() {}
 
 	onAfterUpdate() {}
 }
