@@ -3,8 +3,11 @@ import { Vector3 } from '../structures/vector';
 import { SpaceEntity } from './space_entity';
 
 export type CameraConfig = {
+	/** field of view in radians. */
 	fov?: number;
+	/** how much object is near to the camera. */
 	near?: number;
+	/** how much object is far from the camera. */
 	far?: number;
 };
 
@@ -40,6 +43,7 @@ export class Camera extends SpaceEntity {
 	get fov() {
 		return this.#fov;
 	}
+
 	set fov(value: number) {
 		this.#fov = value;
 		this.#scale = 1 / Math.tan(this.fov / 2);
@@ -72,14 +76,14 @@ export class Camera extends SpaceEntity {
 	}
 
 	#calculateProjectionMatrix(z: number): Matrix {
-		/*
-        W = -z
-        projectionMatrix = 
-            1/W  0     0   0
-            0    1/W  0   0
-            0    0     -1  -1
-            0    0     0   0
-        */
+		/**
+		 * W = -z
+		 * projectionMatrix =
+		 * 1/W   0    0   0
+		 *  0   1/W   0   0
+		 *  0    0    1   1
+		 *  0    0    0   0
+		 */
 		this.#projectionMatrix.set(0, 0, -1 / z);
 		this.#projectionMatrix.set(1, 1, -1 / z);
 
@@ -89,13 +93,15 @@ export class Camera extends SpaceEntity {
 	#preparePerspectiveMatrix() {
 		const { far, near } = this;
 
-		/*
-        perspectiveMatrix = 
-            scale  0      0         0
-            0      scale  0         0
-            0      0      f/(f-n)  1
-            0      0      f*n(f-n) 0
-        */
+		/**
+		 * f = far
+		 * n = near
+		 * perspectiveMatrix =
+		 * scale   0        0        0
+		 *   0    scale     0        0
+		 *   0     0     f/(f-n)     1
+		 *   0     0    f*n/(f-n)    0
+		 */
 		const perspectiveMatrix = Matrix.diagonal([this.#scale, this.#scale], 4, 4);
 		perspectiveMatrix.set(2, 2, far / (far - near));
 		perspectiveMatrix.set(3, 2, (far * near) / (far - near));
