@@ -1,27 +1,34 @@
 import { Vector3 } from './vector';
 
 export class Geometry {
-	readonly vertexes: Vector3[];
-
-	readonly #faces: number[][];
-
-	constructor(vertexes: Vector3[], faces: number[][]) {
-		this.vertexes = vertexes;
-		this.#faces = faces;
-	}
+	constructor(
+		readonly vertexes: Vector3[],
+		readonly vertexIndices: number[][],
+		readonly textures?: Vector3[],
+		readonly textureIndices?: number[][],
+	) {}
 
 	*iteratePolygons() {
-		for (const face of this.#faces) {
-			const polygon = new Polygon(face.map((vertexIndex) => this.vertexes[vertexIndex]!));
+		for (const vertexIndices of this.vertexIndices) {
+			const polygon = new Polygon(vertexIndices.map((i) => this.vertexes[i]!));
 
 			yield polygon;
+		}
+
+		if (this.textures && this.textureIndices) {
+			for (const textureIndices of this.textureIndices) {
+				const polygon = new Polygon(textureIndices.map((i) => this.textures![i]!));
+
+				yield polygon;
+			}
 		}
 	}
 
 	clone() {
 		const clonedVertexes = this.vertexes.map((vertex) => vertex.clone());
+		const clonedTextures = this.textures?.map((texture) => texture.clone());
 
-		return new Geometry(clonedVertexes, this.#faces);
+		return new Geometry(clonedVertexes, this.vertexIndices, clonedTextures, this.textureIndices);
 	}
 }
 

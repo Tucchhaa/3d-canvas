@@ -47,6 +47,7 @@ export class ResourceLoader {
 
 	// ===
 	// Parsers
+	// https://webglfundamentals.org/webgl/lessons/webgl-load-obj.html
 	// ===
 	#parseObject(raw: string) {
 		const vertexMatches = raw.match(/^v( -?\d+(\.\d+)?){3}$/gm);
@@ -63,12 +64,28 @@ export class ResourceLoader {
 		// ===
 		const facesMatches = raw.match(/^f(.*)([^\n]*\n+)/gm);
 
-		const faces = facesMatches?.map((face) =>
+		const vertexIndices: number[][] = [];
+		const textureIndices: number[][] = [];
+		facesMatches?.forEach((face, index) => {
 			face
 				.split(' ')
 				.slice(1)
-				.map((f) => Number(f.split('/')[0]) - 1),
-		);
+				.forEach((v) => {
+					const [position, texture] = v.split('/');
+					if (position) {
+						if (!vertexIndices[index]) {
+							vertexIndices[index] = [];
+						}
+						vertexIndices[index]?.push(+position - 1); // our index is 0 based
+					}
+					if (texture) {
+						if (!textureIndices[index]) {
+							textureIndices[index] = [];
+						}
+						textureIndices[index]?.push(+texture - 1); // our index is 0 based
+					}
+				});
+		});
 
 		const textures = raw.match(TEXTURE_RE)?.map((texture) => {
 			const [x, y] = texture
@@ -78,11 +95,11 @@ export class ResourceLoader {
 			return new Vector3(x!, y!, 0);
 		});
 
-		if (!faces || !vertexes) {
+		if (!vertexIndices.length || !vertexes) {
 			throw new Error('Unsupported .obj format');
 		}
 
-		return new Geometry(vertexes, faces);
+		return new Geometry(vertexes, vertexIndices, textures, textureIndices);
 	}
 
 	// ===
