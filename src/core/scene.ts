@@ -20,11 +20,11 @@ export abstract class Scene {
 		this.engine = engine;
 		this.resourceLoader = engine.resourceLoader;
 	}
-	
+
 	abstract configureScene(): void;
 
 	// ===
-	
+
 	createObject(name: string, config: Partial<Object3DConfig>) {
 		const geometry = this.engine.resourceLoader.getObject(name);
 		const defaultConfig: Object3DConfig = {

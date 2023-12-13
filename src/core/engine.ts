@@ -15,7 +15,7 @@ export class Engine {
 	constructor(canvas: HTMLCanvasElement) {
 		this.#renderer = new Renderer(canvas);
 		this.resourceLoader = new ResourceLoader();
-	
+
 		addEventListener('resize', () => {
 			this.#renderer.updateDimensions();
 		});
