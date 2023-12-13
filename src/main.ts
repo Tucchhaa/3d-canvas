@@ -7,6 +7,12 @@ canvas.height = canvas.offsetHeight * 2;
 
 const engine = new Engine(canvas);
 
-engine.setScene(TestScene);
-engine.launch();
+
+(async() => {
+    await engine.setScene(TestScene);
+    
+    engine.launch();
+    // engine.drawFrame();
+})();
+
 // setTimeout(() => { engine.stop(); }, 500);

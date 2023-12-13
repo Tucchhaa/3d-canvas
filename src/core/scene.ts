@@ -19,13 +19,12 @@ export abstract class Scene {
 	constructor(engine: Engine) {
 		this.engine = engine;
 		this.resourceLoader = engine.resourceLoader;
-
-		this.configureScene();
 	}
-
+	
 	abstract configureScene(): void;
 
 	// ===
+	
 	createObject(name: string, config: Partial<Object3DConfig>) {
 		const geometry = this.engine.resourceLoader.getObject(name);
 		const defaultConfig: Object3DConfig = {
@@ -52,9 +51,7 @@ export abstract class Scene {
 	// ===
 	// Events
 	// ===
-	onBeforeLaunch() {}
-
-	async onPrepareResources() {}
+	async prepareResources() {}
 
 	obBeforeUpdate() {}
 

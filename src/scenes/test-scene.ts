@@ -10,22 +10,22 @@ export class TestScene extends Scene {
 	#pyramid1!: Object3D;
 	#teaopot!: Object3D;
 	#shuttle!: Object3D;
+	$chair!: Object3D;
 
-	configureScene() {
-		const camera = new Camera({ fov: 1.57 }, new Vector3(0, 800, -1500));
-		camera.rotate(Vector3.left, 0.5);
-
-		this.mainCamera = camera;
-	}
-
-	async onPrepareResources(): Promise<void> {
+	async prepareResources(): Promise<void> {
 		await this.resourceLoader.loadObject('cube');
 		await this.resourceLoader.loadObject('pyramid');
 		await this.resourceLoader.loadObject('teapot');
 		await this.resourceLoader.loadObject('shuttle');
 	}
 
-	onBeforeLaunch(): void {
+	configureScene(): void {
+		const camera = new Camera({ fov: 1.57 }, new Vector3(0, 800, -1500));
+		camera.rotate(Vector3.left, 0.5);
+
+		this.mainCamera = camera;
+		// ===
+
 		this.#longCube = this.createObject('cube', {
 			position: new Vector3(-250, -100, 0),
 			scale: new Vector3(600, 100, 100),

@@ -114,11 +114,11 @@ export class Renderer {
 		const startPoint = points[0]!;
 
 		this.#ctx.beginPath();
-		this.#ctx.moveTo(startPoint.x, startPoint.y);
+		this.#ctx.moveTo(Math.floor(startPoint.x), Math.floor(startPoint.y));
 
 		for (let i = 1; i < points.length; i++) {
 			const point = points[i]!;
-			this.#ctx.lineTo(point.x, point.y);
+			this.#ctx.lineTo(Math.floor(point.x), Math.floor(point.y));
 		}
 
 		this.#ctx.closePath();

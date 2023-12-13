@@ -34,7 +34,6 @@ export class Object3D extends SpaceEntity {
 	// ===
 
 	setPosition(value: Vector3) {
-		console.log(this.name, value);
 		const translationVector = Vector3.substract(value, this.position);
 
 		for (const vertex of this.geometry.vertexes) {
