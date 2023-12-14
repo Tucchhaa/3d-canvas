@@ -2,44 +2,21 @@ import { Geometry } from '../structures/geometry';
 import { Vector3 } from '../structures/vector';
 
 export class ResourceLoader {
-	#cache: { [file: string]: string } = {};
-	#cachedObjects: { [file: string]: Geometry } = {};
+	#cache = new Map<string, Geometry>();
 
-	async #loadRawFile(file: string): Promise<string> {
-		if (this.#cache[file]) {
-			return Promise.resolve(this.#cache[file]!);
-		}
-
-		return new Promise((resolve) => {
-			const rawFile = new XMLHttpRequest();
-
-			rawFile.open('GET', file, false);
-			rawFile.onreadystatechange = () => {
-				if (rawFile.readyState === 4) {
-					if (rawFile.status === 200 || rawFile.status === 0) {
-						this.#cache[file] = rawFile.responseText;
-
-						resolve(rawFile.responseText);
-					}
-				}
-			};
-			rawFile.send(null);
-		});
+	async #loadRawFile(file: string) {
+		return (await fetch(file)).text();
 	}
 
 	// ===
 	// Loaders
 	// ===
 	async loadObject(name: string): Promise<ResourceLoader> {
-		if (this.#cachedObjects[name]) {
-			return this;
+		if (!this.#cache.has(name)) {
+			const data = await this.#loadRawFile(`resources/objects/${name}.obj`);
+			const geometry = this.#parseObject(data);
+			this.#cache.set(name, geometry);
 		}
-
-		const data = await this.#loadRawFile(`resources/objects/${name}.obj`);
-		const geometry = this.#parseObject(data);
-
-		this.#cachedObjects[name] = geometry;
-
 		return this;
 	}
 
@@ -80,7 +57,7 @@ export class ResourceLoader {
 	// Getters
 	// ===
 	getObject(name: string) {
-		const obj = this.#cachedObjects[name];
+		const obj = this.#cache.get(name);
 
 		if (!obj) throw new Error(`Object '${name}' is undefined when tried to access it`);
 
