@@ -27,11 +27,11 @@ export abstract class LightSource extends SpaceEntity {
 
 	abstract applyLight(polygon: Polygon, normal: Vector3, color: Color): void;
 
-    protected mixLightColor(color: Color, coefficient: number): void {
-        color.r = color.r + this.color.r * this.color.a * coefficient * this.intensity;
-        color.g = color.g + this.color.g * this.color.a * coefficient * this.intensity;
-        color.b = color.b + this.color.b * this.color.a * coefficient * this.intensity;
-    }
+	protected mixLightColor(color: Color, coefficient: number): void {
+		color.r = color.r + this.color.r * this.color.a * coefficient * this.intensity;
+		color.g = color.g + this.color.g * this.color.a * coefficient * this.intensity;
+		color.b = color.b + this.color.b * this.color.a * coefficient * this.intensity;
+	}
 }
 
 export class DirectLight extends LightSource {
@@ -43,33 +43,33 @@ export class DirectLight extends LightSource {
 		console.log('RES', this.direction);
 	}
 
-	applyLight(polygon: Polygon, normal: Vector3, color: Color) {		
+	applyLight(polygon: Polygon, normal: Vector3, color: Color) {
 		const dot = -Vector3.dot(normal, this.direction);
 
 		if (dot > 0) {
-            this.mixLightColor(color, dot);
+			this.mixLightColor(color, dot);
 		}
 	}
 }
 
 export class SpotLight extends LightSource {
-    radius: number;
+	radius: number;
 
-    constructor(options: Partial<LightConfig & { radius?: number }>) {
-        super(options);
-        
-        this.radius = options.radius ?? 500;
-    }
+	constructor(options: Partial<LightConfig & { radius?: number }>) {
+		super(options);
 
-    applyLight(polygon: Polygon, normal: Vector3, color: Color) {
-        const position = polygon.vertexes.reduce((pos, vertex) => pos.add(vertex), Vector3.zero);
+		this.radius = options.radius ?? 500;
+	}
+
+	applyLight(polygon: Polygon, normal: Vector3, color: Color) {
+		const position = polygon.vertexes.reduce((pos, vertex) => pos.add(vertex), Vector3.zero);
 		position.multiply(1 / polygon.vertexes.length);
 
 		const vector = Vector3.subtract(position, this.position).unit();
 		const dot = -Vector3.dot(normal, vector);
 		const distanceCoefficient = 1 - vector.sqrMagnitude / (this.radius * this.radius);
-		if(dot > 0 && distanceCoefficient > 0) {
+		if (dot > 0 && distanceCoefficient > 0) {
 			this.mixLightColor(color, dot * distanceCoefficient);
 		}
-    }
+	}
 }
