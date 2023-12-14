@@ -74,7 +74,33 @@ export abstract class SpaceEntity {
 	/**
 	 * Translates object relative to its direction
 	 */
-	translate(delta: Vector3): void {
-		throw new Error('not implemented');
+	translateX(delta: Vector3) {
+		this.#translate(delta, 'x');
+	}
+
+	translateZ(delta: Vector3) {
+		this.#translate(delta, 'z');
+	}
+
+	#translate(delta: Vector3, direction: 'x' | 'z') {
+		let theta = Math.atan(this.#direction.x / this.#direction.z);
+		// make angle always positive
+		if (theta < 0) {
+			theta = theta * -1;
+		}
+		if (direction === 'x') {
+			const direction = this.#direction.clone();
+			if (!direction.x) {
+				direction.x = 1;
+			}
+			delta.x = delta.x * Math.cos(theta) * (direction.x > 0 ? 1 : -1);
+			delta.z = delta.x * Math.sin(theta);
+			this.#position.add(Vector3.multiply(delta, direction));
+		}
+		else if (direction === 'z') {
+			delta.x = delta.z * Math.sin(theta);
+			delta.z = -delta.z * Math.cos(theta);
+			this.#position.add(Vector3.multiply(delta, this.#direction));
+		}
 	}
 }
