@@ -9,7 +9,6 @@ export class CubeScene extends Scene {
 	#directLight1!: DirectLight;
 	#directLight2!: DirectLight;
 	#directLight3!: DirectLight;
-	
 
 	async prepareResources(): Promise<void> {
 		await this.resourceLoader.loadObject('cube');

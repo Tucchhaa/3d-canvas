@@ -98,7 +98,7 @@ export class Renderer {
 					.project(vertex)
 					.multiply(new Vector3(this.#offsetX, this.#offsetY * this.#ratio, 1))
 					.add(new Vector3(this.#offsetX, this.#offsetY, 0)),
-				);
+			);
 
 			if (this.isProjectedPolygonVisible(projectedPolygon)) {
 				projectedPolygon.color = this.#applyLights(lights, polygon);
@@ -114,14 +114,14 @@ export class Renderer {
 		const normal = polygon.normal();
 		const lightningColor = new Color(0, 0, 0, 1);
 
-		for(const light of lights) {
+		for (const light of lights) {
 			light.applyLight(normal, lightningColor);
 		}
 
 		const color = polygon.color.copy();
-		color.r = color.r * lightningColor.r / 255 * (lightningColor.a);
-		color.g = color.g * lightningColor.g / 255 * (lightningColor.a);
-		color.b = color.b * lightningColor.b / 255 * (lightningColor.a);
+		color.r = ((color.r * lightningColor.r) / 255) * lightningColor.a;
+		color.g = ((color.g * lightningColor.g) / 255) * lightningColor.a;
+		color.b = ((color.b * lightningColor.b) / 255) * lightningColor.a;
 
 		return color;
 	}

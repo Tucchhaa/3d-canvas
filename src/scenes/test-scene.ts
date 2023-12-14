@@ -13,7 +13,6 @@ export class TestScene extends Scene {
 	#shuttle!: Object3D;
 	#directLight1!: DirectLight;
 	#directLight2!: DirectLight;
-	
 
 	async prepareResources(): Promise<void> {
 		await this.resourceLoader.loadObject('cube');
@@ -30,8 +29,8 @@ export class TestScene extends Scene {
 
 		// ===
 
-		this.#directLight1 = new DirectLight({ direction: Vector3.forward, intensity: .9 });
-		this.#directLight2 = new DirectLight({ direction: Vector3.down, intensity: .4 });
+		this.#directLight1 = new DirectLight({ direction: Vector3.forward, intensity: 0.9 });
+		this.#directLight2 = new DirectLight({ direction: Vector3.down, intensity: 0.4 });
 
 		this.lights.push(this.#directLight1);
 		this.lights.push(this.#directLight2);

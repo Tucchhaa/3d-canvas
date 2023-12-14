@@ -63,7 +63,7 @@ export class Polygon {
 		const v2 = Vector3.subtract(p3, p1);
 
 		const normal = Vector3.cross(v1, v2);
-		
+
 		return normal.unit();
 	}
 }
