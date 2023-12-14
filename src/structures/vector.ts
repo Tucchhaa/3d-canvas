@@ -227,18 +227,21 @@ export class Vector3 {
 	static mmul(vector: Vector3, matrix: Matrix): Vector3 {
 		const isHomogeneous = matrix.rows === 4;
 
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		const data = (matrix as any).data as number[][];
+
 		if (isHomogeneous) {
 			return new Vector3(
-				vector.x * matrix.get(0, 0) + vector.y * matrix.get(1, 0) + vector.z * matrix.get(2, 0) + matrix.get(3, 0),
-				vector.x * matrix.get(0, 1) + vector.y * matrix.get(1, 1) + vector.z * matrix.get(2, 1) + matrix.get(3, 1),
-				vector.x * matrix.get(0, 2) + vector.y * matrix.get(1, 2) + vector.z * matrix.get(2, 2) + matrix.get(3, 2),
+				vector.x * data[0]![0]! + vector.y * data[1]![0]! + vector.z * data[2]![0]! + data[3]![0]!,
+				vector.x * data[0]![1]! + vector.y * data[1]![1]! + vector.z * data[2]![1]! + data[3]![1]!,
+				vector.x * data[0]![2]! + vector.y * data[1]![2]! + vector.z * data[2]![2]! + data[3]![2]!,
 			);
 		}
 
 		return new Vector3(
-			vector.x * matrix.get(0, 0) + vector.y * matrix.get(1, 0) + vector.z * matrix.get(2, 0),
-			vector.x * matrix.get(0, 1) + vector.y * matrix.get(1, 1) + vector.z * matrix.get(2, 1),
-			vector.x * matrix.get(0, 2) + vector.y * matrix.get(1, 2) + vector.z * matrix.get(2, 2),
+			vector.x * data[0]![0]! + vector.y * data[1]![0]! + vector.z * data[2]![0]!,
+			vector.x * data[0]![1]! + vector.y * data[1]![1]! + vector.z * data[2]![1]!,
+			vector.x * data[0]![2]! + vector.y * data[1]![2]! + vector.z * data[2]![2]!,
 		);
 
 		/*

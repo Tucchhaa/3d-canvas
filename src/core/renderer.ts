@@ -101,7 +101,7 @@ export class Renderer {
 			);
 
 			if (this.isProjectedPolygonVisible(projectedPolygon)) {
-				projectedPolygon.color = this.#applyLights(lights, polygon);
+				projectedPolygon.color = this.#calculateColors(lights, polygon);
 
 				result.push(projectedPolygon);
 			}
@@ -110,12 +110,12 @@ export class Renderer {
 		return result;
 	}
 
-	#applyLights(lights: LightSource[], polygon: Polygon): Color {
+	#calculateColors(lights: LightSource[], polygon: Polygon): Color {
 		const normal = polygon.normal();
 		const lightningColor = new Color(0, 0, 0, 1);
 
 		for (const light of lights) {
-			light.applyLight(normal, lightningColor);
+			light.applyLight(polygon, normal, lightningColor);
 		}
 
 		const color = polygon.color.copy();

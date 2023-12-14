@@ -1,6 +1,6 @@
 import { Scene } from '../core/scene';
 import { Camera } from '../objects/camera';
-import { DirectLight } from '../objects/light-source';
+import { DirectLight, SpotLight } from '../objects/light-source';
 import { Object3D } from '../objects/object3d';
 import { Vector3 } from '../structures/vector';
 
@@ -13,6 +13,7 @@ export class TestScene extends Scene {
 	#shuttle!: Object3D;
 	#directLight1!: DirectLight;
 	#directLight2!: DirectLight;
+	#spotLight1!: SpotLight;
 
 	async prepareResources(): Promise<void> {
 		await Promise.all([
@@ -33,9 +34,11 @@ export class TestScene extends Scene {
 
 		this.#directLight1 = new DirectLight({ direction: Vector3.forward, intensity: 0.9 });
 		this.#directLight2 = new DirectLight({ direction: Vector3.down, intensity: 0.4 });
+		this.#spotLight1 = new SpotLight({ radius: 1000, intensity: 0.9, position: new Vector3(0, 0, -500) });
 
-		this.lights.push(this.#directLight1);
-		this.lights.push(this.#directLight2);
+		// this.lights.push(this.#directLight1);
+		// this.lights.push(this.#directLight2);
+		this.lights.push(this.#spotLight1);
 
 		// ===
 
