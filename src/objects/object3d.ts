@@ -26,16 +26,15 @@ export class Object3D extends SpaceEntity {
 		this.name = name ?? 'entity';
 
 		this.geometry = geometry;
-		this.setDirection(direction);
 		this.setScale(scale);
 		this.setPosition(position);
+		this.setDirection(direction);
 	}
 
 	// ===
 
 	setPosition(value: Vector3) {
-		console.log(this.name, value);
-		const translationVector = Vector3.substract(value, this.position);
+		const translationVector = Vector3.subtract(value, this.position);
 
 		for (const vertex of this.geometry.vertexes) {
 			vertex.add(translationVector);

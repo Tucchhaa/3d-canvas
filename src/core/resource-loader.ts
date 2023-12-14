@@ -47,10 +47,11 @@ export class ResourceLoader {
 	// Parsers
 	// ===
 	#parseObject(raw: string) {
-		const vertexMatches = raw.match(/^v( -?\d+(\.\d+)?){3}$/gm);
+		const vertexMatches = raw.match(/^v( +-?\d+(\.\d+)?){3}$/gm);
 
 		const vertexes = vertexMatches?.map((vertex) => {
 			const coordinates = vertex
+				.trim()
 				.split(' ')
 				.slice(1)
 				.map((num) => Number(num));
@@ -59,9 +60,9 @@ export class ResourceLoader {
 		});
 
 		// ===
-		const facesMatches = raw.match(/^f(.*)([^\n]*\n+)/gm);
+		const faceMatches = raw.match(/^f(.*)([^\n]*\n+)/gm);
 
-		const faces = facesMatches?.map((face) =>
+		const faces = faceMatches?.map((face) =>
 			face
 				.split(' ')
 				.slice(1)

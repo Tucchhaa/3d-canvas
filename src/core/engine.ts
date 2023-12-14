@@ -22,13 +22,13 @@ export class Engine {
 	}
 
 	async launch() {
-		await this.#scene.onPrepareResources();
-
-		this.#scene.onBeforeLaunch();
-
 		this.#renderId = setInterval(() => {
 			requestAnimationFrame(this.update.bind(this));
 		}, 1000 / this.#fps);
+	}
+
+	drawFrame() {
+		requestAnimationFrame(this.update.bind(this));
 	}
 
 	stop() {
@@ -43,13 +43,15 @@ export class Engine {
 		this.#scene.onAfterUpdate();
 	}
 
-	setScene(sceneContructor: new (engine: Engine) => Scene) {
+	async setScene(sceneContructor: new (engine: Engine) => Scene) {
 		this.stop();
 
 		const scene = new sceneContructor(this);
 
-		scene.configureScene();
-
 		this.#scene = scene;
+
+		await this.#scene.prepareResources();
+
+		this.#scene.configureScene();
 	}
 }

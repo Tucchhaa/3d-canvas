@@ -4,79 +4,50 @@ import { DirectLight } from '../objects/light-source';
 import { Object3D } from '../objects/object3d';
 import { Vector3 } from '../structures/vector';
 
-export class TestScene extends Scene {
-	#longCube!: Object3D;
-	#cube1!: Object3D;
-	#cube2!: Object3D;
-	#pyramid1!: Object3D;
-	#teaopot!: Object3D;
-	#shuttle!: Object3D;
+export class CubeScene extends Scene {
+	#cube!: Object3D;
 	#directLight1!: DirectLight;
 	#directLight2!: DirectLight;
+	#directLight3!: DirectLight;
 
 	async prepareResources(): Promise<void> {
 		await this.resourceLoader.loadObject('cube');
-		await this.resourceLoader.loadObject('pyramid');
-		await this.resourceLoader.loadObject('teapot');
-		await this.resourceLoader.loadObject('shuttle');
 	}
 
 	configureScene(): void {
-		const camera = new Camera({ fov: 1.57 }, new Vector3(0, 800, -1500));
-		camera.rotate(Vector3.left, 0.5);
+		const camera = new Camera({ fov: 1.57 }, new Vector3(300, 300, -400));
+		camera.rotate(Vector3.left, 0.3);
+		camera.rotate(Vector3.down, 0.3);
 
 		this.mainCamera = camera;
 
 		// ===
 
-		this.#directLight1 = new DirectLight({ direction: Vector3.forward, intensity: 0.9 });
+		this.#directLight1 = new DirectLight({ direction: Vector3.forward, intensity: 0.4 });
 		this.#directLight2 = new DirectLight({ direction: Vector3.down, intensity: 0.4 });
+		this.#directLight3 = new DirectLight({ direction: Vector3.forward, intensity: 0.4 });
 
 		this.lights.push(this.#directLight1);
 		this.lights.push(this.#directLight2);
+		this.lights.push(this.#directLight3);
 
 		// ===
 
-		this.#longCube = this.createObject('cube', {
-			position: new Vector3(-250, -100, 0),
-			scale: new Vector3(600, 100, 100),
-		});
-
-		this.#cube1 = this.createObject('cube', {
+		this.#cube = this.createObject('cube', {
 			name: 'cube',
-			pivot: new Vector3(50, -50, 50),
-			position: new Vector3(-150, 125, -50),
+			position: new Vector3(0, 0, 0),
 			scale: new Vector3(100, 100, 100),
 		});
 
-		this.#cube2 = this.createObject('cube', {
-			position: new Vector3(-500, +50, 0),
-			scale: new Vector3(100, 100, 100),
-		});
-
-		this.#pyramid1 = this.createObject('pyramid', {
-			position: new Vector3(-100, 50, 0),
-			scale: Vector3.one.multiply(50),
-		});
-
-		this.#teaopot = this.createObject('teapot', {
-			position: new Vector3(500, 0, 0),
-			scale: Vector3.one.multiply(100),
-		});
-
-		this.#shuttle = this.createObject('shuttle', {
-			position: new Vector3(0, 0, 1200),
-			scale: Vector3.one.multiply(50),
-		});
-
-		this.#shuttle.rotate(Vector3.left, Math.PI / 2 + 0.7);
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		(window as any).cube = this.#cube;
 
 		this.#setDocumentEventListeners();
 	}
 
 	obBeforeUpdate(): void {
-		this.#cube1.rotate(Vector3.up, 0.025);
-		this.#shuttle.rotate(Vector3.up, 0.025, new Vector3(0, 0, 0));
+		this.#cube.rotate(Vector3.up, 0.005);
+		this.#cube.rotate(Vector3.right, 0.003);
 	}
 
 	// ===
