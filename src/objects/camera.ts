@@ -48,8 +48,8 @@ export class Camera extends SpaceEntity {
 	// ===
 	// Projection and perspective
 	// ===
-	project(vertex: Vector3) {
-		const vectorFromCamera = Vector3.substract(vertex, this.position).mmul(this.rotation);
+	project(vertex: Vector3): Vector3 {
+		const vectorFromCamera = Vector3.subtract(vertex, this.position).mmul(this.rotation);
 
 		const projectionMatrix = this.#calculateProjectionMatrix(vectorFromCamera.z);
 

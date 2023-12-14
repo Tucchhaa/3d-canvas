@@ -44,6 +44,13 @@ export abstract class SpaceEntity {
 		return this.#direction;
 	}
 
+	setDirection(direction: Vector3) {
+		const angle = Vector3.getAngleBetween(this.#direction, direction);
+		const normal = Vector3.cross(this.#direction, direction);
+
+		this.rotate(normal, angle);
+	}
+
 	get rotation() {
 		return this.#rotation;
 	}

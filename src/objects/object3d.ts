@@ -12,6 +12,7 @@ export type Object3DConfig = {
 	pivot: Vector3;
 	position: Vector3;
 	scale: Vector3;
+	direction: Vector3;
 };
 
 export class Object3D extends SpaceEntity {
@@ -19,7 +20,7 @@ export class Object3D extends SpaceEntity {
 
 	#scale: Vector3 = Vector3.one;
 
-	constructor({ name, geometry, pivot, position, scale }: Object3DConfig) {
+	constructor({ name, geometry, pivot, position, scale, direction }: Object3DConfig) {
 		super(pivot);
 
 		this.name = name ?? 'entity';
@@ -27,12 +28,13 @@ export class Object3D extends SpaceEntity {
 		this.geometry = geometry;
 		this.setScale(scale);
 		this.setPosition(position);
+		this.setDirection(direction);
 	}
 
 	// ===
 
 	setPosition(value: Vector3) {
-		const translationVector = Vector3.substract(value, this.position);
+		const translationVector = Vector3.subtract(value, this.position);
 
 		for (const vertex of this.geometry.vertexes) {
 			vertex.add(translationVector);

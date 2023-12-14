@@ -1,5 +1,7 @@
 import { Camera } from '../objects/camera';
+import { LightSource } from '../objects/light-source';
 import { Object3D } from '../objects/object3d';
+import { Color } from '../structures/color';
 import { Polygon } from '../structures/geometry';
 import { Vector3 } from '../structures/vector';
 import { Scene } from './scene';
@@ -54,13 +56,13 @@ export class Renderer {
 		const renderedPolygons: Polygon[] = [];
 
 		for (const object3d of scene.getObjects()) {
-			renderedPolygons.push(...this.projectObject(scene.mainCamera, object3d));
+			renderedPolygons.push(...this.#renderObject(scene.mainCamera, scene.lights, object3d));
 		}
 
 		renderedPolygons.sort(this.ZSort);
 
-		for (const polygon of renderedPolygons) {
-			this.#drawPolygon(polygon);
+		for (const renderedPolygon of renderedPolygons) {
+			this.#drawPolygon(renderedPolygon);
 		}
 	}
 
@@ -76,7 +78,7 @@ export class Renderer {
 	/**
 	 * Backface culling
 	 */
-	private isPolygonVisible(polygon: Polygon) {
+	private isProjectedPolygonVisible(polygon: Polygon) {
 		// P.S. not really sure why this works
 		// also some polygons has more than 3 vertexes
 		const [p1, p2, p3] = polygon.vertexes as [Vector3, Vector3, Vector3];
@@ -85,22 +87,22 @@ export class Renderer {
 	}
 
 	/**
-	 * Projects polygon onto screen
+	 * Projects polygon onto screen and applies lights on it
 	 */
-	public projectObject(camera: Camera, object3d: Object3D): Polygon[] {
+	#renderObject(camera: Camera, lights: LightSource[], object3d: Object3D): Polygon[] {
 		const result = [];
 
-		const polygonIterator = object3d.geometry.iteratePolygons();
-
-		for (const polygon of polygonIterator) {
+		for (const polygon of object3d.geometry.polygons) {
 			const projectedPolygon = polygon.map((vertex) =>
 				camera
 					.project(vertex)
 					.multiply(new Vector3(this.#offsetX, this.#offsetY * this.#ratio, 1))
 					.add(new Vector3(this.#offsetX, this.#offsetY, 0)),
-			);
+				);
 
-			if (this.isPolygonVisible(projectedPolygon)) {
+			if (this.isProjectedPolygonVisible(projectedPolygon)) {
+				projectedPolygon.color = this.#applyLights(lights, polygon);
+
 				result.push(projectedPolygon);
 			}
 		}
@@ -108,10 +110,30 @@ export class Renderer {
 		return result;
 	}
 
-	#drawPolygon(polygon: Polygon) {
-		const points = polygon.vertexes;
+	#applyLights(lights: LightSource[], polygon: Polygon): Color {
+		const normal = polygon.normal();
+		const lightningColor = new Color(0, 0, 0, 1);
+
+		for(const light of lights) {
+			light.applyLight(normal, lightningColor);
+		}
+
+		const color = polygon.color.copy();
+		color.r = color.r * lightningColor.r / 255 * (lightningColor.a);
+		color.g = color.g * lightningColor.g / 255 * (lightningColor.a);
+		color.b = color.b * lightningColor.b / 255 * (lightningColor.a);
+
+		return color;
+	}
+
+	#drawPolygon(renderedPolygon: Polygon) {
+		const points = renderedPolygon.vertexes;
 
 		const startPoint = points[0]!;
+
+		const color = renderedPolygon.color.toString();
+		this.#ctx.strokeStyle = color;
+		this.#ctx.fillStyle = color;
 
 		this.#ctx.beginPath();
 		this.#ctx.moveTo(Math.floor(startPoint.x), Math.floor(startPoint.y));

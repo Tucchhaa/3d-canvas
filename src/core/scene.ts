@@ -14,7 +14,7 @@ export abstract class Scene {
 
 	#objects: Object3D[] = [];
 
-	#lights: LightSource[] = [];
+	lights: LightSource[] = [];
 
 	constructor(engine: Engine) {
 		this.engine = engine;
