@@ -44,10 +44,6 @@ export abstract class SpaceEntity {
 		return this.#direction;
 	}
 
-	setDirection(direction: Vector3) {
-		this.#direction = direction;
-	}
-
 	get rotation() {
 		return this.#rotation;
 	}

@@ -22,11 +22,10 @@ export class Camera extends SpaceEntity {
 	near: number;
 	far: number;
 
-	constructor(config: CameraConfig = {}, position: Vector3 = Vector3.zero, direction: Vector3 = Vector3.backward) {
+	constructor(config: CameraConfig = {}, position: Vector3 = Vector3.zero) {
 		super();
 
 		this.setPosition(position);
-		this.setDirection(direction);
 
 		const { fov, near, far } = config;
 

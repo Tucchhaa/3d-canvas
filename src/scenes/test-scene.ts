@@ -56,7 +56,6 @@ export class TestScene extends Scene {
 		this.#shuttle = this.createObject('shuttle', {
 			position: new Vector3(0, 0, 1200),
 			scale: Vector3.one.multiply(50),
-			direction: Vector3.right,
 		});
 
 		this.#shuttle.rotate(Vector3.left, Math.PI / 2 + 0.7);
