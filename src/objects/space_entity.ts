@@ -96,8 +96,7 @@ export abstract class SpaceEntity {
 			delta.x = delta.x * Math.cos(theta) * (direction.x > 0 ? 1 : -1);
 			delta.z = delta.x * Math.sin(theta);
 			this.#position.add(Vector3.multiply(delta, direction));
-		}
-		else if (direction === 'z') {
+		} else if (direction === 'z') {
 			delta.x = delta.z * Math.sin(theta);
 			delta.z = -delta.z * Math.cos(theta);
 			this.#position.add(Vector3.multiply(delta, this.#direction));
