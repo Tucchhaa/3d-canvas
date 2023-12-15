@@ -1,3 +1,4 @@
+import { Color } from '../structures/color';
 import { Geometry } from '../structures/geometry';
 import { Matrix } from '../structures/matrix';
 import { Vector3 } from '../structures/vector';
@@ -7,6 +8,7 @@ export type ObjectName = 'cube';
 
 export type Object3DConfig = {
 	geometry: Geometry;
+	color: Color;
 
 	name?: string;
 	pivot: Vector3;
@@ -20,12 +22,16 @@ export class Object3D extends SpaceEntity {
 
 	#scale: Vector3 = Vector3.one;
 
-	constructor({ name, geometry, pivot, position, scale, direction }: Object3DConfig) {
+	color: Color;
+
+	constructor({ name, geometry, color, pivot, position, scale, direction }: Object3DConfig) {
 		super(pivot);
 
 		this.name = name ?? 'entity';
 
 		this.geometry = geometry;
+		this.color = color;
+
 		this.setScale(scale);
 		this.setPosition(position);
 		this.setDirection(direction);
