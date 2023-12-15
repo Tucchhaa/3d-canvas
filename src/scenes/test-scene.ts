@@ -2,6 +2,7 @@ import { Scene } from '../core/scene';
 import { Camera } from '../objects/camera';
 import { DirectLight, SpotLight } from '../objects/light-source';
 import { Object3D } from '../objects/object3d';
+import { Color } from '../structures/color';
 import { Vector3 } from '../structures/vector';
 
 export class TestScene extends Scene {
@@ -67,6 +68,7 @@ export class TestScene extends Scene {
 		this.#teapot = this.createObject('teapot', {
 			position: new Vector3(500, 0, 0),
 			scale: Vector3.one.multiply(100),
+			color: new Color(241, 225, 122)
 		});
 
 		this.#shuttle = this.createObject('shuttle', {

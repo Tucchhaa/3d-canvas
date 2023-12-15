@@ -38,7 +38,7 @@ export class Geometry {
 export class Polygon {
 	vertexes: Vector3[];
 
-	color: Color = new Color(0, 150, 255);
+	color!: Color;
 
 	constructor(vertexes: Vector3[]) {
 		this.vertexes = vertexes;

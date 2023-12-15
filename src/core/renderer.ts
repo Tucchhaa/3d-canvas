@@ -101,7 +101,7 @@ export class Renderer {
 			);
 
 			if (this.isProjectedPolygonVisible(projectedPolygon)) {
-				projectedPolygon.color = this.#calculateColors(lights, polygon);
+				projectedPolygon.color = this.#calculateColors(lights, object3d, polygon);
 
 				result.push(projectedPolygon);
 			}
@@ -110,7 +110,7 @@ export class Renderer {
 		return result;
 	}
 
-	#calculateColors(lights: LightSource[], polygon: Polygon): Color {
+	#calculateColors(lights: LightSource[], object3d: Object3D, polygon: Polygon): Color {
 		const normal = polygon.normal();
 		const lightningColor = new Color(0, 0, 0, 1);
 
@@ -118,7 +118,7 @@ export class Renderer {
 			light.applyLight(polygon, normal, lightningColor);
 		}
 
-		const color = polygon.color.copy();
+		const color = object3d.color.copy();
 		color.r = ((color.r * lightningColor.r) / 255) * lightningColor.a;
 		color.g = ((color.g * lightningColor.g) / 255) * lightningColor.a;
 		color.b = ((color.b * lightningColor.b) / 255) * lightningColor.a;
