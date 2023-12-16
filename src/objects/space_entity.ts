@@ -70,11 +70,4 @@ export abstract class SpaceEntity {
 		this.#rotation = this.#rotation.mmul(rotationMatrix);
 		this.#direction.mmul(rotationMatrix);
 	}
-
-	/**
-	 * Translates object relative to its direction
-	 */
-	translate(delta: Vector3): void {
-		throw new Error('not implemented');
-	}
 }
