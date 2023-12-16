@@ -116,7 +116,8 @@ export class Camera extends SpaceEntity {
 	 */
 	translateX(delta: Vector3) {
 		const direction = this.direction.clone();
-		if (!direction.x) {
+		// the rotated x direction can become really small, unable to translate on x
+		if (!direction.x || direction.x < 0.1e-5) {
 			direction.x = 1; //delta.x > 0 ? -1 : 1;
 			direction.z = 0;
 		}
