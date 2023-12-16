@@ -29,7 +29,6 @@ export class Camera extends SpaceEntity {
 		super();
 
 		this.setPosition(position);
-		// this.setDirection(Vector3.backward);
 
 		const { fov, near, far } = config;
 
@@ -112,7 +111,7 @@ export class Camera extends SpaceEntity {
 	}
 
 	/**
-	 * Translates object relative to its direction
+	 * Translates objects on X axis
 	 */
 	translateX(delta: Vector3) {
 		const direction = this.direction.clone();
@@ -127,6 +126,9 @@ export class Camera extends SpaceEntity {
 		this.position.add(Vector3.multiply(delta, direction));
 	}
 
+	/**
+	 * Translates objects on Z axis
+	 */
 	translateZ(delta: Vector3) {
 		// z is always positive, x is + on right and - on left.
 		const theta = Math.atan(this.direction.x / this.direction.z);
