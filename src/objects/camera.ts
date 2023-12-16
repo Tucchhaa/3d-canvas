@@ -115,16 +115,14 @@ export class Camera extends SpaceEntity {
 	 * Translates object relative to its direction
 	 */
 	translateX(delta: Vector3) {
-		const theta = Math.atan(this.direction.x / this.direction.z);
 		const direction = this.direction.clone();
 		if (!direction.x) {
-			// Here the delta is the translation of the object and the translation of
-			// camera has to be opposite.
-			direction.x = delta.x > 0 ? -1 : 1;
+			direction.x = 1; //delta.x > 0 ? -1 : 1;
+			direction.z = 0;
 		}
-		// The delta here has become the translation of the camera.
-		delta.z = delta.x * Math.sin(theta);
-		delta.x = delta.x * Math.cos(theta) * (direction.x > 0 ? 1 : -1);
+		const theta = Math.atan(direction.x / direction.z);
+		delta.x = delta.x * Math.sin(theta); // * (direction.x > 0 ? 1 : -1);
+		delta.z = delta.x * Math.cos(theta);
 		this.position.add(Vector3.multiply(delta, direction));
 	}
 
@@ -133,7 +131,7 @@ export class Camera extends SpaceEntity {
 		const theta = Math.atan(this.direction.x / this.direction.z);
 		// objects are in the opposite directions of rotated camera.
 		delta.x = delta.z * Math.sin(theta) * (this.direction.x > 0 ? -1 : 1);
-		delta.z = delta.z * Math.cos(theta);
+		// delta.z = delta.z * Math.cos(theta);
 		this.position.add(Vector3.multiply(delta, this.direction));
 	}
 }
