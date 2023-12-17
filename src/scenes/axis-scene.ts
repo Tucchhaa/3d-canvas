@@ -31,13 +31,13 @@ export class AxisScene extends Scene {
 			position: Vector3.zero,
 			scale: new Vector3(50, 1, 1),
 			color: red(),
-		})
+		});
 		xCube.rotate(Vector3.up, DEFAULT_ANGLE);
 		const xPyramid = this.createObject('pyramid', {
 			position: new Vector3(-25, 0, 0),
 			scale: new Vector3(5, 5, 5),
 			color: red(),
-		})
+		});
 		xPyramid.rotate(Vector3.backward, Math.PI / 2);
 		xPyramid.rotate(Vector3.up, DEFAULT_ANGLE, Vector3.zero);
 
@@ -46,30 +46,30 @@ export class AxisScene extends Scene {
 			position: Vector3.zero,
 			scale: new Vector3(1, 50, 1),
 			color: green(),
-		})
+		});
 		yCube.rotate(Vector3.up, DEFAULT_ANGLE);
 		this.createObject('pyramid', {
 			position: new Vector3(0, 25, 0),
 			scale: new Vector3(5, 5, 5),
 			color: green(),
-		})
+		});
 
 		// Z axis
 		const zCube = this.createObject('cube', {
 			position: Vector3.zero,
 			scale: new Vector3(1, 1, 50),
 			color: blue(),
-		})
+		});
 		zCube.rotate(Vector3.up, DEFAULT_ANGLE);
 		const zPyramid = this.createObject('pyramid', {
 			position: new Vector3(0, 0, -25),
 			scale: new Vector3(5, 5, 5),
 			color: blue(),
-		})
+		});
 		zPyramid.rotate(Vector3.left, Math.PI / 2);
 		zPyramid.rotate(Vector3.up, DEFAULT_ANGLE, Vector3.zero);
 
-		this.lights.push(new DirectLight({}))
+		this.lights.push(new DirectLight({}));
 
 		addEventListener('keydown', (e) => {
 			const speed = 30;
@@ -102,9 +102,6 @@ export class AxisScene extends Scene {
 	}
 
 	async prepareResources(): Promise<void> {
-		await Promise.all([
-			this.resourceLoader.loadObject('cube'),
-			this.resourceLoader.loadObject('pyramid'),
-		])
+		await Promise.all([this.resourceLoader.loadObject('cube'), this.resourceLoader.loadObject('pyramid')]);
 	}
 }

@@ -44,6 +44,24 @@ export class UrbanScene extends Scene {
 			obj.rotate(Vector3.up, Math.PI);
 		});
 
+		// Colors are overlapping with buildings
+		this.createObject('cube', {
+			position: new Vector3(1000, 0, 250),
+			scale: new Vector3(2100, 1, 250),
+			color: new Color(255, 255, 255, 0.1),
+		});
+		this.createObject('cube', {
+			position: new Vector3(1000, 0, -250),
+			scale: new Vector3(2100, 1, 250),
+			color: new Color(255, 255, 255, 0.1),
+		});
+
+		this.createObject('urban/road', {
+			position: new Vector3(1000, 0, 0),
+			scale: new Vector3(3000, 100, 350),
+			color: new Color(255, 255, 255, 0.5),
+		});
+
 		this.lights.push(
 			new DirectLight({
 				direction: new Vector3(1, -1, 1).unit(),
@@ -90,6 +108,6 @@ export class UrbanScene extends Scene {
 	}
 
 	async prepareResources(): Promise<void> {
-		await Promise.all(OBJ_NAMES.map((o) => this.resourceLoader.loadObject(o)));
+		await Promise.all([...OBJ_NAMES, 'urban/road', 'cube'].map((o) => this.resourceLoader.loadObject(o)));
 	}
 }
