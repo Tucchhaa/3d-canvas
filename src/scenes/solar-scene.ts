@@ -1,52 +1,24 @@
 import { Scene } from '../core/scene';
 import { Camera } from '../objects/camera';
-import { DirectLight, SpotLight } from '../objects/light-source';
+import { DirectLight } from '../objects/light-source';
 import { Vector3 } from '../structures/vector';
 
-const OBJ_NAMES = ['urban/large_building', 'urban/low_building', 'urban/low_wide', 'urban/skyscraper', 'urban/small_building'];
-
-export class UrbanScene extends Scene {
+export class SolarScene extends Scene {
 	configureScene(): void {
 		const camera = (this.mainCamera = new Camera(
 			{
 				fov: Math.PI / 2,
 			},
-			new Vector3(-200, 100, 0),
+			new Vector3(0, 100, 0),
 		));
-		camera.rotate(Vector3.up, 1.5);
 
-		OBJ_NAMES.forEach((name, index) => {
-			const x = 100 + index * 200;
-			this.createObject(name, {
-				position: new Vector3(x, 0, 200),
-				scale: new Vector3(100, 100, 100),
-			});
+		const solar = this.createObject('solar/solar_2', {
+			position: new Vector3(0, 0, 800),
+			scale: new Vector3(100, 100, 100),
 		});
+		solar.rotate(Vector3.up, -Math.PI / 2);
 
-		OBJ_NAMES.sort(() => Math.random()).forEach((name, index) => {
-			const x = 100 + index * 150;
-			const obj = this.createObject(name, {
-				position: new Vector3(x, 0, -200),
-				scale: new Vector3(100, 100, 100),
-			});
-			// rotate the objects to face each other
-			obj.rotate(Vector3.up, Math.PI);
-		});
-
-		this.lights.push(
-			new DirectLight({
-				direction: new Vector3(1, -1, 1).unit(),
-				intensity: 0.3,
-			}),
-		);
-
-		this.lights.push(
-			new SpotLight({
-				position: new Vector3(0, -100, 0),
-				radius: 500,
-				intensity: 0.9,
-			}),
-		);
+		this.lights.push(new DirectLight({}));
 
 		addEventListener('keydown', (e) => {
 			const speed = 30;
@@ -79,6 +51,6 @@ export class UrbanScene extends Scene {
 	}
 
 	async prepareResources(): Promise<void> {
-		await Promise.all(OBJ_NAMES.map((o) => this.resourceLoader.loadObject(o)));
+		await Promise.all([this.resourceLoader.loadObject('solar/solar_1'), this.resourceLoader.loadObject('solar/solar_2')]);
 	}
 }
