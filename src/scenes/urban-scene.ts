@@ -1,6 +1,6 @@
 import { Scene } from '../core/scene';
 import { Camera } from '../objects/camera';
-import { DirectLight } from '../objects/light-source';
+import { DirectLight, SpotLight } from '../objects/light-source';
 import { Vector3 } from '../structures/vector';
 
 const OBJ_NAMES = ['urban/large_building', 'urban/low_building', 'urban/low_wide', 'urban/skyscraper', 'urban/small_building'];
@@ -11,7 +11,7 @@ export class UrbanScene extends Scene {
 			{
 				fov: Math.PI / 2,
 			},
-			new Vector3(0, 100, 0),
+			new Vector3(-200, 100, 0),
 		));
 		camera.rotate(Vector3.up, 1.5);
 
@@ -33,16 +33,19 @@ export class UrbanScene extends Scene {
 			obj.rotate(Vector3.up, Math.PI);
 		});
 
-		// TODO adjust lighting
 		this.lights.push(
 			new DirectLight({
-				direction: Vector3.left,
+				direction: new Vector3(1, -1, 1).unit(),
+				intensity: 0.3
 			}),
 		);
+
 		this.lights.push(
-			new DirectLight({
-				direction: Vector3.right,
-			}),
+			new SpotLight({
+				position: new Vector3(0, -100, 0),
+				radius: 500,
+				intensity: 0.9
+			})
 		);
 
 		addEventListener('keydown', (e) => {
