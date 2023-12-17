@@ -1,9 +1,24 @@
 import { Scene } from '../core/scene';
 import { Camera } from '../objects/camera';
 import { DirectLight, SpotLight } from '../objects/light-source';
+import { Color } from '../structures/color';
 import { Vector3 } from '../structures/vector';
 
-const OBJ_NAMES = ['urban/large_building', 'urban/low_building', 'urban/low_wide', 'urban/skyscraper', 'urban/small_building'];
+const OBJ_NAMES = [
+	'urban/low_building',
+	'urban/low_wide',
+	'urban/skyscraper',
+	'urban/small_building',
+	'urban/large_building',
+];
+
+const COLORS = [
+	new Color(254, 215, 170), // orange
+	new Color(45, 212, 191), // teal
+	new Color(229, 231, 235), // grey
+	new Color(92, 77, 69), // brown
+	new Color(56, 189, 248), // light blue
+];
 
 export class UrbanScene extends Scene {
 	configureScene(): void {
@@ -15,19 +30,21 @@ export class UrbanScene extends Scene {
 		));
 		camera.rotate(Vector3.up, 1.5);
 
-		OBJ_NAMES.forEach((name, index) => {
+		OBJ_NAMES.sort(() => Math.random() - 0.5).forEach((name, index) => {
 			const x = 100 + index * 200;
 			this.createObject(name, {
 				position: new Vector3(x, 0, 200),
 				scale: new Vector3(100, 100, 100),
+				color: COLORS[Math.floor(Math.random() * OBJ_NAMES.length)],
 			});
 		});
 
-		OBJ_NAMES.sort(() => Math.random()).forEach((name, index) => {
-			const x = 100 + index * 150;
+		OBJ_NAMES.sort(() => Math.random() - 0.5).forEach((name, index) => {
+			const x = 100 + index * 220;
 			const obj = this.createObject(name, {
 				position: new Vector3(x, 0, -200),
 				scale: new Vector3(100, 100, 100),
+				color: COLORS[Math.floor(Math.random() * OBJ_NAMES.length)],
 			});
 			// rotate the objects to face each other
 			obj.rotate(Vector3.up, Math.PI);

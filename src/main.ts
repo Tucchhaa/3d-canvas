@@ -14,8 +14,8 @@ const engine = new Engine(canvas);
 (async () => {
 	// await engine.setScene(TestScene);
 	// await engine.setScene(CubeScene);
-	// await engine.setScene(UrbanScene);
-	await engine.setScene(SolarScene);
+	await engine.setScene(UrbanScene);
+	// await engine.setScene(SolarScene);
 
 	engine.launch();
 	// engine.drawFrame();
