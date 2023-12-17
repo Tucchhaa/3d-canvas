@@ -4,13 +4,7 @@ import { DirectLight, SpotLight } from '../objects/light-source';
 import { Color } from '../structures/color';
 import { Vector3 } from '../structures/vector';
 
-const OBJ_NAMES = [
-	'urban/low_building',
-	'urban/low_wide',
-	'urban/skyscraper',
-	'urban/small_building',
-	'urban/large_building',
-];
+const OBJ_NAMES = ['urban/low_building', 'urban/low_wide', 'urban/skyscraper', 'urban/small_building', 'urban/large_building'];
 
 const COLORS = [
 	new Color(254, 215, 170), // orange
