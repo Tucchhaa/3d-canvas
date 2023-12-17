@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Engine } from './core/engine';
 import { CubeScene } from './scenes/cube-scene';
+import { UrbanScene } from './scenes/urban-scene';
 import { TestScene } from './scenes/test-scene';
 
 const canvas = document.querySelector('canvas')!;
@@ -10,8 +11,9 @@ canvas.height = canvas.offsetHeight * 2;
 const engine = new Engine(canvas);
 
 (async () => {
-	await engine.setScene(TestScene);
+	// await engine.setScene(TestScene);
 	// await engine.setScene(CubeScene);
+	await engine.setScene(UrbanScene);
 
 	engine.launch();
 	// engine.drawFrame();

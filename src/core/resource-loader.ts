@@ -24,7 +24,7 @@ export class ResourceLoader {
 	// Parsers
 	// ===
 	#parseObject(raw: string) {
-		const vertexMatches = raw.match(/^v( +-?\d+(\.\d+)?){3}$/gm);
+		const vertexMatches = raw.match(/^v\s+(.*)$/gm);
 
 		const vertexes = vertexMatches?.map((vertex) => {
 			const coordinates = vertex
