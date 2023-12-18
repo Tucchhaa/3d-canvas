@@ -107,14 +107,17 @@ export class CameraRotatingScene extends Scene {
 	onBeforeUpdate(): void {
 		const speed = 0.005;
 		if (this.count < 200) {
-			this.mainCamera.rotate(Vector3.down, speed);
-			this.count++;
+			this.mainCamera.fov -= 0.0001;
+			// this.mainCamera.rotate(Vector3.down, speed);
+			// this.count++;
 		} else if (this.count < 400) {
-			this.mainCamera.rotate(Vector3.up, speed);
-			this.count++;
+			this.mainCamera.fov += 0.0001;
+			// this.mainCamera.rotate(Vector3.up, speed);
+			// this.count++;
 		} else {
 			this.count = 0;
 		}
+		console.log(this.mainCamera.fov);
 	}
 
 	async prepareResources(): Promise<void> {

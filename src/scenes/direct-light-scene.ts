@@ -1,6 +1,7 @@
 import { Scene } from '../core/scene';
 import { Camera } from '../objects/camera';
 import { DirectLight } from '../objects/light-source';
+import { Object3D } from '../objects/object3d';
 import { Color } from '../structures/color';
 import { Vector3 } from '../structures/vector';
 
@@ -8,8 +9,8 @@ const red = () => new Color(255, 0, 0);
 const green = () => new Color(0, 255, 0);
 const blue = () => new Color(0, 0, 255);
 
-export class TranslationScene extends Scene {
-	count = 0;
+export class DirectLightScene extends Scene {
+	cube?: Object3D;
 
 	configureScene(): void {
 		const camera = (this.mainCamera = new Camera(
@@ -21,57 +22,61 @@ export class TranslationScene extends Scene {
 		camera.rotate(Vector3.left, Math.PI / 9);
 
 		const DEFAULT_ANGLE = Math.PI / 3;
-		const cube = this.createObject('cube', {
+		const cube = (this.cube = this.createObject('cube', {
 			position: Vector3.zero,
 			scale: new Vector3(100, 100, 100),
-			color: new Color(255, 255, 255, 0.1),
-		});
+			color: new Color(255, 0, 0, 0.5),
+		}));
 		cube.rotate(Vector3.up, DEFAULT_ANGLE);
 
-		// X axis
-		const xCube = this.createObject('cube', {
-			position: Vector3.zero,
-			scale: new Vector3(50, 1, 1),
-			color: red(),
-		});
-		xCube.rotate(Vector3.up, DEFAULT_ANGLE);
-		const xPyramid = this.createObject('pyramid', {
-			position: new Vector3(-25, 0, 0),
-			scale: new Vector3(5, 5, 5),
-			color: red(),
-		});
-		xPyramid.rotate(Vector3.backward, Math.PI / 2);
-		xPyramid.rotate(Vector3.up, DEFAULT_ANGLE, Vector3.zero);
+		// // X axis
+		// const xCube = this.createObject('cube', {
+		// 	position: Vector3.zero,
+		// 	scale: new Vector3(50, 1, 1),
+		// 	color: red(),
+		// });
+		// xCube.rotate(Vector3.up, DEFAULT_ANGLE);
+		// const xPyramid = this.createObject('pyramid', {
+		// 	position: new Vector3(-25, 0, 0),
+		// 	scale: new Vector3(5, 5, 5),
+		// 	color: red(),
+		// });
+		// xPyramid.rotate(Vector3.backward, Math.PI / 2);
+		// xPyramid.rotate(Vector3.up, DEFAULT_ANGLE, Vector3.zero);
 
-		// Y axis
-		const yCube = this.createObject('cube', {
-			position: Vector3.zero,
-			scale: new Vector3(1, 50, 1),
-			color: green(),
-		});
-		yCube.rotate(Vector3.up, DEFAULT_ANGLE);
-		this.createObject('pyramid', {
-			position: new Vector3(0, 25, 0),
-			scale: new Vector3(5, 5, 5),
-			color: green(),
-		});
+		// // Y axis
+		// const yCube = this.createObject('cube', {
+		// 	position: Vector3.zero,
+		// 	scale: new Vector3(1, 50, 1),
+		// 	color: green(),
+		// });
+		// yCube.rotate(Vector3.up, DEFAULT_ANGLE);
+		// this.createObject('pyramid', {
+		// 	position: new Vector3(0, 25, 0),
+		// 	scale: new Vector3(5, 5, 5),
+		// 	color: green(),
+		// });
 
-		// Z axis
-		const zCube = this.createObject('cube', {
-			position: Vector3.zero,
-			scale: new Vector3(1, 1, 50),
-			color: blue(),
-		});
-		zCube.rotate(Vector3.up, DEFAULT_ANGLE);
-		const zPyramid = this.createObject('pyramid', {
-			position: new Vector3(0, 0, -25),
-			scale: new Vector3(5, 5, 5),
-			color: blue(),
-		});
-		zPyramid.rotate(Vector3.left, Math.PI / 2);
-		zPyramid.rotate(Vector3.up, DEFAULT_ANGLE, Vector3.zero);
+		// // Z axis
+		// const zCube = this.createObject('cube', {
+		// 	position: Vector3.zero,
+		// 	scale: new Vector3(1, 1, 50),
+		// 	color: blue(),
+		// });
+		// zCube.rotate(Vector3.up, DEFAULT_ANGLE);
+		// const zPyramid = this.createObject('pyramid', {
+		// 	position: new Vector3(0, 0, -25),
+		// 	scale: new Vector3(5, 5, 5),
+		// 	color: blue(),
+		// });
+		// zPyramid.rotate(Vector3.left, Math.PI / 2);
+		// zPyramid.rotate(Vector3.up, DEFAULT_ANGLE, Vector3.zero);
 
-		this.lights.push(new DirectLight({}));
+		this.lights.push(
+			new DirectLight({
+				direction: new Vector3(1, -1, 1),
+			}),
+		);
 
 		addEventListener('keydown', (e) => {
 			const speed = 30;
@@ -104,17 +109,9 @@ export class TranslationScene extends Scene {
 	}
 
 	onBeforeUpdate(): void {
-		let v = Vector3.forward;
-		if (this.count < 100) {
-			v = Vector3.forward;
-			this.count++;
-		} else if (this.count < 200) {
-			v = Vector3.backward;
-			this.count++;
-		} else {
-			this.count = 0;
-		}
-		this.mainCamera.setPosition(Vector3.add(this.mainCamera.position, v));
+		this.cube?.rotate(Vector3.left, 0.01);
+		this.cube?.rotate(Vector3.up, 0.01);
+		this.cube?.rotate(Vector3.forward, 0.01);
 	}
 
 	async prepareResources(): Promise<void> {
