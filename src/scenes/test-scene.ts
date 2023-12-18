@@ -68,7 +68,8 @@ export class TestScene extends Scene {
 		this.#teapot = this.createObject('teapot', {
 			position: new Vector3(500, 0, 0),
 			scale: Vector3.one.multiply(100),
-			color: new Color(241, 225, 122)
+			color: new Color(241, 225, 122),
+			backfaceCullingEnabled: false,
 		});
 
 		this.#shuttle = this.createObject('shuttle', {
