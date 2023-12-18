@@ -9,6 +9,7 @@ export type ObjectName = 'cube';
 export type Object3DConfig = {
 	geometry: Geometry;
 	color: Color;
+	backfaceCullingEnabled: boolean,
 
 	name?: string;
 	pivot: Vector3;
@@ -24,13 +25,18 @@ export class Object3D extends SpaceEntity {
 
 	color: Color;
 
-	constructor({ name, geometry, color, pivot, position, scale, direction }: Object3DConfig) {
+	backfaceCullingEnabled: boolean;
+
+	constructor({ 
+		name, geometry, color, pivot, position, scale, direction, backfaceCullingEnabled,
+	}: Object3DConfig) {
 		super(pivot);
 
 		this.name = name ?? 'entity';
 
 		this.geometry = geometry;
 		this.color = color;
+		this.backfaceCullingEnabled = backfaceCullingEnabled;
 
 		this.setScale(scale);
 		this.setPosition(position);

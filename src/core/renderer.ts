@@ -100,7 +100,7 @@ export class Renderer {
 					.add(new Vector3(this.#offsetX, this.#offsetY, 0)),
 			);
 
-			if (this.isProjectedPolygonVisible(projectedPolygon)) {
+			if (object3d.backfaceCullingEnabled === false || this.isProjectedPolygonVisible(projectedPolygon)) {
 				projectedPolygon.color = this.#calculateColors(lights, object3d, polygon);
 
 				result.push(projectedPolygon);

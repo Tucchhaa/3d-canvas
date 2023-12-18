@@ -37,10 +37,8 @@ export abstract class LightSource extends SpaceEntity {
 export class DirectLight extends LightSource {
 	constructor(options: Partial<LightConfig & { direction: Vector3 }>) {
 		super(options);
-		console.log('DIR', options.direction);
 
 		this.setDirection(options.direction ?? Vector3.forward);
-		console.log('RES', this.direction);
 	}
 
 	applyLight(polygon: Polygon, normal: Vector3, color: Color) {
@@ -68,6 +66,7 @@ export class SpotLight extends LightSource {
 		const vector = Vector3.subtract(position, this.position).unit();
 		const dot = -Vector3.dot(normal, vector);
 		const distanceCoefficient = 1 - vector.sqrMagnitude / (this.radius * this.radius);
+
 		if (dot > 0 && distanceCoefficient > 0) {
 			this.mixLightColor(color, dot * distanceCoefficient);
 		}

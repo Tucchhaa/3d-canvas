@@ -30,11 +30,13 @@ export abstract class Scene {
 		const geometry = this.engine.resourceLoader.getObject(name);
 		const defaultConfig: Object3DConfig = {
 			geometry,
+			color: new Color(0, 150, 255),
+			backfaceCullingEnabled: true,
+
 			pivot: Vector3.zero,
 			position: Vector3.zero,
 			scale: Vector3.one,
 			direction: Vector3.forward,
-			color: new Color(0, 150, 255)
 		};
 
 		const object3d = new Object3D({ ...defaultConfig, ...config });
