@@ -105,16 +105,16 @@ export class TranslationScene extends Scene {
 
 	onBeforeUpdate(): void {
 		let v = Vector3.forward;
-		if (this.count < 100) {
+		if (this.count < 50) {
 			v = Vector3.forward;
 			this.count++;
-		} else if (this.count < 200) {
+		} else if (this.count < 100) {
 			v = Vector3.backward;
 			this.count++;
 		} else {
 			this.count = 0;
 		}
-		this.mainCamera.setPosition(Vector3.add(this.mainCamera.position, v));
+		this.mainCamera.setPosition(Vector3.add(this.mainCamera.position, v.multiply(2)));
 	}
 
 	async prepareResources(): Promise<void> {

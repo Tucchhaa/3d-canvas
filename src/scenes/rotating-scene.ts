@@ -163,7 +163,7 @@ export class RotatingScene extends Scene {
 
 	onBeforeUpdate(): void {
 		this.cube1?.rotate(this.cube1.direction, 0.05);
-		this.cube2?.rotate(Vector3.up, 0.01, new Vector3(-400, 0, 0));
+		this.cube2?.rotate(Vector3.up, 0.02, new Vector3(-400, 0, 0));
 	}
 
 	async prepareResources(): Promise<void> {

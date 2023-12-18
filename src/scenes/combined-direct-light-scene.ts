@@ -112,7 +112,7 @@ export class CombinedDirectLightScene extends Scene {
 	}
 
 	onBeforeUpdate(): void {
-		this.teapot?.rotate(Vector3.up, 0.01);
+		this.teapot?.rotate(Vector3.up, 0.02);
 	}
 
 	async prepareResources(): Promise<void> {
