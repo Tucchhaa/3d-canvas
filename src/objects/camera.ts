@@ -1,3 +1,4 @@
+import { Polygon } from '../structures/geometry';
 import { Matrix } from '../structures/matrix';
 import { Vector3 } from '../structures/vector';
 import { SpaceEntity } from './space_entity';
@@ -71,8 +72,8 @@ export class Camera extends SpaceEntity {
 		return point;
 	}
 
-	isProjectedPointInViewport(point: Vector3) {
-		return point.z >= this.near && point.z <= this.far && point.x > -1 && point.x < 1 && point.y > -1 && point.y < 1;
+	isPolygonInFrustum(polygon: Polygon) {
+		return polygon.some((vertex) => vertex.z >= this.near && vertex.z <= this.far);
 	}
 
 	// ===

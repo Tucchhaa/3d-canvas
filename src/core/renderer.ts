@@ -78,12 +78,12 @@ export class Renderer {
 	/**
 	 * Backface culling
 	 */
-	private isProjectedPolygonVisible(polygon: Polygon) {
+	private isBackface(polygon: Polygon) {
 		// P.S. not really sure why this works
 		// also some polygons has more than 3 vertexes
 		const [p1, p2, p3] = polygon.vertexes as [Vector3, Vector3, Vector3];
 
-		return (p2.x - p1.x) * (p3.y - p1.y) < (p3.x - p1.x) * (p2.y - p1.y);
+		return (p2.x - p1.x) * (p3.y - p1.y) >= (p3.x - p1.x) * (p2.y - p1.y);
 	}
 
 	/**
@@ -95,14 +95,23 @@ export class Renderer {
 		const transformationMatrix = camera.getTransformationMatrix();
 
 		for (const polygon of object3d.geometry.polygons) {
-			const projectedPolygon = polygon.map((vertex) =>
+			const transformedPolygon = polygon.map((vertex) => vertex.mmul(transformationMatrix));
+
+			if (camera.isPolygonInFrustum(transformedPolygon) === false) {
+				continue;
+			}
+
+			const projectedPolygon = transformedPolygon.forEach((vertex) =>
 				camera
-					.project(vertex.mmul(transformationMatrix))
+					.project(vertex)
 					.multiply(new Vector3(this.#offsetX, this.#offsetY * this.#ratio, 1))
 					.add(new Vector3(this.#offsetX, this.#offsetY, 0)),
 			);
 
-			if (object3d.backfaceCullingEnabled === false || this.isProjectedPolygonVisible(projectedPolygon)) {
+			const isCulled = object3d.backfaceCullingEnabled === true && this.isBackface(projectedPolygon);
+			const isVisible = !isCulled;
+
+			if (isVisible) {
 				projectedPolygon.color = this.#calculateColors(lights, object3d, polygon);
 
 				result.push(projectedPolygon);
