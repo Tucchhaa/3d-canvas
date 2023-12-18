@@ -13,8 +13,8 @@ canvas.height = canvas.offsetHeight * 2;
 const engine = new Engine(canvas);
 
 (async () => {
-	await engine.setScene(AxisScene);
-	// await engine.setScene(UrbanScene);
+	// await engine.setScene(AxisScene);
+	await engine.setScene(UrbanScene);
 	// await engine.setScene(SolarScene);
 	// await engine.setScene(TestScene);
 	// await engine.setScene(CubeScene);

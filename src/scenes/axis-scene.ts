@@ -48,7 +48,7 @@ export class AxisScene extends Scene {
 			color: green(),
 		});
 		yCube.rotate(Vector3.up, DEFAULT_ANGLE);
-		const yPyramid = this.createObject('pyramid', {
+		this.createObject('pyramid', {
 			position: new Vector3(0, 25, 0),
 			scale: new Vector3(5, 5, 5),
 			color: green(),
@@ -71,95 +71,33 @@ export class AxisScene extends Scene {
 
 		this.lights.push(new DirectLight({}));
 
-		const oldCameraPos = camera.position.clone();
-		const reset = () => {
-			console.dir(camera.direction)
-			{
-				const cameraPos = camera.position.clone();
-				cameraPos.x = cameraPos.x - oldCameraPos.x;
-				cameraPos.y = cameraPos.y - oldCameraPos.y;
-				cameraPos.z = cameraPos.z - oldCameraPos.z;
-				xCube.setPosition(cameraPos);
-				cameraPos.x -= 25;
-				xPyramid.setPosition(cameraPos);
-			}
-			{
-				const cameraPos = camera.position.clone();
-				cameraPos.x = cameraPos.x - oldCameraPos.x;
-				cameraPos.y = cameraPos.y - oldCameraPos.y;
-				cameraPos.z = cameraPos.z - oldCameraPos.z;
-				yCube.setPosition(cameraPos);
-				cameraPos.y += 25;
-				yPyramid.setPosition(cameraPos);
-			}
-			{
-				const cameraPos = camera.position.clone();
-				cameraPos.x = cameraPos.x - oldCameraPos.x;
-				cameraPos.y = cameraPos.y - oldCameraPos.y;
-				cameraPos.z = cameraPos.z - oldCameraPos.z;
-				zCube.setPosition(cameraPos);
-				cameraPos.z -= 25;
-				zPyramid.setPosition(cameraPos);
-			}
-		};
-
 		addEventListener('keydown', (e) => {
 			const speed = 30;
 			const rotSpeed = 0.07;
 
 			if (e.shiftKey) {
-				if (e.key === 'W') {
-					camera.rotate(Vector3.right, rotSpeed);
-					reset();
-				}
+				if (e.key === 'W') camera.rotate(Vector3.right, rotSpeed);
 
-				if (e.key === 'A') {
-					camera.rotate(Vector3.up, rotSpeed);
-					reset();
-				}
+				if (e.key === 'A') camera.rotate(Vector3.up, rotSpeed);
 
-				if (e.key === 'S') {
-					camera.rotate(Vector3.left, rotSpeed);
-					reset();
-				}
+				if (e.key === 'S') camera.rotate(Vector3.left, rotSpeed);
 
-				if (e.key === 'D') {
-					camera.rotate(Vector3.down, rotSpeed);
-					reset();
-				}
+				if (e.key === 'D') camera.rotate(Vector3.down, rotSpeed);
 
 				return;
 			}
 
-			if (e.key === 'w') {
-				camera.setPosition(Vector3.add(camera.position, Vector3.forward.multiply(speed)));
-				reset();
-			}
+			if (e.key === 'w') camera.setPosition(Vector3.add(camera.position, Vector3.forward.multiply(speed)));
 
-			if (e.key === 'a') {
-				camera.setPosition(Vector3.add(camera.position, Vector3.left.multiply(speed)));
-				reset();
-			}
+			if (e.key === 'a') camera.setPosition(Vector3.add(camera.position, Vector3.left.multiply(speed)));
 
-			if (e.key === 's') {
-				camera.setPosition(Vector3.add(camera.position, Vector3.backward.multiply(speed)));
-				reset();
-			}
+			if (e.key === 's') camera.setPosition(Vector3.add(camera.position, Vector3.backward.multiply(speed)));
 
-			if (e.key === 'd') {
-				camera.setPosition(Vector3.add(camera.position, Vector3.right.multiply(speed)));
-				reset();
-			}
+			if (e.key === 'd') camera.setPosition(Vector3.add(camera.position, Vector3.right.multiply(speed)));
 
-			if (e.key == 'z') {
-				camera.position.y -= speed;
-				reset();
-			}
+			if (e.key == 'z') camera.position.y -= speed;
 
-			if (e.key == 'x') {
-				camera.position.y += speed;
-				reset();
-			}
+			if (e.key == 'x') camera.position.y += speed;
 		});
 	}
 
