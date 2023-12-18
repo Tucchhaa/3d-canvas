@@ -22,7 +22,15 @@ export class Geometry {
 
 	initializePolygons(faces: number[][]) {
 		for (const face of faces) {
-			const polygon = new Polygon(face.map((vertexIndex) => this.vertexes[vertexIndex]!));
+			const polygon = new Polygon(
+				face.map((vertexIndex) => {
+					if (vertexIndex > -1) {
+						return this.vertexes[vertexIndex]!;
+					}
+					// some files give negative indices to refer from the back.
+					return this.vertexes[this.vertexes.length + vertexIndex + 1]!;
+				}),
+			);
 
 			this.#polygons.push(polygon);
 		}
