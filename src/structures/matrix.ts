@@ -7,22 +7,20 @@ declare module 'ml-matrix' {
 }
 
 BaseMatrix.prototype.asHomogeneous = function (this: BaseMatrix) {
-	const matrix = new BaseMatrix(this);
-
-	if (matrix.isRowVector()) {
-		return matrix.addColumn(matrix.columns, [1]);
+	if (this.isRowVector()) {
+		return this.addColumn(this.columns, [1]);
 	}
 
-	if (matrix.isColumnVector()) {
-		return matrix.addRow(matrix.rows, [1]);
+	if (this.isColumnVector()) {
+		return this.addRow(this.rows, [1]);
 	}
 
-	const column = Array(matrix.rows).fill(0);
-	const row = Array(matrix.columns + 1).fill(0);
+	const column = Array(this.rows).fill(0);
+	const row = Array(this.columns + 1).fill(0);
 
-	row[matrix.columns] = 1;
+	row[this.columns] = 1;
 
-	return matrix.addColumn(matrix.columns, column).addRow(matrix.rows, row);
+	return this.addColumn(this.columns, column).addRow(this.rows, row);
 };
 
 export class Matrix extends BaseMatrix {

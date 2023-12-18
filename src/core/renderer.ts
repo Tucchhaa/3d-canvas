@@ -92,15 +92,17 @@ export class Renderer {
 	#renderObject(camera: Camera, lights: LightSource[], object3d: Object3D): Polygon[] {
 		const result = [];
 
+		const transformationMatrix = camera.getTransformationMatrix();
+
 		for (const polygon of object3d.geometry.polygons) {
 			const projectedPolygon = polygon.map((vertex) =>
 				camera
-					.project(vertex)
+					.project(vertex.mmul(transformationMatrix))
 					.multiply(new Vector3(this.#offsetX, this.#offsetY * this.#ratio, 1))
 					.add(new Vector3(this.#offsetX, this.#offsetY, 0)),
 			);
 
-			if (this.isProjectedPolygonVisible(projectedPolygon)) {
+			if (object3d.backfaceCullingEnabled === false || this.isProjectedPolygonVisible(projectedPolygon)) {
 				projectedPolygon.color = this.#calculateColors(lights, object3d, polygon);
 
 				result.push(projectedPolygon);

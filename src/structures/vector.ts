@@ -311,7 +311,7 @@ export class Vector3 {
 			}
 		}
 
-		return rotation;
+		return rotation.asHomogeneous();
 	}
 }
 

@@ -37,7 +37,7 @@ export class Camera extends SpaceEntity {
 		this.far = far ?? 5000;
 
 		this.#initProjectionMatrix();
-		this.#preparePerspectiveMatrix();
+		this.#calculatePerspectiveMatrix();
 	}
 
 	get fov() {
@@ -47,17 +47,22 @@ export class Camera extends SpaceEntity {
 	set fov(value: number) {
 		this.#fov = value;
 		this.#scale = 1 / Math.tan(this.fov / 2);
+		this.#calculatePerspectiveMatrix();
 	}
 
 	// ===
-	// Projection and perspective
+	// Projection
 	// ===
-	project(vertex: Vector3): Vector3 {
-		const vectorFromCamera = Vector3.subtract(vertex, this.position).mmul(this.rotation);
 
-		const projectionMatrix = this.#calculateProjectionMatrix(vectorFromCamera.z);
+	project(transformedVertex: Vector3): Vector3 {
+		/** This code does the same thing as code below, but a slower */
+		// const projectionMatrix = this.#calculateProjectionMatrix(transformedVertex.z);
+		// const point = transformedVertex.mmul(projectionMatrix);
 
-		const point = vectorFromCamera.mmul(projectionMatrix).mmul(this.#perspectiveMatrix);
+		const point = transformedVertex;
+		const w = -transformedVertex.z;
+		point.x /= w;
+		point.y /= w;
 
 		if (point.z < this.near || point.z > this.far) {
 			point.multiply(new Vector3(point.z, point.z, 1));
@@ -68,6 +73,18 @@ export class Camera extends SpaceEntity {
 
 	isProjectedPointInViewport(point: Vector3) {
 		return point.z >= this.near && point.z <= this.far && point.x > -1 && point.x < 1 && point.y > -1 && point.y < 1;
+	}
+
+	// ===
+	// Matrices
+	// ===
+
+	getTransformationMatrix() {
+		const translationTo = this.position.getTranslationToOriginMatrix();
+
+		const transformMatrix = translationTo.mmul(this.rotation).mmul(this.#perspectiveMatrix);
+
+		return transformMatrix;
 	}
 
 	#initProjectionMatrix(): void {
@@ -90,7 +107,7 @@ export class Camera extends SpaceEntity {
 		return this.#projectionMatrix;
 	}
 
-	#preparePerspectiveMatrix() {
+	#calculatePerspectiveMatrix() {
 		const { far, near } = this;
 
 		/**

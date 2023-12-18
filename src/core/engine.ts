@@ -8,7 +8,7 @@ export class Engine {
 
 	#renderId: ReturnType<typeof setInterval> | undefined;
 
-	#fps = 60;
+	#fps = 30;
 
 	#scene!: Scene;
 
