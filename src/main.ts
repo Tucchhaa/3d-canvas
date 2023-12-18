@@ -4,8 +4,10 @@ import { AxisScene } from './scenes/axis-scene';
 import { CameraRotatingScene } from './scenes/camera-rotating-scene';
 import { CubeScene } from './scenes/cube-scene';
 import { RotatingScene } from './scenes/rotating-scene';
+import { ScaleScene } from './scenes/scale-scene';
 import { SolarScene } from './scenes/solar-scene';
 import { TestScene } from './scenes/test-scene';
+import { TranslationScene } from './scenes/translation-scene';
 import { UrbanScene } from './scenes/urban-scene';
 
 const canvas = document.querySelector('canvas')!;
@@ -17,7 +19,9 @@ const engine = new Engine(canvas);
 (async () => {
 	// await engine.setScene(AxisScene);
 	// await engine.setScene(RotatingScene);
-	await engine.setScene(CameraRotatingScene);
+	// await engine.setScene(CameraRotatingScene);
+	// await engine.setScene(ScaleScene);
+	await engine.setScene(TranslationScene);
 	// await engine.setScene(UrbanScene);
 	// await engine.setScene(SolarScene);
 	// await engine.setScene(TestScene);
