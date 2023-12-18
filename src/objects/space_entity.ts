@@ -28,7 +28,7 @@ export abstract class SpaceEntity {
 	/**
 	 * If multiply Vector3.forward by this matrix, we will get the direction of the camera
 	 */
-	#rotation: Matrix = Matrix.identity(3, 3);
+	#rotation: Matrix = Matrix.identity(4, 4);
 
 	// ===
 	constructor(pivot: Vector3 = Vector3.zero) {
