@@ -97,7 +97,7 @@ export class Renderer {
 		for (const polygon of object3d.geometry.polygons) {
 			const transformedPolygon = polygon.map((vertex) => vertex.mmul(transformationMatrix));
 
-			if(camera.isPolygonInFrustum(transformedPolygon) === false) {
+			if (camera.isPolygonInFrustum(transformedPolygon) === false) {
 				continue;
 			}
 
@@ -105,7 +105,7 @@ export class Renderer {
 				camera
 					.project(vertex)
 					.multiply(new Vector3(this.#offsetX, this.#offsetY * this.#ratio, 1))
-					.add(new Vector3(this.#offsetX, this.#offsetY, 0))
+					.add(new Vector3(this.#offsetX, this.#offsetY, 0)),
 			);
 
 			const isCulled = object3d.backfaceCullingEnabled === true && this.isBackface(projectedPolygon);

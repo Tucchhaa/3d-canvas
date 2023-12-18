@@ -56,7 +56,7 @@ export class Polygon {
 	}
 
 	forEach(func: (vertex: Vector3) => void) {
-		for(const vertex of this.vertexes) {
+		for (const vertex of this.vertexes) {
 			func(vertex);
 		}
 
@@ -66,7 +66,7 @@ export class Polygon {
 	some(func: (vertex: Vector3) => boolean) {
 		let result = false;
 
-		for(const vertex of this.vertexes) {
+		for (const vertex of this.vertexes) {
 			result ||= func(vertex);
 		}
 
