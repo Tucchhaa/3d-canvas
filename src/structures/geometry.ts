@@ -55,6 +55,24 @@ export class Polygon {
 		return new Polygon(vertexes);
 	}
 
+	forEach(func: (vertex: Vector3) => void) {
+		for(const vertex of this.vertexes) {
+			func(vertex);
+		}
+
+		return this;
+	}
+
+	some(func: (vertex: Vector3) => boolean) {
+		let result = false;
+
+		for(const vertex of this.vertexes) {
+			result ||= func(vertex);
+		}
+
+		return result;
+	}
+
 	normal() {
 		// Assuming that all vertexes of a polygon lie on the same plane, we can calculate only normal for three vertexes
 		const [p1, p2, p3] = this.vertexes as [Vector3, Vector3, Vector3];
