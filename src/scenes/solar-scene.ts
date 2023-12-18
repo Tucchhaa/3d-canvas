@@ -33,7 +33,7 @@ export class SolarScene extends Scene {
 			{
 				fov: Math.PI / 2,
 			},
-			new Vector3(0, 0, -500),
+			new Vector3(0, 0, -800),
 		));
 
 		this.sun = this.createObject(OBJ_NAMES[0], {

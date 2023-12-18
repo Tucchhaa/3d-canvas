@@ -10,24 +10,22 @@ const green = () => new Color(0, 255, 0);
 const blue = () => new Color(0, 0, 255);
 
 export class DirectLightScene extends Scene {
-	cube?: Object3D;
+	teapot?: Object3D;
 
 	configureScene(): void {
 		const camera = (this.mainCamera = new Camera(
 			{
 				fov: Math.PI / 2,
 			},
-			new Vector3(0, 100, -300),
+			new Vector3(0, 500, -1000),
 		));
 		camera.rotate(Vector3.left, Math.PI / 9);
 
 		const DEFAULT_ANGLE = Math.PI / 3;
-		const cube = (this.cube = this.createObject('cube', {
+		this.teapot = this.createObject('teapot', {
 			position: Vector3.zero,
 			scale: new Vector3(100, 100, 100),
-			color: new Color(255, 0, 0, 0.5),
-		}));
-		cube.rotate(Vector3.up, DEFAULT_ANGLE);
+		});
 
 		// // X axis
 		// const xCube = this.createObject('cube', {
@@ -74,7 +72,7 @@ export class DirectLightScene extends Scene {
 
 		this.lights.push(
 			new DirectLight({
-				direction: new Vector3(1, -1, 1),
+				direction: new Vector3(1, -1, 0),
 			}),
 		);
 
@@ -109,12 +107,14 @@ export class DirectLightScene extends Scene {
 	}
 
 	onBeforeUpdate(): void {
-		this.cube?.rotate(Vector3.left, 0.01);
-		this.cube?.rotate(Vector3.up, 0.01);
-		this.cube?.rotate(Vector3.forward, 0.01);
+		this.teapot?.rotate(Vector3.up, 0.01);
 	}
 
 	async prepareResources(): Promise<void> {
-		await Promise.all([this.resourceLoader.loadObject('cube'), this.resourceLoader.loadObject('pyramid')]);
+		await Promise.all([
+			this.resourceLoader.loadObject('teapot'),
+			this.resourceLoader.loadObject('cube'),
+			this.resourceLoader.loadObject('pyramid'),
+		]);
 	}
 }

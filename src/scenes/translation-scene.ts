@@ -24,7 +24,7 @@ export class TranslationScene extends Scene {
 		const cube = this.createObject('cube', {
 			position: Vector3.zero,
 			scale: new Vector3(100, 100, 100),
-			color: new Color(255, 255, 255, 0.1),
+			color: new Color(0, 0, 255, 0.5),
 		});
 		cube.rotate(Vector3.up, DEFAULT_ANGLE);
 

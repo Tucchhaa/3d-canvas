@@ -27,7 +27,7 @@ export class ScaleScene extends Scene {
 		this.cube1 = this.createObject('cube', {
 			position: Vector3.zero,
 			scale: new Vector3(100, 100, 100),
-			color: new Color(255, 255, 255, 0.1),
+			color: new Color(255, 0, 0, 0.5),
 		});
 		this.cube1.rotate(Vector3.up, DEFAULT_ANGLE);
 
@@ -77,14 +77,14 @@ export class ScaleScene extends Scene {
 		this.cube2 = this.createObject('cube', {
 			position: new Vector3(-250, 0, 0),
 			scale: new Vector3(100, 100, 100),
-			color: new Color(255, 0, 255, 0.3),
+			color: new Color(0, 255, 0, 0.5),
 		});
 		this.cube2.rotate(Vector3.up, DEFAULT_ANGLE);
 
 		this.cube3 = this.createObject('cube', {
 			position: new Vector3(-500, 0, 0),
 			scale: new Vector3(100, 100, 100),
-			color: new Color(255, 0, 255, 0.3),
+			color: new Color(0, 0, 255, 0.5),
 		});
 		this.cube3.rotate(Vector3.up, -DEFAULT_ANGLE);
 
