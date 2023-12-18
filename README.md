@@ -23,20 +23,14 @@
 ### Bugs:
 
 1. We need more advanced ZSort. Some times polygons are drawed in the wrong order.
-2. If camera placed on same Y coordinate with another object and the camera is turned 180deg from the object the screen is filled with polygons
 
 ### Functionality:
 
 1. Translation of object relative to its rotation
-2. Lights
-3. Shadow projections
-4. Need to add more complex 3D-objects
-5. Need to design scenes (City design, room interior design)
 
 ### Refactoring:
 
-1. refactor rotation method
-2. we should recognize if vertex is on the screen before projecting it (+optimization)
+1. we should recognize if vertex is on the screen before projecting it (+optimization)
 
 ### Bonus functionality:
 
