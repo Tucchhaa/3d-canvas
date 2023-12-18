@@ -24,13 +24,14 @@ export class ResourceLoader {
 	// Parsers
 	// ===
 	#parseObject(raw: string) {
-		const vertexMatches = raw.match(/^v( +-?\d+(\.\d+)?){3}$/gm);
+		const vertexMatches = raw.match(/^v\s+(.*)$/gm);
 
 		const vertexes = vertexMatches?.map((vertex) => {
 			const coordinates = vertex
 				.trim()
-				.split(' ')
-				.slice(1)
+				.split(/\s+/)
+				.filter((v) => !!v.trim()) // trim multiple whitespaces
+				.slice(1) // trim prefix `v`
 				.map((num) => Number(num));
 
 			return new Vector3(coordinates[0]!, coordinates[1]!, coordinates[2]!);
@@ -41,7 +42,9 @@ export class ResourceLoader {
 
 		const faces = faceMatches?.map((face) =>
 			face
-				.split(' ')
+				.trim()
+				.split(/\s+/)
+				.filter((v) => !!v.trim())
 				.slice(1)
 				.map((f) => Number(f.split('/')[0]) - 1),
 		);
