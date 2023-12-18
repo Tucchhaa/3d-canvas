@@ -2,6 +2,7 @@
 import { Engine } from './core/engine';
 import { AxisScene } from './scenes/axis-scene';
 import { CubeScene } from './scenes/cube-scene';
+import { RotatingScene } from "./scenes/rotating-scene";
 import { SolarScene } from './scenes/solar-scene';
 import { TestScene } from './scenes/test-scene';
 import { UrbanScene } from './scenes/urban-scene';
@@ -14,8 +15,9 @@ const engine = new Engine(canvas);
 
 (async () => {
 	// await engine.setScene(AxisScene);
+	await engine.setScene(RotatingScene);
 	// await engine.setScene(UrbanScene);
-	await engine.setScene(SolarScene);
+	// await engine.setScene(SolarScene);
 	// await engine.setScene(TestScene);
 	// await engine.setScene(CubeScene);
 
