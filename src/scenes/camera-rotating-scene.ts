@@ -25,7 +25,7 @@ export class CameraRotatingScene extends Scene {
 		const cube = this.createObject('cube', {
 			position: Vector3.zero,
 			scale: new Vector3(100, 100, 100),
-			color: new Color(255, 255, 255, 0.1),
+			color: new Color(255, 0, 0, 0.3),
 		});
 		cube.rotate(Vector3.up, DEFAULT_ANGLE);
 
@@ -105,11 +105,11 @@ export class CameraRotatingScene extends Scene {
 	}
 
 	onBeforeUpdate(): void {
-		const speed = 0.01;
-		if (this.count < speed * 1e4) {
+		const speed = 0.005;
+		if (this.count < 200) {
 			this.mainCamera.rotate(Vector3.down, speed);
 			this.count++;
-		} else if (this.count < speed * 2e4) {
+		} else if (this.count < 400) {
 			this.mainCamera.rotate(Vector3.up, speed);
 			this.count++;
 		} else {
