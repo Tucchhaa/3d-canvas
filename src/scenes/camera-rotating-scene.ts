@@ -21,12 +21,12 @@ export class CameraRotatingScene extends Scene {
 		camera.rotate(Vector3.left, Math.PI / 12);
 
 		const DEFAULT_ANGLE = Math.PI / 3;
-		const cube = this.createObject('cube', {
+		const shuttle = this.createObject('shuttle', {
 			position: Vector3.zero,
-			scale: new Vector3(100, 100, 100),
-			color: new Color(0, 0, 255, 0.5),
+			scale: new Vector3(20, 20, 20),
+			color: new Color(0, 0, 255, 0.6),
 		});
-		cube.rotate(Vector3.up, DEFAULT_ANGLE);
+		shuttle.rotate(Vector3.left, Math.PI / 1.5);
 
 		// X axis
 		const xCube = this.createObject('cube', {
@@ -116,6 +116,10 @@ export class CameraRotatingScene extends Scene {
 	}
 
 	async prepareResources(): Promise<void> {
-		await Promise.all([this.resourceLoader.loadObject('cube'), this.resourceLoader.loadObject('pyramid')]);
+		await Promise.all([
+			this.resourceLoader.loadObject('shuttle'),
+			this.resourceLoader.loadObject('cube'),
+			this.resourceLoader.loadObject('pyramid'),
+		]);
 	}
 }
