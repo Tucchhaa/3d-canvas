@@ -10,7 +10,7 @@ const green = () => new Color(0, 255, 0);
 const blue = () => new Color(0, 0, 255);
 
 export class PointLightScene extends Scene {
-	teapot?: Object3D;
+	teapots: Object3D[] = [];
 
 	configureScene(): void {
 		const camera = (this.mainCamera = new Camera(
@@ -22,8 +22,13 @@ export class PointLightScene extends Scene {
 		camera.rotate(Vector3.left, Math.PI / 9);
 
 		const DEFAULT_ANGLE = Math.PI / 3;
-		this.teapot = this.createObject('teapot', {
-			position: new Vector3(-200, 0, 0),
+		this.teapots[0] = this.createObject('teapot', {
+			position: new Vector3(-400, 0, 0),
+			scale: new Vector3(100, 100, 100),
+		});
+
+		this.teapots[1] = this.createObject('teapot', {
+			position: new Vector3(400, 0, -200),
 			scale: new Vector3(100, 100, 100),
 		});
 
@@ -108,7 +113,7 @@ export class PointLightScene extends Scene {
 	}
 
 	onBeforeUpdate(): void {
-		this.teapot?.rotate(Vector3.up, 0.02);
+		this.teapots.forEach((t) => t.rotate(Vector3.up, 0.02))
 	}
 
 	async prepareResources(): Promise<void> {
