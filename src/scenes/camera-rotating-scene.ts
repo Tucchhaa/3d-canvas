@@ -1,6 +1,6 @@
 import { Scene } from '../core/scene';
 import { Camera } from '../objects/camera';
-import { DirectLight } from '../objects/light-source';
+import { Object3D } from '../objects/object3d';
 import { Color } from '../structures/color';
 import { Vector3 } from '../structures/vector';
 
@@ -9,69 +9,76 @@ const green = () => new Color(0, 255, 0);
 const blue = () => new Color(0, 0, 255);
 
 export class CameraRotatingScene extends Scene {
-	count = 0;
+	angle = 0;
+	objs: Object3D[] = [];
 
 	configureScene(): void {
 		const camera = (this.mainCamera = new Camera(
 			{
 				fov: Math.PI / 2,
 			},
-			new Vector3(0, 100, -500),
+			new Vector3(0, 0, -800),
 		));
-		camera.rotate(Vector3.left, Math.PI / 12);
 
-		const DEFAULT_ANGLE = Math.PI / 3;
-		const cube = this.createObject('cube', {
+		const DEFAULT_ANGLE = Math.PI / 2;
+		const shuttle = (this.objs[0] = this.createObject('shuttle', {
 			position: Vector3.zero,
-			scale: new Vector3(100, 100, 100),
+			scale: new Vector3(20, 20, 20),
 			color: new Color(0, 0, 255, 0.5),
-		});
-		cube.rotate(Vector3.up, DEFAULT_ANGLE);
+			applyLights: false,
+		}));
+		shuttle.rotate(Vector3.left, Math.PI / 1.5);
 
 		// X axis
-		const xCube = this.createObject('cube', {
+		const xCube = (this.objs[1] = this.createObject('cube', {
 			position: Vector3.zero,
 			scale: new Vector3(50, 1, 1),
 			color: red(),
-		});
+			applyLights: false,
+		}));
 		xCube.rotate(Vector3.up, DEFAULT_ANGLE);
-		const xPyramid = this.createObject('pyramid', {
+		const xPyramid = (this.objs[2] = this.createObject('pyramid', {
 			position: new Vector3(-25, 0, 0),
 			scale: new Vector3(5, 5, 5),
 			color: red(),
-		});
+			applyLights: false,
+		}));
 		xPyramid.rotate(Vector3.backward, Math.PI / 2);
 		xPyramid.rotate(Vector3.up, DEFAULT_ANGLE, Vector3.zero);
 
 		// Y axis
-		const yCube = this.createObject('cube', {
+		const yCube = (this.objs[3] = this.createObject('cube', {
 			position: Vector3.zero,
 			scale: new Vector3(1, 50, 1),
 			color: green(),
-		});
+			applyLights: false,
+		}));
 		yCube.rotate(Vector3.up, DEFAULT_ANGLE);
-		this.createObject('pyramid', {
+		this.objs[4] = this.createObject('pyramid', {
 			position: new Vector3(0, 25, 0),
 			scale: new Vector3(5, 5, 5),
 			color: green(),
+			applyLights: false,
 		});
 
 		// Z axis
-		const zCube = this.createObject('cube', {
+		const zCube = (this.objs[5] = this.createObject('cube', {
 			position: Vector3.zero,
 			scale: new Vector3(1, 1, 50),
 			color: blue(),
-		});
+			applyLights: false,
+		}));
 		zCube.rotate(Vector3.up, DEFAULT_ANGLE);
-		const zPyramid = this.createObject('pyramid', {
+		const zPyramid = (this.objs[6] = this.createObject('pyramid', {
 			position: new Vector3(0, 0, -25),
 			scale: new Vector3(5, 5, 5),
 			color: blue(),
-		});
+			applyLights: false,
+		}));
 		zPyramid.rotate(Vector3.left, Math.PI / 2);
 		zPyramid.rotate(Vector3.up, DEFAULT_ANGLE, Vector3.zero);
 
-		this.lights.push(new DirectLight({}));
+		// this.lights.push(new DirectLight({}));
 
 		addEventListener('keydown', (e) => {
 			const speed = 30;
@@ -104,18 +111,17 @@ export class CameraRotatingScene extends Scene {
 	}
 
 	onBeforeUpdate(): void {
-		if (this.count < 100) {
-			this.mainCamera.fov -= 0.005;
-			this.count++;
-		} else if (this.count < 200) {
-			this.mainCamera.fov += 0.005;
-			this.count++;
-		} else {
-			this.count = 0;
-		}
+		this.mainCamera.rotate(Vector3.up, 0.05);
+		this.angle += 0.05;
+
+		this.mainCamera.setPosition(new Vector3(Math.sin(this.angle), 0, Math.cos(this.angle)).multiply(-400));
 	}
 
 	async prepareResources(): Promise<void> {
-		await Promise.all([this.resourceLoader.loadObject('cube'), this.resourceLoader.loadObject('pyramid')]);
+		await Promise.all([
+			this.resourceLoader.loadObject('shuttle'),
+			this.resourceLoader.loadObject('cube'),
+			this.resourceLoader.loadObject('pyramid'),
+		]);
 	}
 }

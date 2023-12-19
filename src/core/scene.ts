@@ -38,6 +38,7 @@ export abstract class Scene {
 			position: Vector3.zero,
 			scale: Vector3.one,
 			direction: Vector3.forward,
+			applyLights: true,
 		};
 
 		const object3d = new Object3D({ ...defaultConfig, ...config });

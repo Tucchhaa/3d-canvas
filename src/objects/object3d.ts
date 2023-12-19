@@ -17,6 +17,7 @@ export type Object3DConfig = {
 	position: Vector3;
 	scale: Vector3;
 	direction: Vector3;
+	applyLights: boolean;
 };
 
 export class Object3D extends SpaceEntity {
@@ -30,7 +31,9 @@ export class Object3D extends SpaceEntity {
 
 	layers: string[];
 
-	constructor({ name, geometry, color, layers, pivot, position, scale, direction, backfaceCullingEnabled }: Object3DConfig) {
+	applyLights: boolean;
+
+	constructor({ name, geometry, color, layers, pivot, position, scale, direction, backfaceCullingEnabled, applyLights }: Object3DConfig) {
 		super(pivot);
 
 		this.name = name ?? 'entity';
@@ -39,6 +42,7 @@ export class Object3D extends SpaceEntity {
 		this.color = color;
 		this.backfaceCullingEnabled = backfaceCullingEnabled;
 		this.layers = layers;
+		this.applyLights = applyLights;
 
 		this.setScale(scale);
 		this.setPosition(position);
