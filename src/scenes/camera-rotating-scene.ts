@@ -18,8 +18,7 @@ export class CameraRotatingScene extends Scene {
 			},
 			new Vector3(0, 100, -500),
 		));
-		camera.rotate(Vector3.left, Math.PI / 9);
-		camera.rotate(Vector3.up, Math.PI / 6);
+		camera.rotate(Vector3.left, Math.PI / 12);
 
 		const DEFAULT_ANGLE = Math.PI / 3;
 		const cube = this.createObject('cube', {
@@ -105,19 +104,15 @@ export class CameraRotatingScene extends Scene {
 	}
 
 	onBeforeUpdate(): void {
-		const speed = 0.005;
-		if (this.count < 200) {
-			this.mainCamera.fov -= 0.0001;
-			// this.mainCamera.rotate(Vector3.down, speed);
-			// this.count++;
-		} else if (this.count < 400) {
-			this.mainCamera.fov += 0.0001;
-			// this.mainCamera.rotate(Vector3.up, speed);
-			// this.count++;
+		if (this.count < 100) {
+			this.mainCamera.fov -= 0.005;
+			this.count++;
+		} else if (this.count < 200) {
+			this.mainCamera.fov += 0.005;
+			this.count++;
 		} else {
 			this.count = 0;
 		}
-		console.log(this.mainCamera.fov);
 	}
 
 	async prepareResources(): Promise<void> {
