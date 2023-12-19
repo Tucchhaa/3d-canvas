@@ -28,6 +28,7 @@ export class TranslationScene extends Scene {
 			scale: new Vector3(100, 100, 100),
 			color: new Color(23, 120, 200, 0.8),
 		});
+		this.ball.rotate(Vector3.up, DEFAULT_ANGLE);
 
 		// X axis
 		const xCube = this.createObject('cube', {
@@ -108,11 +109,11 @@ export class TranslationScene extends Scene {
 		let v = Vector3.left;
 		if (this.count < 100) {
 			v = Vector3.left;
-			this.ball?.rotate(Vector3.forward, 0.01);
+			this.ball?.rotate(Vector3.forward, 0.02);
 			this.count++;
 		} else if (this.count < 200) {
 			v = Vector3.right;
-			this.ball?.rotate(Vector3.backward, 0.01);
+			this.ball?.rotate(Vector3.backward, 0.02);
 			this.count++;
 		} else {
 			this.count = 0;
