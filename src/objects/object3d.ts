@@ -10,6 +10,7 @@ export type Object3DConfig = {
 	geometry: Geometry;
 	color: Color;
 	backfaceCullingEnabled: boolean;
+	layers: string[];
 
 	name?: string;
 	pivot: Vector3;
@@ -27,7 +28,9 @@ export class Object3D extends SpaceEntity {
 
 	backfaceCullingEnabled: boolean;
 
-	constructor({ name, geometry, color, pivot, position, scale, direction, backfaceCullingEnabled }: Object3DConfig) {
+	layers: string[];
+
+	constructor({ name, geometry, color, layers, pivot, position, scale, direction, backfaceCullingEnabled }: Object3DConfig) {
 		super(pivot);
 
 		this.name = name ?? 'entity';
@@ -35,6 +38,7 @@ export class Object3D extends SpaceEntity {
 		this.geometry = geometry;
 		this.color = color;
 		this.backfaceCullingEnabled = backfaceCullingEnabled;
+		this.layers = layers;
 
 		this.setScale(scale);
 		this.setPosition(position);
@@ -88,6 +92,10 @@ export class Object3D extends SpaceEntity {
 		const translateFrom = rotationPivot.getTranslationFromOriginMatrix();
 
 		const transformMatrix = translateTo.mmul(rotation).mmul(translateFrom);
+
+		if (pivot) {
+			this.position.mmul(transformMatrix);
+		}
 
 		for (const vertex of this.geometry.vertexes) {
 			vertex.mmul(transformMatrix);
