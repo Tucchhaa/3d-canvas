@@ -7,6 +7,8 @@ export type LightConfig = {
 	color: Color;
 	intensity: number;
 
+	layers: string[],
+
 	pivot: Vector3;
 	position: Vector3;
 };
@@ -16,11 +18,14 @@ export abstract class LightSource extends SpaceEntity {
 
 	color: Color;
 
+	layers: string[];
+
 	constructor(options: Partial<LightConfig>) {
 		super(options.pivot ?? Vector3.zero);
 
 		this.color = options.color ?? new Color(255, 255, 255, 1);
 		this.intensity = options.intensity ?? 1;
+		this.layers = options.layers ?? [];
 
 		this.setPosition(options.position ?? Vector3.zero);
 	}

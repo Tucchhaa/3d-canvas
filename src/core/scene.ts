@@ -32,6 +32,7 @@ export abstract class Scene {
 			geometry,
 			color: new Color(0, 150, 255),
 			backfaceCullingEnabled: true,
+			layers: [],
 
 			pivot: Vector3.zero,
 			position: Vector3.zero,
