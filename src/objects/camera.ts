@@ -33,7 +33,7 @@ export class Camera extends SpaceEntity {
 
 		const { fov, near, far } = config;
 
-		this.fov = fov ?? Math.PI / 3;
+		this.fov = fov ?? Math.PI / 2;
 		this.near = near ?? 0.01;
 		this.far = far ?? 5000;
 
@@ -61,13 +61,16 @@ export class Camera extends SpaceEntity {
 		// const point = transformedVertex.mmul(projectionMatrix);
 
 		const point = transformedVertex;
+
+		if (point.z < this.near || point.z > this.far) {
+			point.multiply(new Vector3(-1, -1, 1));
+
+			return point;
+		}
+
 		const w = -transformedVertex.z;
 		point.x /= w;
 		point.y /= w;
-
-		if (point.z < this.near || point.z > this.far) {
-			point.multiply(new Vector3(point.z, point.z, 1));
-		}
 
 		return point;
 	}
