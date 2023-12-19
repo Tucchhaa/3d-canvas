@@ -1,6 +1,7 @@
 import { Scene } from '../core/scene';
 import { Camera } from '../objects/camera';
 import { DirectLight } from '../objects/light-source';
+import { Object3D } from '../objects/object3d';
 import { Color } from '../structures/color';
 import { Vector3 } from '../structures/vector';
 
@@ -10,6 +11,7 @@ const blue = () => new Color(0, 0, 255);
 
 export class TranslationScene extends Scene {
 	count = 0;
+	ball?: Object3D;
 
 	configureScene(): void {
 		const camera = (this.mainCamera = new Camera(
@@ -21,12 +23,11 @@ export class TranslationScene extends Scene {
 		camera.rotate(Vector3.left, Math.PI / 9);
 
 		const DEFAULT_ANGLE = Math.PI / 3;
-		const cube = this.createObject('cube', {
-			position: Vector3.zero,
+		this.ball = this.createObject('ball', {
+			position: new Vector3(-100, 0, 0),
 			scale: new Vector3(100, 100, 100),
-			color: new Color(0, 0, 255, 0.5),
+			color: new Color(23, 120, 200, 0.8),
 		});
-		cube.rotate(Vector3.up, DEFAULT_ANGLE);
 
 		// X axis
 		const xCube = this.createObject('cube', {
@@ -104,20 +105,26 @@ export class TranslationScene extends Scene {
 	}
 
 	onBeforeUpdate(): void {
-		let v = Vector3.forward;
-		if (this.count < 50) {
-			v = Vector3.forward;
+		let v = Vector3.left;
+		if (this.count < 100) {
+			v = Vector3.left;
+			this.ball?.rotate(Vector3.forward, 0.01);
 			this.count++;
-		} else if (this.count < 100) {
-			v = Vector3.backward;
+		} else if (this.count < 200) {
+			v = Vector3.right;
+			this.ball?.rotate(Vector3.backward, 0.01);
 			this.count++;
 		} else {
 			this.count = 0;
 		}
-		this.mainCamera.setPosition(Vector3.add(this.mainCamera.position, v.multiply(2)));
+		this.ball?.setPosition(Vector3.add(this.ball.position, v.multiply(2)));
 	}
 
 	async prepareResources(): Promise<void> {
-		await Promise.all([this.resourceLoader.loadObject('cube'), this.resourceLoader.loadObject('pyramid')]);
+		await Promise.all([
+			this.resourceLoader.loadObject('ball'),
+			this.resourceLoader.loadObject('cube'),
+			this.resourceLoader.loadObject('pyramid'),
+		]);
 	}
 }
