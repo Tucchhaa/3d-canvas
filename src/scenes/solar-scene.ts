@@ -145,7 +145,8 @@ export class SolarScene extends Scene {
 	}
 
 	onBeforeUpdate(): void {
-		const speed = 0.01;
+		const speed = 0.005;
+		const earthRotatingSpeed = 0.8;
 
 		this.sun?.rotate(Vector3.up, 1 * speed);
 
@@ -153,7 +154,7 @@ export class SolarScene extends Scene {
 
 		this.venus?.rotate(Vector3.up, 1.2 * speed, Vector3.zero);
 
-		this.earth?.rotate(Vector3.down, 1.3 * speed, Vector3.zero);
+		this.earth?.rotate(Vector3.down, earthRotatingSpeed * speed, Vector3.zero);
 		this.earth?.rotate(Vector3.down, 1.3 * speed);
 
 		this.mars?.rotate(Vector3.down, 1.4 * speed, Vector3.zero);
@@ -170,7 +171,7 @@ export class SolarScene extends Scene {
 		this.neptune?.rotate(Vector3.down, 1 * speed, Vector3.zero);
 
 		// this.moon?.setPosition(Vector3.add(this.earth!.position, new Vector3(0, 0, 50)));
-		this.moon?.rotate(Vector3.down, 1.3 * speed, Vector3.zero);
+		this.moon?.rotate(Vector3.down, earthRotatingSpeed * speed, Vector3.zero);
 		this.moon?.rotate(Vector3.down, 8 * speed, this.earth?.position);
 	}
 
