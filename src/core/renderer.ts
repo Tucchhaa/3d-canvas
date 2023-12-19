@@ -129,9 +129,9 @@ export class Renderer {
 		const lightningColor = new Color(0, 0, 0, 1);
 
 		for (const light of lights) {
-			const needApplyLight = light.layers.length == 0 || object3d.layers.some(layer => light.layers.includes(layer));
-			
-			if(needApplyLight) {
+			const needApplyLight = light.layers.length == 0 || object3d.layers.some((layer) => light.layers.includes(layer));
+
+			if (needApplyLight) {
 				light.applyLight(polygon, normal, lightningColor);
 			}
 		}

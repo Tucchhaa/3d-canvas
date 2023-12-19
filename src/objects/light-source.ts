@@ -7,7 +7,7 @@ export type LightConfig = {
 	color: Color;
 	intensity: number;
 
-	layers: string[],
+	layers: string[];
 
 	pivot: Vector3;
 	position: Vector3;

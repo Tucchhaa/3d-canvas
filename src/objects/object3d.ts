@@ -10,7 +10,7 @@ export type Object3DConfig = {
 	geometry: Geometry;
 	color: Color;
 	backfaceCullingEnabled: boolean;
-	layers: string[],
+	layers: string[];
 
 	name?: string;
 	pivot: Vector3;
@@ -93,7 +93,7 @@ export class Object3D extends SpaceEntity {
 
 		const transformMatrix = translateTo.mmul(rotation).mmul(translateFrom);
 
-		if(pivot) {
+		if (pivot) {
 			this.position.mmul(transformMatrix);
 		}
 

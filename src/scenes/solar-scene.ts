@@ -33,7 +33,7 @@ export class SolarScene extends Scene {
 		const camera = (this.mainCamera = new Camera({ backgroundColor: new Color(30, 39, 46) }, new Vector3(0, 300, -1300)));
 
 		// rgb(30, 39, 46)
-		camera.rotate(Vector3.left, 0.4)
+		camera.rotate(Vector3.left, 0.4);
 
 		this.sun = this.createObject(OBJ_NAMES[0], {
 			position: Vector3.zero,
@@ -96,8 +96,7 @@ export class SolarScene extends Scene {
 			color: new Color(63, 84, 186),
 		});
 
-
-		this.lights.push(new SpotLight({ position: Vector3.zero, radius: 5000, intensity: 1.2 }))
+		this.lights.push(new SpotLight({ position: Vector3.zero, radius: 5000, intensity: 1.2 }));
 		this.lights.push(new DirectLight({ direction: new Vector3(1, -2, 1).unit(), intensity: 0.3 }));
 		this.lights.push(new DirectLight({ direction: new Vector3(-1, -2, 1).unit(), intensity: 0.3 }));
 		// light for the sun
@@ -158,7 +157,7 @@ export class SolarScene extends Scene {
 		this.earth?.rotate(Vector3.down, 1.3 * speed);
 
 		this.mars?.rotate(Vector3.down, 1.4 * speed, Vector3.zero);
-		this.mars?.rotate(Vector3.down, .4 * speed);
+		this.mars?.rotate(Vector3.down, 0.4 * speed);
 
 		this.jupiter?.rotate(Vector3.down, 1.7 * speed, Vector3.zero);
 		this.jupiter?.rotate(Vector3.down, 0.7 * speed);
