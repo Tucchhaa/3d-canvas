@@ -79,9 +79,10 @@ export class RotatingScene extends Scene {
 		{
 			const angle = -DEFAULT_ANGLE;
 			this.cube2 = this.createObject('cube', {
-				position: new Vector3(-500, 0, 0),
+				position: new Vector3(-1000, 0, 0),
 				scale: new Vector3(100, 100, 100),
 				color: new Color(255, 0, 255, 0.5),
+				pivot: new Vector3(50, 50, 50),
 			});
 			this.cube2.rotate(Vector3.up, angle);
 
@@ -101,14 +102,14 @@ export class RotatingScene extends Scene {
 			// xPyramid.rotate(Vector3.up, angle, Vector3.zero);
 
 			// Y axis
-			const yCube = this.createObject('cube', {
-				position: new Vector3(-400, 0, 0),
-				scale: new Vector3(1, 50, 1),
-				color: green(),
-			});
-			yCube.rotate(Vector3.up, angle);
+			// const yCube = this.createObject('cube', {
+			// 	position: new Vector3(-400, 0, 0),
+			// 	scale: new Vector3(1, 50, 1),
+			// 	color: green(),
+			// });
+			// yCube.rotate(Vector3.up, angle);
 			this.createObject('pyramid', {
-				position: new Vector3(-400, 25, 0),
+				position: this.cube2.position,
 				scale: new Vector3(5, 5, 5),
 				color: green(),
 			});
@@ -163,7 +164,7 @@ export class RotatingScene extends Scene {
 
 	onBeforeUpdate(): void {
 		this.cube1?.rotate(this.cube1.direction, 0.05);
-		this.cube2?.rotate(Vector3.up, 0.02, new Vector3(-400, 0, 0));
+		this.cube2?.rotate(Vector3.up, 0.02);
 	}
 
 	async prepareResources(): Promise<void> {
