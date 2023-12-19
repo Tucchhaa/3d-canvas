@@ -37,7 +37,7 @@ export class EifelTowerScene extends Scene {
 		this.#tower = this.createObject('eifel-tower', {
 			position: new Vector3(0, 0, 0),
 			scale: new Vector3(0.01, 0.01, 0.01),
-			color: new Color(131, 141, 158)
+			color: new Color(131, 141, 158),
 		});
 
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
