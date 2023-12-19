@@ -5,6 +5,7 @@ import { CameraRotatingScene } from './scenes/camera-rotating-scene';
 import { CombinedDirectLightScene } from './scenes/combined-direct-light-scene';
 import { CubeScene } from './scenes/cube-scene';
 import { DirectLightScene } from './scenes/direct-light-scene';
+import { EifelTowerScene } from './scenes/eifel-tower-scene';
 import { PointLightScene } from './scenes/point-light-scene';
 import { RotatingScene } from './scenes/rotating-scene';
 import { ScaleScene } from './scenes/scale-scene';
@@ -32,6 +33,9 @@ const engine = new Engine(canvas);
 	// await engine.setScene(DirectLightScene);
 	// await engine.setScene(CombinedDirectLightScene);
 	// await engine.setScene(PointLightScene);
+
+	// 26000+ Polygons!
+	// await engine.setScene(EifelTowerScene);
 
 	engine.launch();
 	// engine.drawFrame();
