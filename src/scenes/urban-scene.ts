@@ -93,6 +93,16 @@ export class UrbanScene extends Scene {
 				return;
 			}
 
+			if (e.ctrlKey) {
+				if (e.key === '=') {
+					e.preventDefault();
+					this.mainCamera.fov -= 0.01;
+				} else if (e.key === '-') {
+					e.preventDefault();
+					this.mainCamera.fov += 0.01;
+				}
+			}
+
 			if (e.key === 'w') camera.setPosition(Vector3.add(camera.position, Vector3.forward.multiply(speed)));
 
 			if (e.key === 'a') camera.setPosition(Vector3.add(camera.position, Vector3.left.multiply(speed)));

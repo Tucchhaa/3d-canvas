@@ -23,11 +23,11 @@ const engine = new Engine(canvas);
 (async () => {
 	// await engine.setScene(AxisScene);
 	// await engine.setScene(RotatingScene);
-	await engine.setScene(CameraRotatingScene);
+	// await engine.setScene(CameraRotatingScene);
 	// await engine.setScene(ScaleScene);
 	// await engine.setScene(TranslationScene);
 	// await engine.setScene(UrbanScene);
-	await engine.setScene(SolarScene);
+	// await engine.setScene(SolarScene);
 	// await engine.setScene(TestScene);
 	// await engine.setScene(CubeScene);
 	// await engine.setScene(DirectLightScene);
