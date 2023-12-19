@@ -29,10 +29,7 @@ export class SolarScene extends Scene {
 	neptune?: Object3D;
 
 	configureScene(): void {
-		const camera = (this.mainCamera = new Camera(
-			{ backgroundColor: new Color(19, 15, 64) },
-			new Vector3(0, 0, -800),
-		));
+		const camera = (this.mainCamera = new Camera({ backgroundColor: new Color(19, 15, 64) }, new Vector3(0, 0, -800)));
 
 		this.sun = this.createObject(OBJ_NAMES[0], {
 			position: Vector3.zero,

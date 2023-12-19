@@ -22,7 +22,7 @@ export class UrbanScene extends Scene {
 			},
 			new Vector3(-200, 100, 0),
 		));
-		camera.rotate(Vector3.up, Math.PI/2);
+		camera.rotate(Vector3.up, Math.PI / 2);
 
 		OBJ_NAMES.sort(() => Math.random() - 0.5).forEach((name, index) => {
 			const x = 100 + index * 200;
