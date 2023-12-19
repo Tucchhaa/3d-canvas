@@ -115,7 +115,11 @@ export class Renderer {
 			const isVisible = !isCulled;
 
 			if (isVisible) {
-				projectedPolygon.color = this.#calculateColors(lights, object3d, polygon);
+				projectedPolygon.color = object3d.color;
+
+				if (object3d.applyLights) {
+					projectedPolygon.color = this.#calculateColors(lights, object3d, polygon);
+				}
 
 				result.push(projectedPolygon);
 			}
