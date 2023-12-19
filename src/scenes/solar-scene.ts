@@ -30,9 +30,7 @@ export class SolarScene extends Scene {
 
 	configureScene(): void {
 		const camera = (this.mainCamera = new Camera(
-			{
-				fov: Math.PI / 2,
-			},
+			{ backgroundColor: new Color(19, 15, 64) },
 			new Vector3(0, 0, -800),
 		));
 

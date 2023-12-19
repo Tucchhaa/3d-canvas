@@ -44,14 +44,17 @@ export class Renderer {
 		this.#ctx.fillStyle = 'rgba(0, 150, 255)';
 	}
 
-	public clearScreen() {
+	public clearScreen(camera: Camera) {
 		this.#ctx.clearRect(0, 0, this.#canvas.width, this.#canvas.height);
+
+		this.#ctx.fillStyle = camera.backgroundColor.toString();
+		this.#ctx.fillRect(0, 0, this.#width, this.#height);
 	}
 
 	// ===
 
 	public render(scene: Scene): void {
-		this.clearScreen();
+		this.clearScreen(scene.mainCamera);
 
 		const renderedPolygons: Polygon[] = [];
 

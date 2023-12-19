@@ -1,3 +1,4 @@
+import { Color } from '../structures/color';
 import { Polygon } from '../structures/geometry';
 import { Matrix } from '../structures/matrix';
 import { Vector3 } from '../structures/vector';
@@ -10,6 +11,8 @@ export type CameraConfig = {
 	near?: number;
 	/** how much object is far from the camera. */
 	far?: number;
+
+	backgroundColor?: Color;
 };
 
 export class Camera extends SpaceEntity {
@@ -22,6 +25,7 @@ export class Camera extends SpaceEntity {
 
 	#projectionMatrix!: Matrix;
 	#perspectiveMatrix!: Matrix;
+	backgroundColor!: Color;
 
 	near: number;
 	far: number;
@@ -36,6 +40,8 @@ export class Camera extends SpaceEntity {
 		this.fov = fov ?? Math.PI / 2;
 		this.near = near ?? 0.01;
 		this.far = far ?? 5000;
+
+		this.backgroundColor = config.backgroundColor ?? new Color(255, 255, 255, 1);
 
 		this.#initProjectionMatrix();
 		this.#calculatePerspectiveMatrix();
