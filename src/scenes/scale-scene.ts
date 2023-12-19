@@ -10,6 +10,7 @@ const green = () => new Color(0, 255, 0);
 const blue = () => new Color(0, 0, 255);
 
 export class ScaleScene extends Scene {
+	count = 0;
 	cube1?: Object3D;
 	cube2?: Object3D;
 	cube3?: Object3D;
@@ -122,27 +123,35 @@ export class ScaleScene extends Scene {
 
 	onBeforeUpdate(): void {
 		{
-			const scale = this.cube2?.scale;
+			const scale = this.cube2?.scale.clone();
 			if (scale) {
-				if (scale.z > 300) {
-					scale.z--;
-				} else if (scale.z < 100) {
-					scale.z++;
+				if (this.count < 200) {
+					scale.y++;
+					this.count++;
+				} else if (this.count < 400) {
+					scale.y--;
+					this.count++;
+				} else {
+					this.count = 0;
 				}
 				this.cube2?.setScale(scale);
 			}
 		}
 		{
-			const scale = this.cube3?.scale;
+			const scale = this.cube3?.scale.clone();
 			if (scale) {
-				if (scale.x > 300) {
-					scale.x--;
-					scale.y--;
-					scale.z--;
-				} else if (scale.x < 100) {
+				if (this.count < 200) {
 					scale.x++;
 					scale.y++;
 					scale.z++;
+					this.count++;
+				} else if (this.count < 400) {
+					scale.x--;
+					scale.y--;
+					scale.z--;
+					this.count++;
+				} else {
+					this.count = 0;
 				}
 				this.cube3?.setScale(scale);
 			}
