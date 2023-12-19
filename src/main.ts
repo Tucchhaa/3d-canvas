@@ -25,7 +25,7 @@ const engine = new Engine(canvas);
 	// await engine.setScene(RotatingScene);
 	// await engine.setScene(CameraRotatingScene);
 	// await engine.setScene(ScaleScene);
-	// await engine.setScene(TranslationScene);
+	await engine.setScene(TranslationScene);
 	// await engine.setScene(UrbanScene);
 	// await engine.setScene(SolarScene);
 	// await engine.setScene(TestScene);
